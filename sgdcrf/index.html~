@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="A Java Double Array Trie supporting unicode">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/stylesheet.css">
+
+    <title>Chinese Segmentor</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/fancyerii/chinesesegmentor">View on GitHub</a>
+
+          <h1 id="project_title">Chinese Segmentor</h1>
+          <h2 id="project_tagline">a CRFs based Chinese Segmentor using Stochastic Gradient Descent(sgd) algorithm </h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/fancyerii/chinesesegmentor/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/fancyerii/chinesesegmentor/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2><strong>Chinese Segmentor是什么?</strong></h2>
+
+<p><strong>Chinese Segmentor</strong>基于CRFs的中文分词系统，使用sgd训练，速度快，并且支持Online learning和Incremental learning，同时可以使用hadoop实现并行训练</p>
+
+<h2><strong>Chinese Segmentor有哪些特性？</strong></h2>
+
+<ul>
+<li><p>训练速度快</p></li>
+<li><p>支持大规模数据的训练</p></li>
+<li><p>N-best输出</p></li>
+<li><p>可视化展示切分（解码）过程</p></li>
+</ul>
+<h2><strong>安装</strong></h2>
+<h3>安装依赖的DoubleArrayTrie</h3>
+<p>参考<a href='../doublearraytrie/index.html'>DoubleArrayTrie的文档</a>
+</p>
+
+<h3>安装</h3>
+<ul>
+    <li>下载最新代码</li>
+    <li>mvn clean compile assembly:single</li>
+</ul>
+
+<h2>用法</h2>
+<h3>查看帮助</h3>
+java -cp target/chinesesegmentor-1.0-jar-with-dependencies.jar com.antbrains.crf.SgdCrf
+<br/>
+<pre>
+Usage:
+	SgdCrf help
+	SgdCrf train <CRF++_format_train_file> <model_file> <crf_train_properties_file> [encoding]
+	SgdCrf train2 <tab_sep_text_train_file> <model_file> <crf_train_properties_file> [encoding]
+	SgdCrf hdfs-train <hdfs_dir> <model_file> <crf_train_properties_file> <feature_dict> [encoding] [hdfsconf1] [hdfsconf2] ...
+	SgdCrf test  <test_file> <model_file> [encoding]
+	SgdCrf tag <model_file> [nBest] [encoding]
+</pre>
+<h2><strong>训练数据格式</strong></h2>
+<p>
+目前支持两种格式的训练数据：<a href='http://crfpp.googlecode.com/svn/trunk/doc/index.html'>CRF++</a>格式的数据；tab分割的数据。
+</p>
+<p>
+  人民日报的数据已经被处理成合适的格式了，使用了6标签：B E S B1 B2 M，即单字词为S，两字词为B E，三字词为B B1 E，四字词为 B B1 B2 E，五字词为B B1 B2 M E，...<br/><br/>
+  句子之间用一个空行分割开来。<br/><br/>
+  关于tag的比较请参考 Effective Tag Set Selection in Chinese Word Segmentation via Conditional Random Field Modeling by Hai Zhao et al.(2006)
+</p>
+
+<p>人民日报语料的片段
+<pre>
+天	B
+气	E
+趋	B
+势	E
+分	B
+析	E
+
+据	S
+新	B
+华	B1
+社	E
+天	B
+津	E
+１	B
+</pre>
+人民日报的句子较长，如果为了提高效果可以先用逗号等一些标点符号先预处理，然后在训练效果可能更好。我这里只是用来测试而已（人民日报的语料库和互联网的差别很大，所以如果想要用于互联网的话需要增加相关的训练数据）
+</p>
+ 
+<h3><em>人民日报分词语料库的训练</em></h3>
+<p>训练的参数都在配置文件conf/crf_train.properties里，具体参数请参考下面</p>
+<pre>java -cp target/chinesesegmentor-1.0-jar-with-dependencies.jar -Xmx2g com.antbrains.crf.SgdCrf train data/people-daily.train model/people-daily.model conf/crf_train.properties</pre>
+
+<h3><em>测试</em></h3>
+<pre>java -cp target/chinesesegmentor-1.0-jar-with-dependencies.jar -Xmx2g com.antbrains.crf.SgdCrf test data/people-daily.test model/people-daily.model</pre> 
+
+<h3><em>Tab分隔的训练数据</em></h3>
+<p>训练的参数都在配置文件conf/crf_train.properties里，具体参数请参考下面</p>
+<pre>java -cp target/chinesesegmentor-1.0-jar-with-dependencies.jar -Xmx2g com.antbrains.crf.SgdCrf train2 tab-sep-trainingdata model/people-daily.model conf/crf_train.properties</pre>
+
+<h3><em>分词</em></h3>
+<pre>java -cp target/chinesesegmentor-1.0-jar-with-dependencies.jar -Xmx2g com.antbrains.crf.SgdCrf seg model/people-daily.model</pre> 
+
+<h3><em>查看切分路径</em></h3>
+<pre>java -cp target/chinesesegmentor-1.0-jar-with-dependencies.jar -Xmx2g com.antbrains.crf.CRFExplainer model/people-daily.model</pre>
+<img src='../images/crf.png'/>
+<p>说明：
+<ul>
+<li>点击分词后然后分析</li>
+<li>点击某个节点，比如图上的”今/B“</li>
+我们可以得到今字的tag是B的概率。其中U04:今/天的值是2.4，U04表示当前字和下一个字的组合（具体参考Template），也就是说如果当前字是”今“，下一个字是”天“，那么今被标注为B的概率是比较大的。
+<pre>
+total score: 3.6785386417228456
+U04:今/天  2.4
+U01:今  1.3
+U02:天  -.1
+</pre>
+<li>点击某条边，我们可以知道tag直接的转移概率</li>
+<li>我们也可以修改某些边(右键删除边，托放增加边）来分析其它路径的概率</li>
+</ul>
+</p>
+
+<h3><em>训练参数说明</em></h3>
+<pre>
+# feature
+mininumFeatureFrequency=1 //如果一个特征的出现次数小于它会被过滤，默认1不会过滤任何特征，过滤有助于减少特征大小，加快学习速度和分词速度，也有可能抑制过拟合。
+
+# sgd
+sigma=5.0 
+eta=0.1
+rate=2.0
+iterateCount=100 //迭代次数
+
+# calibrate //确定t0的过程
+samplesNum=10000  
+candidatesNum=10
+
+
+templateFile=./conf/segment.tmpl //模版
+template.charset: utf8
+</pre>
+
+<h3><em>模版说明</em></h3>
+<p>和CRF++格式兼容，但不支持B，只支持U</p>
+<pre>
+U00:%x[-1,0]
+U01:%x[0,0]
+U02:%x[1,0]
+U03:%x[-1,0]/%x[0,0]
+U04:%x[0,0]/%x[1,0]
+U05:%x[-1,0]/%x[1,0]
+</pre>
+
+<h2>基于Hadoop的训练</h2>
+coming soon...
+
+<h2>Future Road Map</h2>
+<ul>
+    <li>支持Lucene的Analyzer</li>
+    <li>预处理（语言识别，分句，分词，数字/日期等）</li>
+    <li>增量学习（包括增加新词典）</li>
+    <li>通过网络发现新词</li>
+
+</ul>
+
+<h2>参考资料</h2>
+<ul>
+<li><a href='http://www.chokkan.org/software/crfsuite/'>CRF Suite</a> 本程序参考了CRFSuite的代码实现</li>
+<li><a href='http://crfpp.googlecode.com/svn/trunk/doc/index.html'>CRF++</a></li>
+<li><a href='http://leon.bottou.org/projects/sgd'>Léon Bottou的sgd项目</a></li>
+
+<li>J. Lafferty, A. McCallum, and F. Pereira. Conditional random fields: Probabilistic models for segmenting and labeling sequence data, In Proc. of ICML, pp.282-289, 2001</li>
+<li>Shai Shalev-Shwartz, Yoram Singer, and Nathan Srebro. “Pegasos: Primal Estimated sub-GrAdient SOlver for SVM”. Proceedings of the 24th International Conference on Machine Learning (ICML 2007). 807-814. 2007.</li>
+
+
+</ul>
+</section>
+</div>
+</body></html>
