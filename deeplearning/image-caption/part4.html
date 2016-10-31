@@ -3,7 +3,7 @@
  <head>
   <meta charset="utf-8"/>
   <title>
-    Image Caption Generation(part IV) 
+Image Caption Generation(part IV)
   </title>
   <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
   <style type="text/css">
@@ -376,7 +376,10 @@ f=\sigma(z)$$
    <br/>
    <mathjax>
     $$\sigma(x) = \frac{1}{1+e^{-x}} \\\\
-\rightarrow \hspace{0.3in} \frac{d\sigma(x)}{dx} = \frac{e^{-x}}{(1+e^{-x})^2} = \left( \frac{1 + e^{-x} - 1}{1 + e^{-x}} \right) \left( \frac{1}{1+e^{-x}} \right) 
+\rightarrow \hspace{0.3in} \frac{d\sigma(x)}{dx} = \frac{e^{-x}}{(1+e^{-x})^2} 
+\\\\
+= \left( \frac{1 + e^{-x} - 1}{1 + e^{-x}} \right) \left( \frac{1}{1+e^{-x}} \right) 
+\\\\
 = \left( 1 - \sigma(x) \right) \sigma(x)$$
    </mathjax>
   </p>
@@ -1223,7 +1226,9 @@ Out[12]: array([5, 7, 9])
    怎么来的呢？还记得前面max(x,y)的偏导数吗？
    <br/>
    <mathjax>
-    $f(x,y) = \max(x, y) \hspace{0.5in} \rightarrow \hspace{0.5in} \frac{\partial f}{\partial x} = \mathbb{1}(x &gt;= y) \hspace{0.5in} \frac{\partial f}{\partial y} = \mathbb{1}(y &gt;= x)$
+    $f(x,y) = \max(x, y) \hspace{0.5in} \rightarrow \hspace{0.5in} 
+\\\\
+\frac{\partial f}{\partial x} = \mathbb{1}(x &gt;= y) \hspace{0.5in} \frac{\partial f}{\partial y} = \mathbb{1}(y &gt;= x)$
    </mathjax>
    <br/>
    把y设置成0，则
@@ -1340,7 +1345,9 @@ def affine_relu_backward(dout, cache):
    那怎么让它们加起来等于1呢？也很简单，除以它们的和就行了。因此我们就得到了softmax函数：
    <br/>
    <mathjax>
-    $$softmax([x_1, x_2, .., x_K]^T)=[\frac {exp(x_1)} {\sum_{i=1}^{K} exp(x_i)}, \frac {exp(x_2)} {\sum_{i=1}^{K} exp(x_i)}, ..., \frac {exp(x_K)} {\sum_{i=1}^{K} exp(x_i)}]^T$$
+    $$softmax([x_1, .., x_K]^T)=
+\\\\
+[\frac {exp(x_1)} {\sum_{i=1}^{K} exp(x_i)}, ..., \frac {exp(x_K)} {\sum_{i=1}^{K} exp(x_i)}]^T$$
    </mathjax>
    <br/>
    因为这个向量的每个元素都大于0小于1而且加起来等于1，如果我们把这个输出当成一个K类分类器的输出的话，我们可以把它当成分类器的”概率“。
@@ -1415,7 +1422,9 @@ def affine_relu_backward(dout, cache):
 </code></pre>
   <p>
    <mathjax>
-    $$softmax([x_1, x_2, .., x_K]^T)=[\frac {exp(x_1)} {\sum_{i=1}^{K} exp(x_i)}, \frac {exp(x_2)} {\sum_{i=1}^{K} exp(x_i)}, ..., \frac {exp(x_K)} {\sum_{i=1}^{K} exp(x_i)}]^T$$
+    $$softmax([x_1, .., x_K]^T)=
+\\\\
+[\frac {exp(x_1)} {\sum_{i=1}^{K} exp(x_i)}, ..., \frac {exp(x_K)} {\sum_{i=1}^{K} exp(x_i)}]^T$$
    </mathjax>
   </p>
   <p>
@@ -1426,11 +1435,11 @@ def affine_relu_backward(dout, cache):
    我们看一个例子：x=[1,2,3]，x=[101,102,103]，我们分别计算
    <br/>
    <mathjax>
-    $$[\frac{exp(1)}{exp(1)+exp(2)+exp(3)}, \frac{exp(2)}{exp(1)+exp(2)+exp(3)}, \frac{exp(3)}{exp(1)+exp(2)+exp(3)}]$$
+    $$[\frac{e^1}{e^1+e^2+e^3}, \frac{e^2}{e^1+e^2+e^3},\frac{e^3}{e^1+e^2+e^3}]$$
    </mathjax>
    <br/>
    <mathjax>
-    $$[\frac{exp(101)}{exp(101)+exp(102)+exp(103)}, \frac{exp(102)}{exp(101)+exp(102)+exp(103)}, \frac{exp(103)}{exp(101)+exp(102)+exp(103)}]$$
+    $$[\frac{e^{101}}{e^{101}+e^{102}+e^{103}}, \frac{e^{102}}{e^{101}+e^{102}+e^{103}},\frac{e^{103}}{e^{101}+e^{102}+e^{103}}]$$
    </mathjax>
    <br/>
    我们把下面这个式子的分子分母同时除以exp(100)，那么结果应该是不变的，我们会发现这两个值是一样的！
@@ -1530,9 +1539,12 @@ $$
    <br/>
    <mathjax>
     $$\frac{\partial p_i}{\partial x_i}=\frac{\frac{\partial e^{x_i}}{\partial x_i} \sum_ke^{x_k}  - e^{x_i} \frac{\partial (\sum_ke^{x_k})}{\partial x_i} } {(\sum_ke^{x_k})^2}
+\\\\
  = \frac{e^{x_i} \sum_ke^{x_k}  - e^{x_i} e^{x_i} } {(\sum_ke^{x_k})^2}
 \\\\
-= \frac{e^{x_i}}{\sum_ke^{x_k}} - (\frac{e^{x_i}}{\sum_ke^{x_k}})^2=p_i - {p_i}^2
+= \frac{e^{x_i}}{\sum_ke^{x_k}} - (\frac{e^{x_i}}{\sum_ke^{x_k}})^2
+\\\\
+=p_i - {p_i}^2
 $$
    </mathjax>
    <br/>
@@ -1570,8 +1582,11 @@ $$
     $$=-y_i(1-p_i) - \sum_{k \ne i} y_k \frac{1}{p_k}(-p_ip_k)
 \\\\
 =-y_i(1-p_i) + \sum_{k \ne i} y_kp_i
+\\\\
 =-y_i + y_ip_i + \sum_{k \ne i} y_kp_i
+\\\\
 =\sum_ky_kp_i - y_i
+\\\\
 =p_i-y_i
 $$
    </mathjax>
