@@ -3,7 +3,7 @@
  <head>
   <meta charset="utf-8"/>
   <title>
-   Image Caption Generation(part IV) 
+    Image Caption Generation(part IV) 
   </title>
   <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
   <style type="text/css">
@@ -2366,9 +2366,10 @@ solver.train()
    <br/>
    <img alt="" src="images/cell-15.png"/>
   </p>
+  <h4 id="4217-cell-17">
+   4.2.17 cell-17
+  </h4>
   <p>
-   #### 4.2.16 cell-16
-   <br/>
    用5层的全连接神经网络训练cifar-10，要求得到一个在验证集上得到50%以上准确率的模型。你会发现要调好各种参数确实挺tricky的。不过也不要花太多时间在这里，之后我们的重点是CNN，我们多花些时间调CNN吧。不过如果对神经网络不太熟悉，也可以多调调参数找找感觉，请写个python脚本来搜索最优的参数。同时如果计算资源足够，也可以同时跑多个脚本并行搜索。另外一个技巧就是如果发现loss或者val_acc不怎么变化，就可以提前停止了。
    <br/>
    我这里就不列举最优参数了，请大家自己试试能不能找到val_acc大于0.5的超参数。
