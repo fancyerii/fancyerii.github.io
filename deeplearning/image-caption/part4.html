@@ -223,8 +223,11 @@ Image Caption Generation(part IV)
    </mathjax>
    <br/>
    最后一个简单函数是max函数：
+   <br/>
    <mathjax>
-    $f(x,y) = \max(x, y) \hspace{0.5in} \rightarrow \hspace{0.5in} \frac{\partial f}{\partial x} = \mathbb{1}(x &gt;= y) \hspace{0.5in} \frac{\partial f}{\partial y} = \mathbb{1}(y &gt;= x)$
+    $$f(x,y) = \max(x, y) \hspace{0.5in} \rightarrow \hspace{0.5in}
+\\\\
+ \frac{\partial f}{\partial x} = \mathbb{1}(x &gt;= y) \hspace{0.5in} \frac{\partial f}{\partial y} = \mathbb{1}(y &gt;= x)$$
    </mathjax>
    <br/>
    这个导数是ReLU(x)=max(x,0)的导数，其实也简单，如果
@@ -1435,11 +1438,19 @@ def affine_relu_backward(dout, cache):
    我们看一个例子：x=[1,2,3]，x=[101,102,103]，我们分别计算
    <br/>
    <mathjax>
-    $$[\frac{e^1}{e^1+e^2+e^3}, \frac{e^2}{e^1+e^2+e^3},\frac{e^3}{e^1+e^2+e^3}]$$
+    $$[\frac{e^1}{e^1+e^2+e^3},
+\\\\
+ \frac{e^2}{e^1+e^2+e^3},
+ \\\\
+ \frac{e^3}{e^1+e^2+e^3}]$$
    </mathjax>
    <br/>
    <mathjax>
-    $$[\frac{e^{101}}{e^{101}+e^{102}+e^{103}}, \frac{e^{102}}{e^{101}+e^{102}+e^{103}},\frac{e^{103}}{e^{101}+e^{102}+e^{103}}]$$
+    $$[\frac{e^{101}}{e^{101}+e^{102}+e^{103}},
+\\\\
+ \frac{e^{102}}{e^{101}+e^{102}+e^{103}},
+\\\\
+\frac{e^{103}}{e^{101}+e^{102}+e^{103}}]$$
    </mathjax>
    <br/>
    我们把下面这个式子的分子分母同时除以exp(100)，那么结果应该是不变的，我们会发现这两个值是一样的！
