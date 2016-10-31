@@ -60,11 +60,11 @@
    <br/>
    任何一个显示定义的函数（隐函数不行，不过我们定义的神经网络肯定不会通过隐函数来定义）都可以分解为一个有向无环图（树），其中叶子节点是最基本的无依赖的自变量，而中间节点是我们引入的中间变量，而树根就是我们的函数。比如上面的例子，计算图如下所示：
    <br/>
-   <img alt="" src="./images/tree-def.png" title="计算图示例"/>
+   <img alt="" src="images/tree-def.png" title="计算图示例"/>
    <br/>
    给定每一个自变量的值，我们可以计算最终的函数值，对应与神经网络就是feedforward计算。具体用”算法“怎么计算呢？首先因为计算图是一个有向无环图，因此我们可以拓扑排序，先是叶子节点a和b，他们的值已经给定，然后删除a和b出发的边，然后c和d没有任何未知依赖，可以计算，最后计算e。计算过程如下图：
    <br/>
-   <img alt=" " src="./images/tree-eval.png" title="“前向”计算"/>
+   <img alt=" " src="images/tree-eval.png" title="“前向”计算"/>
   </p>
   <h3 id="13">
    1.3 计算图的导数计算
@@ -72,7 +72,7 @@
   <p>
    首先我们可以计算每条边上的导数，也就是边的终点对起点的导数，而且导数是在起点的取前向计算值时的导数，具体过程如图所示：
    <br/>
-   <img alt="" src="./images/tree-eval-derivs.png"/>
+   <img alt="" src="images/tree-eval-derivs.png"/>
    <br/>
    有些边的导数不依赖于输入的值，比如
    <mathjax>
@@ -118,7 +118,7 @@
    1.4 反向导数计算
   </h3>
   <p>
-   <img alt="" src="./images/tree-backprop.png"/>
+   <img alt="" src="images/tree-backprop.png"/>
    <br/>
    计算流程文字描述如下：
    <br/>
@@ -281,7 +281,7 @@ dfdy = 1.0 * dfdq # 因为dq/dy = 1，所以使用链式法则计算dfdy=-4
   <p>
    我们也可以用计算图来表示和计算：
    <br/>
-   <img alt="" src="./images/cs231n-opt2-1.png"/>
+   <img alt="" src="images/cs231n-opt2-1.png"/>
    <br/>
    绿色的值是feed forward的结果，而红色的值是backprop的结果。
    <br/>
@@ -326,29 +326,29 @@ f_a(x) = ax
   <p>
    下面是用计算图画出这个计算过程：
    <br/>
-   <img alt="" src="./images/cs231n-opt2-2.png"/>
+   <img alt="" src="images/cs231n-opt2-2.png"/>
    <br/>
    这个图有4种gate，加法，乘法，指数和倒数。加法有加一个常数和两个变量相加，乘法也是一样。
    <br/>
    上图绿色的值是前向计算的结果，而红色的值是反向计算的结果，local graident并没有标示出来，所以看起来可能有些跳跃，下面我在纸上详细的分解了其中的步骤，请读者跟着下图自己动手计算一遍。
   </p>
   <p>
-   <img alt="" src="./images/11.jpg"/>
+   <img alt="" src="images/11.jpg"/>
    <br/>
    上图就是前向计算的过程，比较简单。
   </p>
   <p>
-   <img alt="" src="./images/22.jpg"/>
+   <img alt="" src="images/22.jpg"/>
    <br/>
    第二个图是计算local gradient，对于两个输入的乘法和加法，local gradient也是两个值，local gradient的值我是放到图的节点上了。
   </p>
   <p>
-   <img alt="" src="./images/33.jpg"/>
+   <img alt="" src="images/33.jpg"/>
    <br/>
    第三个图是具体计算一个乘法的local gradient的过程，因为上图可能看不清，所以单独放大了这一步。
   </p>
   <p>
-   <img alt="" src="./images/44.jpg"/>
+   <img alt="" src="images/44.jpg"/>
    <br/>
    最后计算真正的梯度，是把local gradient乘以来自上一步的gradient。不过这个例子一个节点只有一个输出，如果有多个的话，梯度是加起来的，可以参考1.4的
    <mathjax>
@@ -383,7 +383,7 @@ f=\sigma(z)$$
   <p>
    因此我们可以把后面一长串的gate”压缩“成一个gate：
    <br/>
-   <img alt="" src="./images/55.jpg"/>
+   <img alt="" src="images/55.jpg"/>
   </p>
   <p>
    我们来比较一下，之前前向计算
@@ -918,12 +918,12 @@ deactivate                       # Exit the virtual environment
    <br/>
    下面是我运行作业1的前几个cell的结果，你有可以自己也试一试，有空最好把作业1自己做一做。
    <br/>
-   <img alt="" src="./images/home-work-1.png"/>
+   <img alt="" src="images/home-work-1.png"/>
   </p>
   <p>
    下面是我运行这个cell的结果：
    <br/>
-   <img alt="" src="./images/cell-2.png"/>
+   <img alt="" src="images/cell-2.png"/>
    <br/>
    cifar10的数据10类图片，’plane’, ‘car’, ‘bird’, ‘cat’, ‘deer’, ‘dog’, ‘frog’, ‘horse’, ‘ship’, ‘truck。总共有6万张标注的数据，其中50000张训练数据，10000张测试数据。而在这里，我们把50000张中的49000用来真正训练，1000张用来validate
   </p>
@@ -1084,7 +1084,7 @@ np.reshape?
    写完这个函数后怎么知道我们写的没问题呢？CS231N的课程非常好的一点就是每一个步骤都会有检验的代码。我们写完这个函数之后就可以运行这个cell测试一下：
   </p>
   <p>
-   <img alt="" src="./images/cell-3.png"/>
+   <img alt="" src="images/cell-3.png"/>
   </p>
   <p>
    cell的注释里写了，如果相对错误了小于10的-9次方，那么说明代码是没有问题的【至少是通过单元测试了】。恭喜！你正确的完成了第一个函数！
@@ -1193,7 +1193,7 @@ Out[12]: array([5, 7, 9])
    另外值得注意的是这个cell里用到了eval_numerical_gradient_array函数，在cs231n/gradient_check.py下，另外这个文件下还有个eval_numerical_gradient，都是用来计算数值梯度和我们求出的梯度的误差的，有兴趣的读者可以仔细阅读这个代码。
   </p>
   <p>
-   <img alt="" src="./images/cell-4.png"/>
+   <img alt="" src="images/cell-4.png"/>
   </p>
   <h4 id="425-cell-5">
    4.2.5 cell-5
@@ -1299,8 +1299,8 @@ def affine_relu_backward(dout, cache):
   return dx, dw, db
 
 </code></pre>
-  <h4 id="427-cell-7_1">
-   4.2.7 cell-7
+  <h4 id="428-cell-8">
+   4.2.8 cell-8
   </h4>
   <p>
    svm-loss和softmax-loss
@@ -1596,9 +1596,10 @@ $$
    <br/>
    dx[np.arange(N), y] -= 1，然后除以N得到平均的dx。
   </p>
+  <h4 id="429-cell-9">
+   4.2.9 cell-9
+  </h4>
   <p>
-   #### 4.2.8 cell-8
-   <br/>
    接下来就是把这些Layers拼装成一个完整的多层神经网络，请打开cs231n/classifiers/fc_net.py，我们现在要完成TwoLayerNet这个类。
    <br/>
    我们直接把代码放到下面，然后用注释的方式解释代码。补充的解释在后面。
@@ -1739,9 +1740,10 @@ $$
   <p>
    接下来我们运行这个cell，检查相对error是否足够小。
   </p>
+  <h4 id="4210-cell-10">
+   4.2.10 cell-10
+  </h4>
   <p>
-   #### 4.2.9 cell-9
-   <br/>
    实现Solver，forward和backward的代码都好了，接下来就是要实现(batch)梯度下降的逻辑了。
    <br/>
    请打开cs231n/solver.py，课程已经帮我们实现了，我们需要理解其代码然后使用它。Solver的代码较长，如果读者不想阅读全部代码，至少要阅读最前面的注释，了解它应该怎么用。
@@ -2119,7 +2121,7 @@ solver.train()
   <p>
    运行的结果如下【因为随机的因素，你的结果和我可能不同】：
    <br/>
-   <img alt="" src="./images/cell-9.png"/>
+   <img alt="" src="images/cell-9.png"/>
    <br/>
    读者可能会问，为什么要用learning_rate=1e-3，reg=1e-2？换别的参数好像到不了50%的validation 准确率。这个就是训练神经网络的一些tricks了。谁也不能提前知道，只能通过不断的尝试才能找到比较好的超参数。感兴趣的同学请参考
    <a href="http://neuralnetworksanddeeplearning.com/chap3.html">
@@ -2134,16 +2136,18 @@ solver.train()
     http://cs231n.github.io/neural-networks-3/#update。我后面只会把代码实现，细节部分请读者自己琢磨。
    </a>
   </p>
+  <h4 id="4211-cell-11">
+   4.2.11 cell-11
+  </h4>
   <p>
-   #### 4.2.10 cell-10
-   <br/>
    这个部分不需要自己实现，直接运行就可以了。不过对python不熟的读者可以阅读一下代码。学习怎么绘图。
    <br/>
-   <img alt="" src="./images/cell-10.png"/>
+   <img alt="" src="images/cell-10.png"/>
   </p>
+  <h4 id="4212-cell-12">
+   4.2.12 cell-12
+  </h4>
   <p>
-   #### 4.2.11 cell-11
-   <br/>
    实现FullyConnectedNet，从两层推广的任意层的全连接网络。其实和两层差不多，细节我就不罗嗦了，请读者自行阅读。唯一注意的是第一层和最后一层是需要特殊处理的。
   </p>
   <pre><code> class FullyConnectedNet(object):
@@ -2292,8 +2296,8 @@ solver.train()
 
     return loss, grads
 </code></pre>
-  <h4 id="4212-cell-12">
-   4.2.12 cell-12
+  <h4 id="4213-cell-13">
+   4.2.13 cell-13
   </h4>
   <p>
    用两层神经网络过拟合50个训练数据
@@ -2306,8 +2310,8 @@ solver.train()
    <br/>
    learning_rate = 1e-3
   </p>
-  <h4 id="4213-cell-13">
-   4.2.13 cell-13
+  <h4 id="4214-cell-14">
+   4.2.14 cell-14
   </h4>
   <p>
    用5层神经网络过拟合50个训练数据，我们会发现要找一个合适的参数比两层网络更困难。
@@ -2318,8 +2322,8 @@ solver.train()
    <br/>
    learning_rate = 5e-3
   </p>
-  <h4 id="4214-cell-14">
-   4.2.14 cell-14
+  <h4 id="4215-cell-15">
+   4.2.15 cell-15
   </h4>
   <p>
    sgd_momentum
@@ -2334,10 +2338,10 @@ solver.train()
   <p>
    下面是sgd和sgd_momentum的收敛速度比较：
    <br/>
-   <img alt="" src="./images/cell-14.png"/>
+   <img alt="" src="images/cell-14.png"/>
   </p>
-  <h4 id="4215-cell-15">
-   4.2.15 cell-15
+  <h4 id="4216-cell-16">
+   4.2.16 cell-16
   </h4>
   <p>
    rmsprop和adam
@@ -2360,7 +2364,7 @@ solver.train()
   <p>
    收敛速度比较：
    <br/>
-   <img alt="" src="./images/cell-15.png"/>
+   <img alt="" src="images/cell-15.png"/>
   </p>
   <p>
    #### 4.2.16 cell-16
