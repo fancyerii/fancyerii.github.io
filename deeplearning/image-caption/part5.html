@@ -59,8 +59,6 @@
    局部感知域
   </h3>
   <p>
-   In the fully-connected layers shown earlier, the inputs were depicted as a vertical line of neurons. In a convolutional net, it’ll help to think instead of the inputs as a 28×28 square of neurons, whose values correspond to the 28×28 pixel intensities we’re using as inputs:
-   <br/>
    在前面图示的全连接的层里，输入是被描述成一列神经元。而在卷积网络里，我们把输入看成28×28方格的二维神经元，它的每一个神经元对应于图片在这个像素点的强度（灰度值），如下图所示：
    <br/>
   </p>
@@ -100,8 +98,6 @@
    共享权值
   </h3>
   <p>
-   Shared weights and biases: I’ve said that each hidden neuron has a bias and 5×5 weights connected to its local receptive field. What I did not yet mention is that we’re going to use the same weights and bias for each of the 24×24 hidden neurons. In other words, for the j,kth hidden neuron, the output is:
-   <br/>
    之前提到过每一个隐藏层的神经元有一个5×5的权值。这24×24个隐藏层对应的权值是相同的。也就是说，对于隐藏层的第j,k个神经元，输出如下：
    <br/>
    <mathjax>
@@ -284,8 +280,6 @@ $ipython
    改进版本1
   </h4>
   <p>
-   Let’s begin by inserting a convolutional layer, right at the beginning of the network. We’ll use 5 by 5 local receptive fields, a stride length of 1, and 20 feature maps. We’ll also insert a max-pooling layer, which combines the features using 2 by 2 pooling windows. So the overall network architecture looks much like the architecture discussed in the last section, but with an extra fully-connected layer
-   <br/>
    我们首先在输入的后面增加一个卷积层。我们使用5
    <em>
     5的局部感知域，stride等于1，20个特征映射。然后接一个2
