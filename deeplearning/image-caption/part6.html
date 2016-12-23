@@ -52,16 +52,16 @@
    </p>
   </blockquote>
   <p>
-   因此用英语的发音是 (/θɪˈænoʊ/。
+   因此用英语的发音是 /θɪˈænoʊ/。
   </p>
   <h2 id="2-theano">
    2. Theano简介
   </h2>
   <p>
-   Theano是一个Python库，它可以让你定义，优化以及对数学表达式求值，尤其是多维数组(numpy的ndarray)的表达式的求值。对于解决大量数据的问题，使用Theano可能获得与手工用C实现差不多的性能。另外通过理由GPU，它能获得比CPU上的C实现快很多数量级。
+   Theano是一个Python库，它可以让你定义，优化以及对数学表达式求值，尤其是多维数组(numpy的ndarray)的表达式的求值。对于解决大量数据的问题，使用Theano可能获得与手工用C实现差不多的性能。另外通过利用GPU，它能获得比CPU上的C实现快很多数量级。
   </p>
   <p>
-   Theano把计算机代数系统(CAS)和优化的编译器结合在一起。 它也可以对许多数学操作生产自定义的c代码。这种CAS和优化编译的组合对于有复杂数学表达式重复的被求值并且求值速度很关键的问题是非常有用的。对于许多不同的表达式只求值一次的场景，Theano也能最小化编译/分析的次数，但是仍然可以提供诸如自动差分这样的符号计算的特性。
+   Theano把计算机代数系统(CAS)和优化的编译器结合在一起。 它也可以对许多数学操作生成自定义的c代码。这种CAS和优化编译的组合对于有复杂数学表达式重复的被求值并且求值速度很关键的问题是非常有用的。对于许多不同的表达式只求值一次的场景，Theano也能最小化编译/分析的次数，但是仍然可以提供诸如自动差分这样的符号计算的特性。
   </p>
   <p>
    Theano的编译器支持这些符号表达式的不同复杂程度的许多优化方法：
@@ -94,11 +94,7 @@
     】来避免重复计算
    </li>
    <li>
-    对于不涉及aliasing的操作尽量使用就地的运算【类似与x
-    <em>
-     =2 vs y=x
-    </em>
-    2】
+    对于不涉及aliasing的操作尽量使用就地的运算【类似与x*=2 vs y=x*2】
    </li>
    <li>
     Elementwise的子表达式的循环的合并(loop fusion)【这是一项编译器优化技巧，简单的说就是把相同下标的循环合并起来，例子可以参考
@@ -121,10 +117,11 @@
    3. theano安装
   </h2>
   <p>
-   <a href="http://请参考http://deeplearning.net">
-    请参考http://deeplearning.net
+   请参考
+   <a href="http://deeplearning.net/software/theano/install.html">
+    http://deeplearning.net/software/theano/install.html
    </a>
-   /software/theano/install.html，这里就不赘述了。
+   ，这里就不赘述了。
   </p>
   <h2 id="4-tutorial">
    4. 官方Tutorial
@@ -199,9 +196,8 @@ True
   </h4>
   <p>
    函数定义为：
-   <br/>
    <mathjax>
-    $$ s(x)=\frac{1}{1+e^{-x}}$$
+    $ s(x)=\frac{1}{1+e^{-x}}$
    </mathjax>
    <br/>
    函数图像为：
