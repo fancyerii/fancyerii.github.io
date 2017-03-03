@@ -1952,8 +1952,6 @@ RESIZE=true
   <p>
    数据预处理对象caffe.io.Transformer
    <br/>
-   Our default CaffeNet is configured to take images in BGR format. Values are expected to start in the range [0, 255] and then have the mean ImageNet pixel value subtracted from them. In addition, the channel dimension is expected as the first (outermost) dimension.
-   <br/>
    默认的CaffeNet是使用BGR格式的图像【这和我们一般图像处理工具得到RBG是不一样的】。并且取值是0-255【另外一种表示方法就是0-1】，然后会减去RGB的平均值。另外Caffe的Blob是(N, C, H, W)的，我们从图像里得到的一般是(H, W, C)。
    <br/>
    所以需要经过预处理把我们读到的数据转成Caffe需要的格式。Caffe提供了一个类caffe.io.Transformer，我们直接用这个类就可以方便的完成这些工作【当然你自己实现也是完全没有问题的，那么不需要这个类了】
