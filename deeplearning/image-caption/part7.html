@@ -2,7 +2,9 @@
 <html>
  <head>
   <meta charset="utf-8"/>
-  <title>卷积神经网络(partIII)</title>
+  <title>
+卷积神经网络(partIII)
+  </title>
   <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
   <style type="text/css">
    body,table tr{background-color:#fff}table tr td,table tr th{border:1px solid #ccc;text-align:left;padding:6px 13px;margin:0}pre code,table,table tr{padding:0}hr,pre code{background:0 0}body{font:16px Helvetica,Arial,sans-serif;line-height:1.4;color:#333;word-wrap:break-word;padding:10px 15px}strong,table tr th{font-weight:700}h1{font-size:2em;margin:.67em 0;text-align:center}h2{font-size:1.75em}h3{font-size:1.5em}h4{font-size:1.25em}h1,h2,h3,h4,h5,h6{font-weight:700;position:relative;margin-top:15px;margin-bottom:15px;line-height:1.1}h1,h2{border-bottom:1px solid #eee}hr{height:0;margin:15px 0;overflow:hidden;border:0;border-bottom:1px solid #ddd}a{color:#4183C4}a.absent{color:#c00}ol,ul{padding-left:15px;margin-left:5px}ol{list-style-type:lower-roman}table tr{border-top:1px solid #ccc;margin:0}table tr:nth-child(2n){background-color:#aaa}table tr td :first-child,table tr th :first-child{margin-top:0}table tr td:last-child,table tr th :last-child{margin-bottom:0}img{max-width:100%}blockquote{padding:0 15px;border-left:4px solid #ccc}code,tt{margin:0 2px;padding:0 5px;white-space:nowrap;border:1px solid #eaeaea;background-color:#f8f8f8;border-radius:3px}pre code{margin:0;white-space:pre;border:none}.highlight pre,pre{background-color:#f8f8f8;border:1px solid #ccc;font-size:13px;line-height:19px;overflow:auto;padding:6px 10px;border-radius:3px}
@@ -201,9 +203,10 @@
   </h3>
   <p>
    安装参考
-   <a href="http://cs231n.github.io/assignments2016/assignment2"/>这里</a>。之前的文章也有介绍，请参考。包括数据的下载（cifar10有100多M）和cpython扩展的安装。安装好之后运行
-  
-   ipython notebook打开BatchNormalization.ipybn
+   <a href="http://cs231n.github.io/assignments2016/assignment2/">
+    http://cs231n.github.io/assignments2016/assignment2/
+   </a>
+   。之前的文章也有介绍，请参考。包括数据的下载（cifar10有100多M）和cpython扩展的安装。安装好之后运行 ipython notebook打开BatchNormalization.ipybn
   </p>
   <h3 id="32-cell1cell2">
    3.2 cell1和cell2
@@ -655,6 +658,241 @@ def affine_bn_relu_backward(dout, cache):
   </p>
   <p>
    从上面的图可以看出，确实使用了bn后参赛初始化的问题变得好一些了【当然不会完全解决】。另外最后一个图不使用batch norm的baseline对于初始化过大的参数会出现不能训练的情况，因此图中有部分不能绘制。
+  </p>
+  <h2 id="4-dropout">
+   4. Dropout
+  </h2>
+  <h3 id="41-dropout">
+   4.1 Dropout简介
+  </h3>
+  <p>
+   dropout是一种防止模型过拟合的技术，这项技术也很简单，但是很实用。它的基本思想是在训练的时候随机的dropout(丢弃)一些神经元的激活，这样可以让模型更鲁棒，因为它不会太依赖某些局部的特征（因为局部特征有可能被丢弃）。
+  </p>
+  <p>
+   <img alt="" src="./images/part7/dropout.jpeg"/>
+   <br/>
+   上图a是标准的一个全连接的神经网络，b是对a应用了dropout的结果，它会以一定的概率(dropout probability)随机的丢弃掉一些神经元。
+  </p>
+  <h3 id="42-dropout">
+   4.2 Dropout的实现
+  </h3>
+  <p>
+   实现Dropout最直观的思路就是按照dropout的定义来计算，比如上面的3层（2个隐藏层）的全连接网络，我们可以这样实现：
+  </p>
+  <pre><code>""" 最原始的dropout实现，不推荐使用 """
+
+p = 0.5 # 保留一个神经元的概率，这个值越大，丢弃的概率就越小。
+
+def train_step(X): 
+
+  H1 = np.maximum(0, np.dot(W1, X) + b1)
+  U1 = np.random.rand(*H1.shape) &lt; p # first dropout mask
+  H1 *= U1 # drop!
+  H2 = np.maximum(0, np.dot(W2, H1) + b2)
+  U2 = np.random.rand(*H2.shape) &lt; p # second dropout mask
+  H2 *= U2 # drop!
+  out = np.dot(W3, H2) + b3
+
+  # 反向梯度计算，代码从略
+
+def predict(X):
+  H1 = np.maximum(0, np.dot(W1, X) + b1) * p # NOTE: scale the activations
+  H2 = np.maximum(0, np.dot(W2, H1) + b2) * p # NOTE: scale the activations
+  out = np.dot(W3, H2) + b3
+
+</code></pre>
+  <p>
+   我们看函数 train_step，正常计算第一层的激活H1之后，我们随机的生成dropout mask数组U1。它生成一个0-1之间均匀分布的随机数组，然后把小于p的变成1，大于p的变成0。极端的情况，p = 0，则所有数都不小于p，因此U1全是0；p=1，所有数都小于1，因此U1全是1。因此越大，U1中1越多，也就keep的越多，反之则dropout的越多。
+   <br/>
+   然后我们用U1乘以H1，这样U1中等于0的神经元的激活就是0，其余的仍然是H1。
+   <br/>
+   第二层也是一样的道理。
+  </p>
+  <p>
+   predict函数我们需要注意一下。因为我们训练的时候会随机的丢弃一些神经元，但是预测的时候就没办法随机丢弃了【我个人觉得也不是不能丢弃，但是这会带来结果会不稳定的问题，也就是给定一个测试数据，有时候输出a有时候输出b，结果不稳定，这是实际系统不能接受的，用户可能认为你的模型有”bug“】。那么一种”补偿“的方案就是每个神经元的输出都乘以一个p，这样在”总体上“使得测试数据和训练数据是大致一样的。比如一个神经元的输出是x，那么在训练的时候它有p的概率keep，(1-0)的概率丢弃，那么它输出的期望是p
+   <em>
+    x+(1-p)
+   </em>
+   0=px。因此测试的时候把这个神经元乘以p可以得到同样的期望。
+  </p>
+  <p>
+   但是这样测试的时候就需要多一次乘法，我们对于训练的实时性要求没有测试那么高。所以更为常见的做法是如下面的代码：
+  </p>
+  <pre><code>p = 0.5 # 保留一个神经元的概率，这个值越大，丢弃的概率就越小。
+
+def train_step(X):
+  H1 = np.maximum(0, np.dot(W1, X) + b1)
+  U1 = (np.random.rand(*H1.shape) &lt; p) / p # first dropout mask. Notice /p!
+  H1 *= U1 # drop!
+  H2 = np.maximum(0, np.dot(W2, H1) + b2)
+  U2 = (np.random.rand(*H2.shape) &lt; p) / p # second dropout mask. Notice /p!
+  H2 *= U2 # drop!
+  out = np.dot(W3, H2) + b3
+
+def predict(X):
+  # ensembled forward pass
+  H1 = np.maximum(0, np.dot(W1, X) + b1) # no scaling necessary
+  H2 = np.maximum(0, np.dot(W2, H1) + b2)
+  out = np.dot(W3, H2) + b3
+</code></pre>
+  <p>
+   上面的代码在训练的时候给U1的每个元素除以p，相当于给H1放大1/p倍，那么预测的时候，那么后面层的参数学到的就相当于没有dropout的情况，因此预测的时候就不需要再乘以p了。比如第1层的输出是100个神经元，假设每一个神经元的输出都是0.5。如果没有dropout，这100个神经元都会连接到第二层的第一个神经元，假设第二层的第一个神经元的参数都是1，那么它的累加和是50。如果使用了0.5的概率保留，则第二层第一个神经元的累加和变成了25。但是上面的算法，我们对每个神经元的输出都先除以0.5。也就是第一层每个输出都是1，一个100个输入给第二层的第一个神经元，然后又以0.5的概率丢弃，那么最终累加的结果还是50。这样就”相当于“补偿”了第二层的“损失”。
+  </p>
+  <h3 id="43">
+   4.3  实现
+  </h3>
+  <p>
+   我们打开作业2的Dropout.ipynb。
+  </p>
+  <h4 id="431-cell1-2">
+   4.3.1 cell1-2
+  </h4>
+  <p>
+   和之前的一样的代码
+  </p>
+  <h4 id="432-cell3">
+   4.3.2 cell3
+  </h4>
+  <p>
+   打开layers.py，把dropout_forward里缺失的代码实现如下：
+  </p>
+  <pre><code>
+  if mode == 'train':
+    ###########################################################################
+    # TODO: Implement the training phase forward pass for inverted dropout.   #
+    # Store the dropout mask in the mask variable.                            #
+    ###########################################################################
+    [N,D] = x.shape
+    mask = (np.random.rand(N,D) &lt; (1-p))/(1-p)
+    out = x * mask
+    ###########################################################################
+    #                            END OF YOUR CODE                             #
+    ###########################################################################
+  elif mode == 'test':
+    ###########################################################################
+    # TODO: Implement the test phase forward pass for inverted dropout.       #
+    ###########################################################################
+    out = x
+    ###########################################################################
+    #                            END OF YOUR CODE                             #
+    ###########################################################################
+
+</code></pre>
+  <p>
+   代码非常简单，不过注意的是这里的p是丢弃的概率，所以保留的概率是(1-p)。
+  </p>
+  <p>
+   运行这个cell的结果如下图：
+   <br/>
+   <img alt="" src="./images/part7_2/cell3.png"/>
+   <br/>
+   注意使用不同的dropout的结果是差不多的，因为我们实现的方法是“补偿”，如果您使用第一种实现，那么均值应该随着p而变化
+  </p>
+  <h4 id="433-cell4">
+   4.3.3 cell4
+  </h4>
+  <p>
+   接下来是实现dropout_backward，这也非常简单，只有一行代码：
+  </p>
+  <pre><code>  if mode == 'train':
+    ###########################################################################
+    # TODO: Implement the training phase backward pass for inverted dropout.  #
+    ###########################################################################
+    dx = mask * dout
+    ###########################################################################
+    #                            END OF YOUR CODE                             #
+    ###########################################################################
+</code></pre>
+  <p>
+   然后我们运行cell4进行gradient check
+   <br/>
+   <img alt="" src="./images/part7_2/cell4.png"/>
+  </p>
+  <h4 id="434-cell5">
+   4.3.4 cell5
+  </h4>
+  <p>
+   然后我们需要修改fc_net.py来增加dropout的支持，具体来说，如果dropout参数不是空，那么每一个relu的输出都需要增加一个dropout。
+  </p>
+  <h5 id="4341-loss">
+   4.3.4.1 loss函数
+  </h5>
+  <p>
+   __init__里代码已经处理好了，不需要任何修改，我们只需要修改loss的forward和backward部分。
+  </p>
+  <p>
+   首先是loss函数的forward部分：
+  </p>
+  <pre><code>    dropout_cache = {}
+    for i in range(1, self.num_layers):
+      keyW = 'W' + str(i)
+      keyb = 'b' + str(i)
+
+      if not self.use_batchnorm:
+        current_input, affine_relu_cache[i] = affine_relu_forward(current_input, self.params[keyW], self.params[keyb])
+
+      else:
+        key_gamma = 'gamma' + str(i)
+        key_beta = 'beta' + str(i)
+        current_input, affine_bn_relu_cache[i] = affine_bn_relu_forward(current_input, self.params[keyW],
+                                                                        self.params[keyb],
+                                                                        self.params[key_gamma], self.params[key_beta],
+                                                                        self.bn_params[i - 1])
+
+      if self.use_dropout:
+        current_input, dropout_cache[i] = dropout_forward(current_input,self.dropout_param)
+</code></pre>
+  <p>
+   和之前的代码比其实就增加了两行，如果self.use_dropout。
+   <br/>
+   当然还要记得在外面定义dropout_cache这个dict
+  </p>
+  <p>
+   然后是backward部分：
+  </p>
+  <pre><code>    for i in range(self.num_layers - 1, 0, -1):
+      if self.use_dropout:
+        affine_dx = dropout_backward(affine_dx, dropout_cache[i])
+
+      if not self.use_batchnorm:
+        affine_dx, affine_dw, affine_db = affine_relu_backward(affine_dx, affine_relu_cache[i])
+
+      else:
+        affine_dx, affine_dw, affine_db, dgamma, dbeta = affine_bn_relu_backward(affine_dx, affine_bn_relu_cache[i])
+        grads['beta' + str(i)] = dbeta
+        grads['gamma' + str(i)] = dgamma
+</code></pre>
+  <p>
+   在for循环的最上面增加 if self.use_dropout这两行。
+   <br/>
+   注意顺序，我们是把dropout放到激活函数之后，因此反向求梯度是要最先计算affine_dx
+  </p>
+  <p>
+   完成代码后我们执行这个cell坚持梯度是否正确计算：
+   <br/>
+   <img alt="" src="./images/part7_2/cell5.png"/>
+  </p>
+  <h4 id="435-cell6-7">
+   4.3.5 cell6-7
+  </h4>
+  <p>
+   As an experiment, we will train a pair of two-layer networks on 500 training examples: one will use no dropout, and one will use a dropout probability of 0.75. We will then visualize the training and validation accuracies of the two networks over time.
+   <br/>
+   接下来我们做一个实验，我们会用500个数据训练一对2层的网络：其中一个使用dropout(0.75的丢弃概率)，一个不用。
+   <br/>
+   <img alt="" src="./images/part7_2/train_acc.png"/>
+   <br/>
+   训练数据上的准确率
+  </p>
+  <p>
+   <img alt="" src="./images/part7_2/val_acc.png"/>
+   <br/>
+   验证数据上的准确率
+  </p>
+  <p>
+   从上面两个图可以看出：不使用dropout，训练数据很少时会过拟合，在训练数据上准确率100%，但是验证数据上只有28%。而使用了dropout之后，训练数据90%，但是验证数据上能提高到30%以上。
+   <br/>
+   这说明dropout确实能缓解过拟合的问题。
   </p>
   <h2 id="5">
    5. 卷积神经网络的实现
@@ -1951,6 +2189,8 @@ RESIZE=true
   </h3>
   <p>
    数据预处理对象caffe.io.Transformer
+   <br/>
+   Our default CaffeNet is configured to take images in BGR format. Values are expected to start in the range [0, 255] and then have the mean ImageNet pixel value subtracted from them. In addition, the channel dimension is expected as the first (outermost) dimension.
    <br/>
    默认的CaffeNet是使用BGR格式的图像【这和我们一般图像处理工具得到RBG是不一样的】。并且取值是0-255【另外一种表示方法就是0-1】，然后会减去RGB的平均值。另外Caffe的Blob是(N, C, H, W)的，我们从图像里得到的一般是(H, W, C)。
    <br/>
