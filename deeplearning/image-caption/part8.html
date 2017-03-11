@@ -1,0 +1,291 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+  递归神经网络(RNN) part I
+  </title>
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <style type="text/css">
+   body,table tr{background-color:#fff}table tr td,table tr th{border:1px solid #ccc;text-align:left;padding:6px 13px;margin:0}pre code,table,table tr{padding:0}hr,pre code{background:0 0}body{font:16px Helvetica,Arial,sans-serif;line-height:1.4;color:#333;word-wrap:break-word;padding:10px 15px}strong,table tr th{font-weight:700}h1{font-size:2em;margin:.67em 0;text-align:center}h2{font-size:1.75em}h3{font-size:1.5em}h4{font-size:1.25em}h1,h2,h3,h4,h5,h6{font-weight:700;position:relative;margin-top:15px;margin-bottom:15px;line-height:1.1}h1,h2{border-bottom:1px solid #eee}hr{height:0;margin:15px 0;overflow:hidden;border:0;border-bottom:1px solid #ddd}a{color:#4183C4}a.absent{color:#c00}ol,ul{padding-left:15px;margin-left:5px}ol{list-style-type:lower-roman}table tr{border-top:1px solid #ccc;margin:0}table tr:nth-child(2n){background-color:#aaa}table tr td :first-child,table tr th :first-child{margin-top:0}table tr td:last-child,table tr th :last-child{margin-bottom:0}img{max-width:100%}blockquote{padding:0 15px;border-left:4px solid #ccc}code,tt{margin:0 2px;padding:0 5px;white-space:nowrap;border:1px solid #eaeaea;background-color:#f8f8f8;border-radius:3px}pre code{margin:0;white-space:pre;border:none}.highlight pre,pre{background-color:#f8f8f8;border:1px solid #ccc;font-size:13px;line-height:19px;overflow:auto;padding:6px 10px;border-radius:3px}
+  </style>
+ </head>
+ <body>
+  <h1 id="recurrent-neural-networks-rnn">
+   递归神经网络(Recurrent Neural Networks, RNN)
+  </h1>
+  <h2 id="1">
+   1. 内容简介
+  </h2>
+  <p>
+   前面我们介绍了CNN，这对于Image Caption来说是基础的特征提取部分，或者说是对图像的“理解”部分，而接下来需要用一句话来“描述”图像的内容，这就要借助RNN了。
+   <br/>
+   我们这几篇文章首先会介绍RNN/LSTM的基本概念和实现方法。这一部分的主要内容翻译自
+   <a href="http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/">
+    http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/
+   </a>
+   。也会包括一些我自己的理解内容。
+  </p>
+  <h2 id="2-rnn">
+   2. RNN简介
+  </h2>
+  <p>
+   这个tutorial会介绍用RNN来实现一个语言模型(Language Model)。
+  </p>
+  <h3 id="21">
+   2.1 语言模型补充介绍
+  </h3>
+  <p>
+   语言模型是在自然语言处理处理中非常常见的一个模型。它在语音识别，机器翻译等任务中都有应用。它解决的问题之一就是给定一个字符串，用了判断这是一个“合理”句子的概率。比如在语音识别中，声学模型会把声学信号转换成音素【当然也是概率而不是绝对的】，但是同音的词很多，而组成的句子就更多了。
+   <br/>
+   语言模型需要解决的问题是：给定一个句子，计算它出现的可能性(概率)。比如“今天天气不错”的概率就比“今天天启不错”的概率大。最常见的语言模型就是n-gram语言模型，它是在假设当前的词只依赖于之前的n-1个词，比如二元语法(bi-gram)它假设当前词只依赖于之前的词，因此一个句子的概率
+   <mathjax>
+    $P(w_1w_2...w_n)=P(w_1)P(w_2|w_1)...P(w_n|w_{n-1})$
+   </mathjax>
+   。我们可以使用训练语料来估计
+   <mathjax>
+    $P(w_j|w_i)=\frac{count(w_iw_j}{count(w_i})$
+   </mathjax>
+   ，当然还有很多问题，比如没有在训练语料出现的词对概率就是零了，这需要通过平滑等方法解决。有兴趣的读者参考
+   <a href="https://en.wikipedia.org/wiki/N-gram">
+    N-gram wiki
+   </a>
+  </p>
+  <h3 id="22-rnn">
+   2.2 什么是RNN？
+  </h3>
+  <p>
+   RNN的特点是利用序列的信息。之前我们介绍的神经网络假设所有的输入是相互独立的。但是对于许多任务来说这不是一个好的假设。如果你想预测一个句子的下一个词，知道之前的词是有帮助的。RNN被成为递归的(recurrent)原因就是它会对一个序列的每一个元素执行同样的操作，并且之后的输出依赖于之前的计算。另外一种看待RNN的方法是可以认为它有一些“记忆”能捕获之前计算过的一些信息。理论上RNN能够利用任意长序列的信息，但是实际中它能记忆的长度是有限的。下图是一个典型的RNN的样子：
+   <br/>
+   <img alt="" src="images/part8/rnn.jpg"/>
+  </p>
+  <p>
+   上图显示了怎么把一个RNN展开成一个完整的网络。比如我们考虑一个包含5个词的句子，我们可以把它展开成5层的神经网络，每个词是一层。RNN的计算公式如下：
+  </p>
+  <p>
+   1，
+   <mathjax>
+    $x_t$
+   </mathjax>
+   是t时刻的输入。例如，
+   <mathjax>
+    $x_1$
+   </mathjax>
+   是句子可以是句子第二个【下标从0开始】词的one-hot表示。
+   <br/>
+   注：one-hot表示简单解释是：假设有3000个词，我们可以给他们从0到2999的一个编号，每个词对应的位置为1，其它为0。比如“你好”这个词，假设它的编号是2，那么“你好”的one-hot表示为
+   <mathjax>
+    $(0,0,1,0,....,0)^T$
+   </mathjax>
+   ，相对于word embedding的低维“稠密”表示方法，one-hot是一种高维稀疏的表示方法。它的缺点是如果用这个向量来计算相似度，如果两个词相同，距离是0，否则就是1，因此它不能capture同义词这样的特征。有兴趣的读者可以参考：
+   <a href="http://cs224d.stanford.edu/lectures/CS224d-Lecture2.pdf">
+    斯坦福cs224d的slides
+   </a>
+  </p>
+  <p>
+   2，
+   <mathjax>
+    $s_t$
+   </mathjax>
+   是t时刻的隐状态。它是网络的“记忆”。
+   <mathjax>
+    $s_t$
+   </mathjax>
+   的计算依赖于前一个时刻的状态和当前时刻的输入：
+   <mathjax>
+    $s_t=f(Ux_t + Ws_{t-1})$
+   </mathjax>
+   。函数f通常是诸如tanh或者ReLU的非线性函数。
+   <mathjax>
+    $s_{-1}$
+   </mathjax>
+   ，这是用来计算第一个隐状态，通常我们可以初始化成0。
+  </p>
+  <p>
+   3，
+   <mathjax>
+    $o_t$
+   </mathjax>
+   是t时刻的输出。比如我们想预测的句子的下一个词，那么它可以是生成每一个词的概率【比如生成3000个词中的一个】，那么我们可以把它定义为softmax这样的函数，因为它加起来等于1。
+   <mathjax>
+    $o_t = \mathrm{softmax}(Vs_t)$
+   </mathjax>
+  </p>
+  <p>
+   有一些事情值得注意：
+   <br/>
+   1，你可以把
+   <mathjax>
+    $s_t$
+   </mathjax>
+   看成是网络的“记忆”。
+   <mathjax>
+    $s_t$
+   </mathjax>
+   捕获了从开始到前一个时刻的所有(感兴趣)的信息。输出
+   <mathjax>
+    $o_t$
+   </mathjax>
+   只基于当前时刻的记忆。之前也提过，实际应用中
+   <mathjax>
+    $s_t$
+   </mathjax>
+   很难记住很久以前的信息。
+  </p>
+  <p>
+   2，和传统的深度神经网络不同，这些传统的网络每层使用不同的参数，RNN的参数(上文的U, V, W)是在所有时刻共享(一样)的。这反映这样一个事实：我们每一步都在执行同样的操作，只不过输入不同而已。这种结构极大的减少了我们需要学习的参数【同时也让信息得以共享，是的训练变得可能】
+  </p>
+  <p>
+   3，上图每一个时刻都有输出，但是也不一定要这样。比如我们预测一个句子的情感倾向是我们只关注最后的输出，而不是每一个词的情感。类似的，我们也不一定每个时刻都有输入。RNN最主要的特点是它有隐状态(记忆)，它能捕获一个序列的信息。
+  </p>
+  <h3 id="23-rnn">
+   2.3 RNN能做什么？
+  </h3>
+  <p>
+   RNN在很多NLP任务中都取得了很好的效果。我这里所说的RNN指的最常见的是LSTM，它和最原始(vanilla)的RNN相比能够捕获更长距离的依赖。不要担心，LSTM和原始RNN的不同之处只是在于计算隐状态的方法。我们在之后会详细介绍LSTM的细节。这是RNN用于NLP的一些例子（当然不是所有）
+  </p>
+  <h4 id="1_1">
+   1. 语言模型和文本生成
+  </h4>
+  <p>
+   给定一个词的序列，我们可以预测给定之前的所有词时当前词出现的概率。语言模型让我们可以计算一个句子的可能性，这对于机器翻译是很重要的输入。这个模型的一个意外收获是我们得到了一个产生式的模型它可以预测下一个词，这可以帮助我们用采样的方式生产文本【先根据概率采样生成第一个词，然后根据第一个词计算第二个词的概率，采样第二个词，…】。根据不同的训练数据我们可以生成各种各样的东西。在语言建模这个任务，我们的输入通常是一个词的序列（可以使用one-hot的向量表示方法），我们的输出是需要预测的词。我们在t时刻让它预测下一个词
+   <mathjax>
+    $x_{t+1}$
+   </mathjax>
+   ，因此我的预测的输出
+   <mathjax>
+    $o_t=x_{t+1}$
+   </mathjax>
+   。
+  </p>
+  <p>
+   语言建模和文本生成的论文包括：
+   <br/>
+   <a href="http://www.fit.vutbr.cz/research/groups/speech/publi/2010/mikolov_interspeech2010_IS100722.pdf">
+    Recurrent neural network based language model
+   </a>
+   <br/>
+   <a href="http://www.fit.vutbr.cz/research/groups/speech/publi/2011/mikolov_icassp2011_5528.pdf">
+    Extensions of Recurrent neural network based language model
+   </a>
+   <br/>
+   <a href="http://machinelearning.wustl.edu/mlpapers/paper_files/ICML2011Sutskever_524.pdf">
+    Generating Text with Recurrent Neural Networks
+   </a>
+  </p>
+  <h4 id="2">
+   2. 机器翻译
+  </h4>
+  <p>
+   机器翻译和语言建模的相似之处是输入是源语言(比如德语)的一个词序列。我们想输出目标语言(比如英语)的一个词序列。不同之处在于，我们只有在看到完整的输入之后才开始输出，因为我们想翻译的第一个词可能需要后面句子的信息才能翻译出来【比如多义词，它的具体含义依赖于整个句子】。
+   <br/>
+   <img alt="" src="images/part8/mt.png"/>
+   <br/>
+   【上图我们首先用一个RNN来“记忆”源语言的句子，当它结束后再用一个RNN“翻译”成另外一种语言】
+  </p>
+  <p>
+   关于机器翻译的论文：
+   <br/>
+   <a href="http://www.aclweb.org/anthology/P14-1140.pdf">
+    A Recursive Recurrent Neural Network for Statistical Machine Translation
+   </a>
+   <br/>
+   <a href="http://papers.nips.cc/paper/5346-sequence-to-sequence-learning-with-neural-networks.pdf">
+    Sequence to Sequence Learning with Neural Networks
+   </a>
+   <br/>
+   <a href="http://research.microsoft.com/en-us/um/people/gzweig/Pubs/EMNLP2013RNNMT.pdf">
+    Joint Language and Translation Modeling with Recurrent Neural Networks
+   </a>
+  </p>
+  <h4 id="3">
+   3. 语音识别
+  </h4>
+  <p>
+   Given an input sequence of acoustic signals from a sound wave, we can predict a sequence of phonetic segments together with their probabilities.
+   <br/>
+   给定一个序列的语音波形的声学信号，我们想预测音素序列。
+   <br/>
+   【注：这里作者指的是声学模型部分，但是实际的语音识别需要借助前面的语言模型，使用解码器结合声学模型和语言模型把声音变成文字。传统的语音识别使用HMM-GMM来对声学特征建模，使用n-gram来建模语言，使用WFST把声学模型，发音词典和语言模型结合起来实现解码器。因此做一个语音识别系统需要很多模块，后来慢慢的用DNN替代了GMM而变成了HMM-DNN的声学模型，也有用RNNLM来替代传统的n-gram语言模型，但仍然需要解码器融合声学模型，发音词典和语言模型。到最近，End-to-end的语音识别系统开始出现，直接输入是声学特征，输出是词序列，完全抛弃了之前分模块的方法】
+   <br/>
+   语音识别的论文：
+   <br/>
+   <a href="http://www.jmlr.org/proceedings/papers/v32/graves14.pdf">
+    Towards End-to-End Speech Recognition with Recurrent Neural Networks
+   </a>
+  </p>
+  <h4 id="4">
+   4. 生产图片描述
+  </h4>
+  <p>
+   【这正是我们这个系列教程的内容，读者这下明白我们为什么要介绍RNN/LSTM了吧】
+  </p>
+  <p>
+   通过结合卷积神经网络，RNN可以给一个图片生产一段描述。这看起来非常神奇。这样的模型甚至能够告诉我们生产的词对于图片的那些地方(特征)【attention机制可以更好的实现这一点，我们后面会介绍】
+   <br/>
+   <img alt="" src="images/part8/image_caption.png"/>
+   <br/>
+   【上图就是根据图片生成文字同时还告诉我们每个词对应于图片的哪个部分】
+  </p>
+  <h3 id="24-rnn">
+   2.4 RNN的训练
+  </h3>
+  <p>
+   训练RNN好普通的神经网络类似，我们也是使用反向传播算法，但是有一些麻烦的地方。因为每个时刻的参数是共享的，因此参数的梯度不只依赖当前时刻的输出，还依赖于之前的时刻。比如为了计算t=4的梯度，我们需要把错误往前传递3个时刻。这就是所谓的Backpropagation Through Time(BPTT)。如果现在不明白，不用担心，我们后面会详细介绍。现在我们只需要知道对于原始的RNN，BPTT很难学会长距离的依赖，原因在于梯度消失/梯度爆炸。【我们之前在学习很深的卷积网络时也会有梯度消失和爆炸的问题，我们之前是通过Batch Normalization，ResNet等方式来缓解这个问题】。有一些机制可以解决这个问题，比如特定的RNN（如LSTM）可以缓解【不是完全解决】这个问题。
+  </p>
+  <h3 id="25-rnn">
+   2.5 RNN的扩展
+  </h3>
+  <p>
+   经过多年的探索，研究者提出了根据复杂的RNN来克服原始RNN的一些问题。我们会在后面详细介绍，但是这里先给出一个简单的介绍，让读者能够熟悉这些模型的分类方法。
+  </p>
+  <p>
+   双向RNN(Bidirectional RNNs)的思想是t时刻的输出不但依赖于之前的元素，而且还依赖之后的元素。比如，我们做完形填空，在句子中“挖”掉一个词，我们想预测这个词，我们不但会看之前的词，也会分析之后的词。双向RNN很简单，它就是两个RNN堆叠在一起。输出依赖两个RNN的隐状态。
+   <br/>
+   【对于语言模型来说，计算句子的概率是可以使用双向RNN的，但是生成一个句子就不行了，因为我们必须按照顺序一个一个采样，当然还有一种方法是两个方向都生成一些candidate，然后用双向RNN打分。】
+  </p>
+  <p>
+   <img alt="" src="images/part8/brnn.png"/>
+   <br/>
+   双向RNN
+  </p>
+  <p>
+   深度(双向)RNN(Deep (Bidirectional) RNNs)和双向RNN类似，不过多加几层。当然它的表示能力更强，需要的训练数据也更多。
+   <br/>
+   <img alt="" src="images/part8/drnn.png"/>
+   <br/>
+   深度双向RNN
+  </p>
+  <p>
+   LSTM网络是如今非常留下的RNN。LSTM本质也是一种RNN，不过它计算隐状态的方法有所不同。LSTM的记忆叫做cell，你可以把它们当成一个黑盒，这个黑盒的输入是之前的状态
+   <mathjax>
+    $h_{t-1}$
+   </mathjax>
+   和当前输入
+   <mathjax>
+    $x_t$
+   </mathjax>
+   。在LSTM内部，这些cell会决定保持哪些记忆同时擦除另外一些记忆。然后它会把之前的状态，当前的记忆好输入来计算当前当前的cell。这种结构可以非常有效的捕获长距离的依赖。LSTM对于初学者来说可能非常难以理解，不过
+   <a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/">
+    这篇文章
+   </a>
+   是一个非常好的解释。
+  </p>
+  <h2 id="3_1">
+   3. 总结
+  </h2>
+  <p>
+   这一部分简单的解释了什么是RNN以及它能做什么。下一部分讲话介绍使用Python和Theano来实现一个RNN的语言模型，敬请关注！
+  </p>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  </script>
+  <script>
+   hljs.initHighlightingOnLoad();
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   MathJax.Hub.Config({"showProcessingMessages" : false,"messageStyle" : "none","tex2jax": { inlineMath: [ [ "$", "$" ] ] }});
+  </script>
+ </body>
+</html>
