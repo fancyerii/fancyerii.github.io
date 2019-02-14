@@ -7,7 +7,7 @@ description: ""
 keyword: ""
 url: "http://fancyerii.github.io"              # your host, for absolute URL
 baseurl: ""         # for example, '/blog' if your blog hosted on 'host/blog'
-
+excerpt_separator: "<!--more-->"
 
 
 # SNS settings
