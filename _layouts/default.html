@@ -1,9 +1,22 @@
----
-layout: base
----
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="intro-header"></div>
+{% include head.html %}
+{% include mathjax.html %}
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
 
-<div role="main" class="container">
-  {{ content }}
-</div>
+    {% include nav.html %}
+
+    {{ content }}
+
+    {% include footer.html %}
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
