@@ -951,3 +951,4 @@ body {
 .page-fullscreen footer .copyright a:hover {
   color: #ddd;
 }
+a + em { display: block; text-align: center;}
