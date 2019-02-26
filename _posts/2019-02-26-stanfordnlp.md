@@ -17,10 +17,12 @@ tags:
     - Java
     - CoreNLP
 ---
-
 本文介绍[Stanford CoreNLP](https://stanfordnlp.github.io/CoreNLP/index.html)的用法。Stanford CoreNLP是斯坦福(Stanford) NLP组(Group)用Java开发的NLP工具，它支持很多中语言(包括中文)。它提高工具来实现分词、分句、词性标注、句法分析等许多常见的NLP任务。
  
  <!--more-->
+**目录**
+* TOC
+{:toc}
  
 ## 简介
 
