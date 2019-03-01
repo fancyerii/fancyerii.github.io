@@ -734,6 +734,11 @@ body {
   margin: 0 1px;
   margin-bottom: 6px;
 }
+div.tags a.tag{
+  color: #f8aaaa;
+  font-weight: bolder;
+  font-size: 16px;
+}
 .tags a:hover,
 .tags .tag:hover,
 .tags a:active,
