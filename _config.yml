@@ -11,7 +11,7 @@ excerpt_separator: "<!--more-->"
 
 
 # SNS settings
-RSS: false
+RSS: true
 #weibo_username:     huxpro
 #zhihu_username:     huxpro
 github_username:    fancyerii
@@ -61,8 +61,8 @@ duoshuo_share: false                     # set to false if you want to use Comme
 # Baidu Analytics
 ba_track_id: 1adf2d3145a435baa683d84388135812
 # Google Analytics
-ga_track_id: 'UA-133955198-1'            # Format: UA-xxxxxx-xx
-ga_domain: fancyerii.github.io
+# ga_track_id: 'UA-133955198-1'            # Format: UA-xxxxxx-xx
+# ga_domain: fancyerii.github.io
 
 
 
