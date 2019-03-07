@@ -129,9 +129,11 @@ Word2Vec的基本思想就是Distributional假设(hypothesis)：如果两个词�
 *图：词的上下文*
 
 
-除了我们即将介绍的Word2Vec和GloVe，还有很多其它方法也可以利用上述假设学习词向量。所有通过Distributional假设学习到的(向量)表示都叫做Distributional表示(Representation)。
+除了我们即将介绍的Word2Vec，还有很多其它方法也可以利用上述假设学习词向量。所有通过Distributional假设学习到的(向量)表示都叫做Distributional表示(Representation)。
 
 注意，还有一个很像的术语叫Distributed表示(Representation)。它其实就是指的是用稠密的低维向量来表示一个词的语义，也就是把语义"分散"到不同的维度上。与之相对的通常是one-hot表示，它的语义集中在高维的稀疏的某一维上。
+
+
 
 
 
@@ -495,7 +497,7 @@ Word: 河北  Position in vocabulary: 2859
 
 我们看到确实它学到了长沙和湖南的关系等于石家庄与河北的关系，用向量来说就是：
 ```
-湖南-长沙+河北=石家庄
+湖南-长沙=河北-石家庄
 ```
 
 接下来找一个词最近的词：
