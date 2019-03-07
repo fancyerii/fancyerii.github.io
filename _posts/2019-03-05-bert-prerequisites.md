@@ -3,6 +3,7 @@ layout:     post
 title:      "BERT课程预备知识"
 author:     "lili"
 mathjax: true
+sticky: true
 excerpt_separator: <!--more-->
 tags:
     - 人工智能
