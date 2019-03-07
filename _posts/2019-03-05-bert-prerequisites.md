@@ -93,4 +93,11 @@ tags:
 
     斯坦福的课程，作者的文章也参考了一些内容。
     
-    
+
+## Word Embedding
+
+* [Word Embedding教程]({{ site.baseurl }}{% post_url 2019-03-08-word-embedding %})
+
+    理解Word Embedding的概念即可，跳过Word2Vec的推导、Softmax和Negative Sample并不影响后续阅读。
+
+
