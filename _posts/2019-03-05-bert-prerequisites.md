@@ -117,7 +117,7 @@ tags:
 
      包含PyTorch的基本概念，包括用RNN来进行人名国家分类，生成不同国家的人名。本来还有一个看图说话的例子，但是编辑似乎忘了加进去。
 
-* [https://blog.csdn.net/guleileo/article/details/80415228](https://blog.csdn.net/guleileo/article/details/80415228)
+* [手把手教你搭一个机器翻译模型](https://blog.csdn.net/guleileo/article/details/80415228)
       
      使用PyTorch实现一个机器翻译系统，包括LSTM/GRU、Attention机制等内容。
 
