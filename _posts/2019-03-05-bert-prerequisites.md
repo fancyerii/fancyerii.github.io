@@ -87,11 +87,11 @@ tags:
 
 * [Neural Networks and Deep Learning](http://neuralnetworksanddeeplearning.com/) 
 
-    Michael Nielsen的免费书籍，作者前面的文章参考了很多里面的内容。
+    Michael Nielsen的免费书籍，作者前面的文章参考了很多里面的内容。有兴趣的读者可以阅读一下，大部分内容前面已经介绍过了，因此也可以跳过。
     
 * [CS231N课程](http://cs231n.stanford.edu/) 
 
-    斯坦福的课程，作者的文章也参考了一些内容。
+    斯坦福的课程，作者的文章也参考了一些内容。有兴趣的读者可以学习一下，跳过不影响对课程的理解。
     
 
 ## Word Embedding
