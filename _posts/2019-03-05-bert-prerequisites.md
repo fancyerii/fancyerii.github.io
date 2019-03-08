@@ -124,5 +124,10 @@ tags:
 
 ## Tensorflow基础知识
 
+* [Tensorflow简明教程]({{ site.baseurl }}{% post_url 2019-03-08-tf %})
+
+     Tensorflow的基础知识，熟悉的读者也建议读读，也许会有新的收获。
 
 ## PyTorch基础知识
+
+
