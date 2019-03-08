@@ -22,7 +22,7 @@ tags:
 为了理解课程的内容，读者需要以下背景知识。
 * 深度学习基础知识
 * Word Embedding
-* Language Model
+* 语言模型
 * RNN/LSTM/GRU
 * Seq2Seq模型
 * Attention机制
@@ -101,3 +101,28 @@ tags:
     理解Word Embedding的概念即可，跳过Word2Vec的推导、Softmax和Negative Sample并不影响后续阅读。
 
 
+## 语言模型
+
+* [语言模型教程]({{ site.baseurl }}{% post_url 2019-03-08-lm %})
+
+    理解语言模型的概念即可，N-Gram可以稍微了解一下，平滑和回退等tricky可以跳过，RNN语言模型需要RNN的知识，请参考RNN/LSTM/GRU的部分。
+
+## RNN/LSTM/GRU、Seq2Seq和Attention机制
+
+* [循环神经网络简介]({{ site.baseurl }}{% post_url 2019-02-25-rnn-intro %})
+
+     介绍vanilla RNN、LSTM和GRU的基本概念。
+
+* [手把手教你用PyTorch实现图像描述](https://mp.weixin.qq.com/s?__biz=MzAwNDI4ODcxNA==&mid=2652247441&idx=1&sn=2408e035c2ea3709ba6b75b0450a19e1&chksm=80cc8c34b7bb052219dd4e9c4f064fecc121fddd5aa91184c7ab3e1675c74d0b89656ce45100&scene=21#wechat_redirect)
+
+     包含PyTorch的基本概念，包括用RNN来进行人名国家分类，生成不同国家的人名。本来还有一个看图说话的例子，但是编辑似乎忘了加进去。
+
+* [https://blog.csdn.net/guleileo/article/details/80415228](https://blog.csdn.net/guleileo/article/details/80415228)
+      
+     使用PyTorch实现一个机器翻译系统，包括LSTM/GRU、Attention机制等内容。
+
+
+## Tensorflow基础知识
+
+
+## PyTorch基础知识
