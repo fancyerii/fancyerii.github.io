@@ -130,4 +130,6 @@ tags:
 
 ## PyTorch基础知识
 
+* [PyTorch简明教程]({{ site.baseurl }}{% post_url 2019-03-08-pytorch %})
 
+     来自官网的教程，包含60分钟PyTorch教程、通过例子学PyTorch和迁移学习教程。
