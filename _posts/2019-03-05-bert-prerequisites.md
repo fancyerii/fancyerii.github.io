@@ -121,6 +121,9 @@ tags:
       
      使用PyTorch实现一个机器翻译系统，包括LSTM/GRU、Attention机制等内容。
 
+* [使用PyTorch实现Chatbot]({{ site.baseurl }}{% post_url 2019-02-14-chatbot %})
+
+     使用PyTorch实现一个Chatbot。里面会涉及Seq2Seq模型和Attention机制。
 
 ## Tensorflow基础知识
 
@@ -133,3 +136,11 @@ tags:
 * [PyTorch简明教程]({{ site.baseurl }}{% post_url 2019-03-08-pytorch %})
 
      来自官网的教程，包含60分钟PyTorch教程、通过例子学PyTorch和迁移学习教程。
+
+## BERT
+
+* [详解谷歌最强NLP模型BERT](https://www.jishuwen.com/d/2ihW)
+
+     这些内容会在课程上详细讲解，但是建议同学们提前预习一下。
+
+
