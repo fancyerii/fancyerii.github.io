@@ -345,7 +345,8 @@ self.word_to_idx里存放的是word和idx的映射关系：
 def create_conv_model(fingerprint_input, model_settings, is_training):
 	"""构建一个标准的卷积网络
 	
-	这个网络结果和下面论文'Convolutional Neural Networks for Small-footprint Keyword Spotting'的'cnn-trad-fpool3'类似，论文的url是：
+	这个网络结果和下面论文'Convolutional Neural Networks for Small-footprint Keyword Spotting'
+        的'cnn-trad-fpool3'类似，论文的url是：
 	
 	http://www.isca-speech.org/archive/interspeech_2015/papers/i15_1478.pdf
 	
@@ -374,9 +375,11 @@ def create_conv_model(fingerprint_input, model_settings, is_training):
 		[BiasAdd]<-(bias)
 		v
 	
-	这个模型的效果很不错，但是它有大量的参数(占内存)和需要大量的计算(费CPU)。如果需要在资源不足的环境里，建议使用'low_latency_conv'
+	这个模型的效果很不错，但是它有大量的参数(占内存)和需要大量的计算(费CPU)。
+        如果需要在资源不足的环境里，建议使用'low_latency_conv'
 	
-	如果is_training是True，那么会返回一个dropout的PlaceHolder，调用者在session.run的时候需要feed需要dropout的比例。
+	如果is_training是True，那么会返回一个dropout的PlaceHolder
+        ，调用者在session.run的时候需要feed需要dropout的比例。
 	
 	
 	参数:

@@ -149,8 +149,13 @@ tags:
 
      详细解读Transformer的代码。
 
-* [详解谷歌最强NLP模型BERT](https://blog.csdn.net/starzhou/article/details/86602009)
+* [BERT模型详解]({{ site.baseurl }}{% post_url 2019-03-09-bert-theory %})
 
-     这是在CSDN上发的文章，包含了所有内容，但是有一些typo，而且全放到一起内容太多。建议阅读上面作者博客的内容。
+     本文详细介绍BERT模型的原理，包括相关的ELMo和OpenAI GPT模型。
+
+* [BERT代码阅读]({{ site.baseurl }}{% post_url 2019-03-09-bert-codes %})
+
+     详细解读BERT模型的代码。
+
 
 

@@ -408,7 +408,8 @@ class MultiHeadedAttention(nn.Module):
 		
 		# 1) 首先使用线性变换，然后把d_model分配给h个Head，每个head为d_k=d_model/h 
 		query, key, value = \
-			[l(x).view(nbatches, -1, self.h, self.d_k).transpose(1, 2)	for l, x in zip(self.linears, (query, key, value))]
+			[l(x).view(nbatches, -1, self.h, self.d_k).transpose(1, 2)	
+				for l, x in zip(self.linears, (query, key, value))]
 		
 		# 2) 使用attention函数计算
 		x, self.attn = attention(query, key, value, mask=mask, 
@@ -427,7 +428,8 @@ class MultiHeadedAttention(nn.Module):
 接下来是根据输入query，key和value计算变换后的Multi-Head的query，key和value。这是通过下面的语句来实现的：
 ```
 query, key, value = \
-		[l(x).view(nbatches, -1, self.h, self.d_k).transpose(1, 2)	for l, x in zip(self.linears, (query, key, value))]
+		[l(x).view(nbatches, -1, self.h, self.d_k).transpose(1, 2)	
+			for l, x in zip(self.linears, (query, key, value))]
 ```
 
 zip(self.linears, (query, key, value))是把(self.linears[0],self.linears[1],self.linears[2])和(query, key, value)放到一起然后遍历。我们只看一个self.linears[0] (query)。根据构造函数的定义，self.linears[0]是一个(512, 512)的矩阵，而query是(batch, time, 512)，相乘之后得到的新query还是512(d_model)维的向量，然后用view把它变成(batch, time, 8, 64)。然后transponse成(batch, 8,time,64)，这是attention函数要求的shape。分别对应8个Head，每个Head的Query都是64维。

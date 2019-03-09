@@ -112,7 +112,8 @@ CoreNLP中文分词使用的是CTB7的规范，读者可以在[这里](https://c
 
 我们可以使用下面的命令行测试tokenize:
 ```
-java -cp "./*" -Xmx1g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit -file example.txt -outputFormat text
+java -cp "./*" -Xmx1g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit \
+         -file example.txt -outputFormat text
 ```
 在运行前我们需要下载[软件](http://nlp.stanford.edu/software/stanford-corenlp-full-2018-10-05.zip)，此外我们还需要下载模型，读者可以根据使用的语言去[这里](https://stanfordnlp.github.io/CoreNLP/index.html#download)下载模型。我们这里需要下载[英文](http://nlp.stanford.edu/software/stanford-english-corenlp-2018-10-05-models.jar)和[中文](http://nlp.stanford.edu/software/stanford-chinese-corenlp-2018-10-05-models.jar)的模型，然后把它放到classpath里。
 
@@ -156,43 +157,43 @@ Tokens:
 ```
 public class PipelineDemo {
 
-	public static void main(String[] args) {
-		// set up pipeline properties
-		Properties props = new Properties();
-		props.setProperty("annotators", "tokenize,ssplit");
-		
-		// set up pipeline
-		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-		
-		// the following has examples for the new Core Wrapper API and the older
-		// Annotation API
-		// example using Core Wrappers (new API designed to make it easier to work with
-		// NLP data)
-		System.out.println("---");
-		System.out.println("Accessing Tokens In A CoreDocument");
-		System.out.println("(text, char offset begin, char offset end)");
-		CoreDocument exampleDocument = new CoreDocument("Here is the text to tokenize.");
-		// annotate document
-		pipeline.annotate(exampleDocument);
-		// access tokens from a CoreDocument
-		// a token is represented by a CoreLabel
-		List<CoreLabel> firstSentenceTokens = exampleDocument.sentences().get(0).tokens();
-		// this for loop will print out all of the tokens and the character offset info
-		for (CoreLabel token : firstSentenceTokens) {
-			System.out.println(token.word() + "\t" + token.beginPosition() + "\t" + token.endPosition());
-		}
-		// example using older Annotation API
-		System.out.println("---");
-		System.out.println("Accessing Tokens In An Annotation");
-		System.out.println("(text, char offset begin, char offset end)");
-		Annotation exampleAnnotation = new Annotation("Here is the text to tokenize.");
-		pipeline.annotate(exampleAnnotation);
-		CoreMap firstSentence = exampleAnnotation.get(CoreAnnotations.SentencesAnnotation.class).get(0);
-		// this for loop will print out all of the tokens and the character offset info
-		for (CoreLabel token : firstSentence.get(CoreAnnotations.TokensAnnotation.class)) {
-			System.out.println(token.word() + "\t" + token.beginPosition() + "\t" + token.endPosition());
-		}
-	}
+  public static void main(String[] args) {
+    // set up pipeline properties
+    Properties props = new Properties();
+    props.setProperty("annotators", "tokenize,ssplit");
+    
+    // set up pipeline
+    StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+    
+    // the following has examples for the new Core Wrapper API and the older
+    // Annotation API
+    // example using Core Wrappers (new API designed to make it easier to work with
+    // NLP data)
+    System.out.println("---");
+    System.out.println("Accessing Tokens In A CoreDocument");
+    System.out.println("(text, char offset begin, char offset end)");
+    CoreDocument exampleDocument = new CoreDocument("Here is the text to tokenize.");
+    // annotate document
+    pipeline.annotate(exampleDocument);
+    // access tokens from a CoreDocument
+    // a token is represented by a CoreLabel
+    List<CoreLabel> firstSentenceTokens = exampleDocument.sentences().get(0).tokens();
+    // this for loop will print out all of the tokens and the character offset info
+    for (CoreLabel token : firstSentenceTokens) {
+      System.out.println(token.word() + "\t" + token.beginPosition() + "\t" + token.endPosition());
+    }
+    // example using older Annotation API
+    System.out.println("---");
+    System.out.println("Accessing Tokens In An Annotation");
+    System.out.println("(text, char offset begin, char offset end)");
+    Annotation exampleAnnotation = new Annotation("Here is the text to tokenize.");
+    pipeline.annotate(exampleAnnotation);
+    CoreMap firstSentence = exampleAnnotation.get(CoreAnnotations.SentencesAnnotation.class).get(0);
+    // this for loop will print out all of the tokens and the character offset info
+    for (CoreLabel token : firstSentence.get(CoreAnnotations.TokensAnnotation.class)) {
+      System.out.println(token.word() + "\t" + token.beginPosition() + "\t" + token.endPosition());
+    }
+  }
 }
 ```
 读者可以在[这里](https://github.com/fancyerii/blog-codes/tree/master/stanfordnlp)获取完整源代码。
@@ -205,33 +206,34 @@ public class PipelineDemo {
 
 使用新的API非常简单：
 ```
-		CoreDocument exampleDocument = new CoreDocument("Here is the text to tokenize.");
-		// annotate document
-		pipeline.annotate(exampleDocument);
+	CoreDocument exampleDocument = new CoreDocument("Here is the text to tokenize.");
+	// annotate document
+	pipeline.annotate(exampleDocument);
 ```
 
 构造一个CoreDocument对象，传入要分析的文本，然后使用pipeline.annotate方法就可以了，下面我们看怎么读取分析的结果：
 ```
-		List<CoreLabel> firstSentenceTokens = exampleDocument.sentences().get(0).tokens();
-		// this for loop will print out all of the tokens and the character offset info
-		for (CoreLabel token : firstSentenceTokens) {
-			System.out.println(token.word() + "\t" + token.beginPosition() + "\t" + token.endPosition());
-		}
+	List<CoreLabel> firstSentenceTokens = exampleDocument.sentences().get(0).tokens();
+	// this for loop will print out all of the tokens and the character offset info
+	for (CoreLabel token : firstSentenceTokens) {
+		System.out.println(token.word() + "\t" + token.beginPosition()
+			 + "\t" + token.endPosition());
+	}
 ```
 exampleDocument.sentences()可以拿到所有的句子，我们这里只有一个句子，因此可以再用get(0)拿到第一个句子的处理结果。一个句子又有很多Token，因此调用tokens()方法拿到多个Token(List<CoreLabel>)。然后我们可以遍历这个List，每一个元素都是一个CoreLabel，我们可以从中拿到词(token.word())、开始下标(token.beginPosition())和结束下标(token.endPosition())。
 
 老的API和前面介绍的概念更加接近：
 ```
-		Annotation exampleAnnotation = new Annotation("Here is the text to tokenize.");
-		pipeline.annotate(exampleAnnotation);
+	Annotation exampleAnnotation = new Annotation("Here is the text to tokenize.");
+	pipeline.annotate(exampleAnnotation);
 ```
 我们首先构造一个Annotation，然后使用pipeline.annotate()方法进行处理，下面是获取结果的代码：
 ```
-		CoreMap firstSentence = exampleAnnotation.get(CoreAnnotations.SentencesAnnotation.class).get(0);
-		// this for loop will print out all of the tokens and the character offset info
-		for (CoreLabel token : firstSentence.get(CoreAnnotations.TokensAnnotation.class)) {
-			System.out.println(token.word() + "\t" + token.beginPosition() + "\t" + token.endPosition());
-		}
+  CoreMap firstSentence = exampleAnnotation.get(CoreAnnotations.SentencesAnnotation.class).get(0);
+  // this for loop will print out all of the tokens and the character offset info
+  for (CoreLabel token : firstSentence.get(CoreAnnotations.TokensAnnotation.class)) {
+    System.out.println(token.word() + "\t" + token.beginPosition() + "\t" + token.endPosition());
+  }
 ```
 我们首先需要拿到分句的结果，这需要使用key CoreAnnotations.SentencesAnnotation.class，接着我们需要拿到一个句子的所有Token，这需要key CoreAnnotations.TokensAnnotation.class。最后拿到的是CoreLabel，这和前面是一样的。可以看到，使用老的API会稍微麻烦一点。
 
@@ -266,25 +268,25 @@ pos对应POSTaggerAnnotator，它实现词性标注(Part of Speech Tagging)，�
 ```
 public class TaggerDemo {
 
-	private TaggerDemo() {
-	}
+  private TaggerDemo() {
+  }
 
-	public static void main(String[] args) throws Exception { 
-		InputStream input = TaggerDemo.class.getResourceAsStream("/"+MaxentTagger.DEFAULT_JAR_PATH);
+  public static void main(String[] args) throws Exception { 
+    InputStream input = TaggerDemo.class.getResourceAsStream("/"+MaxentTagger.DEFAULT_JAR_PATH);
  
-		MaxentTagger tagger = new MaxentTagger(input);
-		
-		List<List<HasWord>> sentences = MaxentTagger.tokenizeText(new StringReader("Karma of humans is AI"));
+    MaxentTagger tagger = new MaxentTagger(input);
+    
+    List<List<HasWord>> sentences = MaxentTagger.tokenizeText(new StringReader("Karma of humans is AI"));
 
-		for (List<HasWord> sentence : sentences) {
+    for (List<HasWord> sentence : sentences) {
 
-			List<TaggedWord> tSentence = tagger.tagSentence(sentence);
+      List<TaggedWord> tSentence = tagger.tagSentence(sentence);
 
-			System.out.println(SentenceUtils.listToString(tSentence, false));
+      System.out.println(SentenceUtils.listToString(tSentence, false));
 
-		}
+    }
 
-	}
+  }
 
 }
 ```
@@ -365,28 +367,29 @@ ner的tag有两种：basic和advanced。basic的tag就是PERSON和ORGANIZATION�
 ```
 public class NERPipelineDemo {
 
-	public static void main(String[] args) {
-		// set up pipeline properties
-		Properties props = new Properties();
-		props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner");
+  public static void main(String[] args) {
+    // set up pipeline properties
+    Properties props = new Properties();
+    props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner");
 
-		// set up pipeline
-		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-		// make an example document
-		CoreDocument doc = new CoreDocument("Joe Smith is from Seattle.");
-		// annotate the document
-		pipeline.annotate(doc);
-		// view results
-		System.out.println("---");
-		System.out.println("entities found");
-		for (CoreEntityMention em : doc.entityMentions())
-			System.out.println("\tdetected entity: \t" + em.text() + "\t" + em.entityType());
-		System.out.println("---");
-		System.out.println("tokens and ner tags");
-		String tokensAndNERTags = doc.tokens().stream().map(token -> "(" + token.word() + "," + token.ner() + ")")
-				.collect(Collectors.joining(" "));
-		System.out.println(tokensAndNERTags);
-	}
+    // set up pipeline
+    StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+    // make an example document
+    CoreDocument doc = new CoreDocument("Joe Smith is from Seattle.");
+    // annotate the document
+    pipeline.annotate(doc);
+    // view results
+    System.out.println("---");
+    System.out.println("entities found");
+    for (CoreEntityMention em : doc.entityMentions())
+      System.out.println("\tdetected entity: \t" + em.text() + "\t" + em.entityType());
+    System.out.println("---");
+    System.out.println("tokens and ner tags");
+    String tokensAndNERTags = doc.tokens().stream().map(
+		token -> "(" + token.word() + "," + token.ner() + ")")
+        	.collect(Collectors.joining(" "));
+    System.out.println(tokensAndNERTags);
+  }
 
 }
 ```
@@ -411,30 +414,31 @@ parse对应的是ParserAnnotator，实现成分句法分析(Constituency Parsing
 ```
 public class ConstituentExample {
 
-	public static void main(String[] args) {
-		// set up pipeline properties
-		Properties props = new Properties();
-		props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner,parse");
+  public static void main(String[] args) {
+    // set up pipeline properties
+    Properties props = new Properties();
+    props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner,parse");
 
-		// set up Stanford CoreNLP pipeline
-		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-		// build annotation for a review
-		Annotation annotation = new Annotation("The small red car turned very quickly around the corner.");
-		// annotate
-		pipeline.annotate(annotation);
-		// get tree
-		Tree tree = annotation.get(CoreAnnotations.SentencesAnnotation.class).get(0)
-				.get(TreeCoreAnnotations.TreeAnnotation.class);
-		System.out.println(tree);
-		Set<Constituent> treeConstituents = tree.constituents(new LabeledScoredConstituentFactory());
-		for (Constituent constituent : treeConstituents) {
-			if (constituent.label() != null
-					&& (constituent.label().toString().equals("VP") || constituent.label().toString().equals("NP"))) {
-				System.err.println("found constituent: " + constituent.toString());
-				System.err.println(tree.getLeaves().subList(constituent.start(), constituent.end() + 1));
-			}
-		}
-	}
+    // set up Stanford CoreNLP pipeline
+    StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+    // build annotation for a review
+    Annotation annotation = new Annotation("The small red car turned very quickly around the corner.");
+    // annotate
+    pipeline.annotate(annotation);
+    // get tree
+    Tree tree = annotation.get(CoreAnnotations.SentencesAnnotation.class).get(0)
+        .get(TreeCoreAnnotations.TreeAnnotation.class);
+    System.out.println(tree);
+    Set<Constituent> treeConstituents = tree.constituents(new LabeledScoredConstituentFactory());
+    for (Constituent constituent : treeConstituents) {
+      if (constituent.label() != null
+          && (constituent.label().toString().equals("VP") || 
+		constituent.label().toString().equals("NP"))) {
+        System.err.println("found constituent: " + constituent.toString());
+        System.err.println(tree.getLeaves().subList(constituent.start(), constituent.end() + 1));
+      }
+    }
+  }
 }
 ```
 
@@ -452,13 +456,13 @@ public class ConstituentExample {
 
 接着使用"Set<Constituent> treeConstituents = tree.constituents(new LabeledScoredConstituentFactory());"来得到句法树的每一个成分，然后寻找VP和NP。
 ```
-		for (Constituent constituent : treeConstituents) {
-			if (constituent.label() != null
-					&& (constituent.label().toString().equals("VP") || constituent.label().toString().equals("NP"))) {
-				System.err.println("found constituent: " + constituent.toString());
-				System.err.println(tree.getLeaves().subList(constituent.start(), constituent.end() + 1));
-			}
-		}
+for (Constituent constituent : treeConstituents) {
+  if (constituent.label() != null
+     && (constituent.label().toString().equals("VP") || constituent.label().toString().equals("NP"))) {
+    System.err.println("found constituent: " + constituent.toString());
+    System.err.println(tree.getLeaves().subList(constituent.start(), constituent.end() + 1));
+  }
+}
 ```
 一个Constituent代表一个成分，这是一棵树，但是我们想拿到所有叶子节点，constituent.start()表示开始token的下标，constituent.end()表示最后一个token的下标(这是包含的，和subList等方法不一样，所以后面的subList要加一）。
 
@@ -505,26 +509,26 @@ CoreNLP包含3种算法：
 代码示例如下：
 ```
 public class CorefExample {
-	public static void main(String[] args) throws Exception {
-		Annotation document = new Annotation(
-				"Barack Obama was born in Hawaii.  He is the president. Obama was elected in 2008.");
-		Properties props = new Properties();
-		props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner,parse,coref");
-		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-		pipeline.annotate(document);
-		System.out.println("---");
-		System.out.println("coref chains");
-		for (CorefChain cc : document.get(CorefCoreAnnotations.CorefChainAnnotation.class).values()) {
-			System.out.println("\t" + cc);
-		}
-		for (CoreMap sentence : document.get(CoreAnnotations.SentencesAnnotation.class)) {
-			System.out.println("---");
-			System.out.println("mentions");
-			for (Mention m : sentence.get(CorefCoreAnnotations.CorefMentionsAnnotation.class)) {
-				System.out.println("\t" + m);
-			}
-		}
-	}
+  public static void main(String[] args) throws Exception {
+    Annotation document = new Annotation(
+        "Barack Obama was born in Hawaii.  He is the president. Obama was elected in 2008.");
+    Properties props = new Properties();
+    props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner,parse,coref");
+    StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+    pipeline.annotate(document);
+    System.out.println("---");
+    System.out.println("coref chains");
+    for (CorefChain cc : document.get(CorefCoreAnnotations.CorefChainAnnotation.class).values()) {
+      System.out.println("\t" + cc);
+    }
+    for (CoreMap sentence : document.get(CoreAnnotations.SentencesAnnotation.class)) {
+      System.out.println("---");
+      System.out.println("mentions");
+      for (Mention m : sentence.get(CorefCoreAnnotations.CorefMentionsAnnotation.class)) {
+        System.out.println("\t" + m);
+      }
+    }
+  }
 }
 
 ```
@@ -605,19 +609,19 @@ mentionMap的key是IntPair，第一个整数表示句子id(下标从1开始)，�
 ```
 调用pipeline的annotate之后，我们可以得到每个句子CoreMap sentence，然后使用下面的代码得到情感分类的结果：
 ```
-				Tree tree = sentence.get(SentimentCoreAnnotations.SentimentAnnotatedTree.class);
-				SimpleMatrix simpleMatrix = RNNCoreAnnotations.getPredictions(tree);
+Tree tree = sentence.get(SentimentCoreAnnotations.SentimentAnnotatedTree.class);
+SimpleMatrix simpleMatrix = RNNCoreAnnotations.getPredictions(tree);
 
-				classification.setVeryNegative((double) Math.round(simpleMatrix.get(0) * 100d));
-				classification.setNegative((double) Math.round(simpleMatrix.get(1) * 100d));
-				classification.setNeutral((double) Math.round(simpleMatrix.get(2) * 100d));
-				classification.setPositive((double) Math.round(simpleMatrix.get(3) * 100d));
-				classification.setVeryPositive((double) Math.round(simpleMatrix.get(4) * 100d));
+classification.setVeryNegative((double) Math.round(simpleMatrix.get(0) * 100d));
+classification.setNegative((double) Math.round(simpleMatrix.get(1) * 100d));
+classification.setNeutral((double) Math.round(simpleMatrix.get(2) * 100d));
+classification.setPositive((double) Math.round(simpleMatrix.get(3) * 100d));
+classification.setVeryPositive((double) Math.round(simpleMatrix.get(4) * 100d));
 
-				String setimentType = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
-				sentimentResult.setSentimentType(setimentType);
-				sentimentResult.setSentimentClass(classification);
-				sentimentResult.setSentimentScore(RNNCoreAnnotations.getPredictedClass(tree));
+String setimentType = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
+sentimentResult.setSentimentType(setimentType);
+sentimentResult.setSentimentClass(classification);
+sentimentResult.setSentimentScore(RNNCoreAnnotations.getPredictedClass(tree));
 ```
 首先用SentimentCoreAnnotations.SentimentAnnotatedTree.class得到Tree对象，然后用RNNCoreAnnotations.getPredictions(tree)得到SimpleMatrix。simpleMatrix.get(0)得到第一个分类(Very Negative)的概率。
 
@@ -631,7 +635,8 @@ mentionMap的key是IntPair，第一个整数表示句子id(下标从1开始)，�
 ### 命令行用法
 可以使用如下的命令启动CoreNLP Server：
 ```
-lili@lili-Precision-7720:~/soft/stanford-corenlp-full-2018-10-05$ java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000
+lili@lili-Precision-7720:~/soft/stanford-corenlp-full-2018-10-05$ java -mx4g -cp "*" \
+       edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000
 [main] INFO CoreNLP - --- StanfordCoreNLPServer#main() called ---
 [main] INFO CoreNLP - setting default constituency parser
 [main] INFO CoreNLP - warning: cannot find edu/stanford/nlp/models/srparser/englishSR.ser.gz
@@ -644,7 +649,8 @@ lili@lili-Precision-7720:~/soft/stanford-corenlp-full-2018-10-05$ java -mx4g -cp
 ```
 我们看到服务启动后监听在9000端口。上面启动的是默认的英文的服务，如果像使用中文服务，可以这样：
 ```
-java -Xmx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -serverProperties StanfordCoreNLP-chinese.properties -port 9000 -timeout 15000
+java -Xmx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer \
+  -serverProperties StanfordCoreNLP-chinese.properties -port 9000 -timeout 15000
 ```
 用浏览器访问http://localhost:9000/，我们可以看到如<a href='#server-1'>下图</a>的界面。
 
@@ -655,7 +661,8 @@ java -Xmx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -serverPrope
 
 上面的界面虽然漂亮，但是我们更希望它输出Json，这样程序更容易处理，我们可以使用如下命令：
 ```
-wget --post-data 'The quick brown fox jumped over the lazy dog.' 'localhost:9000/?properties={"annotators":"tokenize,ssplit,pos","outputFormat":"json"}' -O -
+wget --post-data 'The quick brown fox jumped over the lazy dog.' \
+'localhost:9000/?properties={"annotators":"tokenize,ssplit,pos","outputFormat":"json"}' -O -
 ```
 它会输出一个json：
 ```
@@ -844,29 +851,33 @@ public class ServerDemo {
 ```
 用"mvn compile assembly:single"打包，然后用如下命令启动服务：
 ```
-java -cp "target/*" -Xmx8g com.fancyerii.blog.stanfordnlp.ServerDemo -preload tokenize,ssplit,pos,lemma,ner,parse,depparse -status_port 9000 -port 9000 -timeout 15000
+java -cp "target/*" -Xmx8g com.fancyerii.blog.stanfordnlp.ServerDemo \
+     -preload tokenize,ssplit,pos,lemma,ner,parse,depparse \
+     -status_port 9000 -port 9000 -timeout 15000
 ```
 我们需要比较大的内存，这里设置了8GB内存。
 
 我们可以使用前面的StanfordCoreNLPClient来处理英文，但是没办法使用它处理中文。因此作者对StanfordCoreNLPClient进行了简单的修改实现了[MultiLangsStanfordCoreNLPClient.java](https://github.com/fancyerii/blog-codes/blob/master/stanfordnlp/src/main/java/edu/stanford/nlp/pipeline/MultiLangsStanfordCoreNLPClient.java)。它的用法为：
 ```
-		// creates a StanfordCoreNLP object with POS tagging, lemmatization, NER, parsing, and coreference resolution
-		Properties props = new Properties();
-		
-		props.setProperty("annotators", "tokenize,ssplit,pos,ner,depparse,openie"); 
-		MultiLangsStanfordCoreNLPClient pipeline = new MultiLangsStanfordCoreNLPClient(props, "http://localhost", 9000, 2, null, null, "zh");
+// creates a StanfordCoreNLP object with POS tagging, lemmatization, 
+// NER, parsing, and coreference resolution
+Properties props = new Properties();
+
+props.setProperty("annotators", "tokenize,ssplit,pos,ner,depparse,openie"); 
+MultiLangsStanfordCoreNLPClient pipeline = new MultiLangsStanfordCoreNLPClient(props, 
+			"http://localhost", 9000, 2, null, null, "zh");
  
-		// read some text in the text variable
-		String text = "今天天气很好。";
-		// create an empty Annotation just with the given text
-		Annotation document = new Annotation(text);
-		// run all Annotators on this text
-		pipeline.annotate(document);
-		
-		CoreMap firstSentence = document.get(CoreAnnotations.SentencesAnnotation.class).get(0);
-		// this for loop will print out all of the tokens and the character offset info
-		for (CoreLabel token : firstSentence.get(CoreAnnotations.TokensAnnotation.class)) {
-			System.out.println(token.word() + "\t" + token.beginPosition() + "\t" + token.endPosition());
-		}
+// read some text in the text variable
+String text = "今天天气很好。";
+// create an empty Annotation just with the given text
+Annotation document = new Annotation(text);
+// run all Annotators on this text
+pipeline.annotate(document);
+
+CoreMap firstSentence = document.get(CoreAnnotations.SentencesAnnotation.class).get(0);
+// this for loop will print out all of the tokens and the character offset info
+for (CoreLabel token : firstSentence.get(CoreAnnotations.TokensAnnotation.class)) {
+  System.out.println(token.word() + "\t" + token.beginPosition() + "\t" + token.endPosition());
+}
 ```
  
