@@ -139,8 +139,18 @@ tags:
 
 ## BERT
 
-* [详解谷歌最强NLP模型BERT](https://www.jishuwen.com/d/2ihW)
+下面的内容会在课程上详细讲解，但是建议同学们提前预习一下。
 
-     这些内容会在课程上详细讲解，但是建议同学们提前预习一下。
+* [Transformer图解]({{ site.baseurl }}{% post_url 2019-03-09-transformer-illustrated %})
+
+     通过图解详细的介绍Transformer的原理。
+
+* [Transformer代码阅读]({{ site.baseurl }}{% post_url 2019-03-09-transformer-codes %})
+
+     详细解读Transformer的代码。
+
+* [详解谷歌最强NLP模型BERT](https://blog.csdn.net/starzhou/article/details/86602009)
+
+     这是在CSDN上发的文章，包含了所有内容，但是有一些typo，而且全放到一起内容太多。建议阅读上面作者博客的内容。
 
 
