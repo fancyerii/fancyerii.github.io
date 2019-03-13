@@ -37,7 +37,7 @@ Word Embedding解决了传统机器学习方法的特征稀疏问题，它通过
 
 在BERT之前比较大的进展是ELMo、ULMFiT和OpenAI GPT。尤其是OpenAI GPT，它在BERT出现之前已经横扫过各大排行榜一次了，当然Google的BERT又横扫了一次。
 
-UMLFiT比较复杂，而且效果也不是特别好，我们暂且不提。ELMo和OpenAI GPT的思想其实非常非常简单，就是用海量的无标注数据学习语言模型，在学习语言模型的过程中自然而然的就学到了上下文的语义关系。它们俩都是使用Transformer来学习语言模型，但是在进行下游任务处理的时候就有所不同，ELMo是把它当成特征。拿分类任务来说，输入一个句子，用ELMo把它扫一次，这样就可以得到每个词的表示，这个表示是考虑上下文的，因此”He deposited his money in this bank”和”His soldiers were arrayed along the river bank”中的两个bank的向量是不同的。下游任务用这些向量来做分类，它会增加一些网络层，但是ELMo语言模型的参数是固定的。而OpenAI GPT不同，它直接用特定任务来Fine-Tuning Transformer的参数。因为用特定任务的数据来调整Transformer的参数，这样它更可能学习到与这个任务特定的上下文语义关系，因此效果也更好。
+UMLFiT比较复杂，而且效果也不是特别好，我们暂且不提。ELMo和OpenAI GPT的思想其实非常非常简单，就是用海量的无标注数据学习语言模型，在学习语言模型的过程中自然而然的就学到了上下文的语义关系。它们都是来学习一个语言模型，前者使用的是LSTM而后者使用Transformer，在进行下游任务处理的时候也有所不同，ELMo是把它当成特征。拿分类任务来说，输入一个句子，ELMo用LSTM把它扫一次，这样就可以得到每个词的表示，这个表示是考虑上下文的，因此”He deposited his money in this bank”和”His soldiers were arrayed along the river bank”中的两个bank的向量是不同的。下游任务用这些向量来做分类，它会增加一些网络层，但是ELMo语言模型的参数是固定的。而OpenAI GPT不同，它直接用特定任务来Fine-Tuning Transformer的参数。因为用特定任务的数据来调整Transformer的参数，这样它更可能学习到与这个任务特定的上下文语义关系，因此效果也更好。
 
 而BERT和OpenAI GPT的方法类似，也是Fine-Tuning的思路，但是它解决了OpenAI GPT(包括ELMo)单向信息流的问题，同时它的模型和语料库也更大。依赖Google强大的计算能力和工程能力，BERT横扫了OpenAI GPT。成王败寇，很少还有人记得OpenAI GPT的贡献了。但是BERT的很多思路都是沿用OpenAI GPT的，要说BERT的学术贡献，最多是利用了Mask LM(这个模型在上世纪就存在了)和Predicting Next Sentence这个Multi-task Learning而已。
 

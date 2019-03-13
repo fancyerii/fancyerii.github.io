@@ -24,7 +24,7 @@ tags:
 
 ## 概述
 
-Transformer模型来自论文[Attention Is All You Need](https://arxiv.org/abs/1706.03762)。这个模型最初是为了提高机器翻译的效率，它的Self-Attention机制和Position Encoding可以替代RNN。因为RNN是顺序执行的，t时刻没有完成就不能处理t+1时刻，因此很难并行。但是后来发现Self-Attention效果很好，在很多其它的地方也可以使用Transformer模型。这包括著名的ELMo、OpenAI GPT和BERT模型，都是以Transformer为基础的。当然它们只使用了Transformer的Decoder部分，由于没有了Encoder，所以Decoder只有Self-Attention而没有普通的Attention。
+Transformer模型来自论文[Attention Is All You Need](https://arxiv.org/abs/1706.03762)。这个模型最初是为了提高机器翻译的效率，它的Self-Attention机制和Position Encoding可以替代RNN。因为RNN是顺序执行的，t时刻没有完成就不能处理t+1时刻，因此很难并行。但是后来发现Self-Attention效果很好，在很多其它的地方也可以使用Transformer模型。这包括著名的OpenAI GPT和BERT模型，都是以Transformer为基础的。当然它们只使用了Transformer的Decoder部分，由于没有了Encoder，所以Decoder只有Self-Attention而没有普通的Attention。
 
 
 我们通过图解的方式来直观的理解Transformer模型的基本原理，这部分内容主要参考了文章[The Illustrated Transformer](http://jalammar.github.io/illustrated-transformer/)。
