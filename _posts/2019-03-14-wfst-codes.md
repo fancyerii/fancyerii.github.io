@@ -14,6 +14,7 @@ tags:
 ---
 
 前面介绍了HMM和WFST的原理，下面我们通过简单的例子来更加深入的了解HMM和WFST在语音识别中的应用。更多文章请点击<a href='/tags/#《深度学习理论与实战：提高篇》'>《深度学习理论与实战：提高篇》</a>。
+<div class='zz'>转载请联系作者(fancyerii at gmail dot com)！</div>
  <!--more-->
  
 **目录**

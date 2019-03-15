@@ -14,6 +14,7 @@ tags:
 ---
 
 本文介绍基于CTC的End-to-End语音识别系统——DeepSpecch，包括简单的原理介绍和代码介绍。阅读本文之前需要了解CTC的基本原理。更多文章请点击<a href='/tags/#《深度学习理论与实战：提高篇》'>《深度学习理论与实战：提高篇》</a>。
+<div class='zz'>转载请联系作者(fancyerii at gmail dot com)！</div>
  <!--more-->
  
 **目录**
