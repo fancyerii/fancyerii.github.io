@@ -564,14 +564,14 @@ def file_based_convert_examples_to_features(
 		tf_example = tf.train.Example(features=tf.train.Features(feature=features))
 		writer.write(tf_example.SerializeToString())
 ```
-file_based_convert_examples_to_features函数遍历每一个example(InputExample类的对象)。然后使用convert_single_example函数把每个InputExample对象变成InputFeature。InputFeature就是一个存放特征的对象，它包括input_ids、input_mask、segment_ids和label_ids，这4个属性除了label_ids是一个int之外，其它都是int的列表，因此使用create_int_feature函数把它变成tf.train.Feature，最后构造tf.train.Example对象，然后写到TFRecord文件里。后面Estimator的input_fn会用到它。
+file_based_convert_examples_to_features函数遍历每一个example(InputExample类的对象)。然后使用convert_single_example函数把每个InputExample对象变成InputFeature。InputFeature就是一个存放特征的对象，它包括input_ids、input_mask、segment_ids和label_id，这4个属性除了label_id是一个int之外，其它都是int的列表，因此使用create_int_feature函数把它变成tf.train.Feature，而label_id需要构造一个只有一个元素的列表，最后构造tf.train.Example对象，然后写到TFRecord文件里。后面Estimator的input_fn会用到它。
 
 这里的最关键是convert_single_example函数，读懂了它就真正明白BERT把输入表示成向量的过程，所以请读者仔细阅读代码和其中的注释。
 ```
 def convert_single_example(ex_index, example, label_list, max_seq_length,
 				tokenizer):
 	"""把一个`InputExample`对象变成`InputFeatures`."""
-	# label_map把label变成id，这个函数每个example都需要执行一次，其实是优化的。
+	# label_map把label变成id，这个函数每个example都需要执行一次，其实是可以优化的。
 	# 只需要在可以再外面执行一次传入即可。
 	label_map = {}
 	for (i, label) in enumerate(label_list):
@@ -659,7 +659,7 @@ def _truncate_seq_pair(tokens_a, tokens_b, max_length):
 			tokens_b.pop()
 ```
 
-这个函数很简单，如果两个序列的长度小鱼max_length，那么不用truncate，否则在tokens_a和tokens_b中选择长的那个序列来pop掉最后面的那个Token，这样的结果是使得两个Token序列一样长(或者最多a比b多一个Token)。对于Estimator API来说，最重要的是实现model_fn和input_fn。我们先看input_fn，它是由file_based_input_fn_builder构造出来的。代码如下：
+这个函数很简单，如果两个序列的长度小于max_length，那么不用truncate，否则在tokens_a和tokens_b中选择长的那个序列来pop掉最后面的那个Token，这样的结果是使得两个Token序列一样长(或者最多a比b多一个Token)。对于Estimator API来说，最重要的是实现model_fn和input_fn。我们先看input_fn，它是由file_based_input_fn_builder构造出来的。代码如下：
 
 ```
 def file_based_input_fn_builder(input_file, seq_length, is_training,
@@ -781,7 +781,7 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
 	return model_fn
 ```
 
-这里的代码都是一些boilerplate代码，没什么可说的，最重要的是调用create_model"真正"的常见Transformer模型。下面我们来看这个函数的代码：
+这里的代码都是一些boilerplate代码，没什么可说的，最重要的是调用create_model"真正"的创建Transformer模型。下面我们来看这个函数的代码：
 ```python
 def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 					labels, num_labels, use_one_hot_embeddings): 
@@ -863,7 +863,7 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
   logits = tf.matmul(pooled_output, label_embeddings)
 ```
 
-接下来我们看一些BertModel的构造函数：
+接下来我们看一下BertModel的构造函数：
 
 ```
 def __init__(self,
@@ -957,8 +957,6 @@ def __init__(self,
 	  self.sequence_output = self.all_encoder_layers[-1]
 
 	  with tf.variable_scope("pooler"):
-		  # We "pool" the model by simply taking the hidden state corresponding
-		  # to the first token. We assume that this has been pre-trained
 		  # 取最后一层的第一个时刻[CLS]对应的tensor
 		  # 从[batch_size, seq_length, hidden_size]变成[batch_size, hidden_size]
 		  # sequence_output[:, 0:1, :]得到的是[batch_size, 1, hidden_size]
