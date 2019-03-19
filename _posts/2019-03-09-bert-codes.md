@@ -1542,7 +1542,7 @@ def attention_layer(from_tensor,
 
 虽然Google提供了Pretraining的模型，但是我们可以也会需要自己通过Mask LM和Next Sentence Prediction进行Pretraining。当然如果我们数据和计算资源都足够多，那么我们可以从头开始Pretraining，如果我们有一些领域的数据，那么我们也可以进行Pretraining，但是可以用Google提供的checkpoint作为初始值。
 
-要进行Pretraining首先需要有数据，前面讲过，数据有很多"文档"组成，每篇文档的句子之间是有关系的。如果只能拿到没有关系的句子则是无法训练的。我们的训练数据需要变成如下的格式：
+要进行Pretraining首先需要有数据，前面讲过，数据由很多"文档"组成，每篇文档的句子之间是有关系的。如果只能拿到没有关系的句子则是无法训练的。我们的训练数据需要变成如下的格式：
 ```
 ~/codes/bert$ cat sample_text.txt 
 This text is included to make sure Unicode is handled properly: 力加勝北区ᴵᴺᵀᵃছজটডণত
@@ -1674,8 +1674,8 @@ def create_training_instances(input_files, tokenizer, max_seq_length,
 		for document_index in range(len(all_documents)):
 			# 从一个文档(下标为document_index)里抽取多个TrainingInstance
 			instances.extend(create_instances_from_document(
-					all_documents, document_index, max_seq_length, short_seq_prob,
-					masked_lm_prob, max_predictions_per_seq, vocab_words, rng))
+				all_documents, document_index, max_seq_length, short_seq_prob,
+				masked_lm_prob, max_predictions_per_seq, vocab_words, rng))
 	
 	rng.shuffle(instances)
 	return instances
@@ -1808,7 +1808,7 @@ w11,w12,.....,
 w21,w22,....
 wn1,wn2,....
 ```
-那么算法首先找到一个chunk，它会不断网chunk加入一个句子的所有Token，使得chunk里的token数量大于等于target_seq_length。通常我们期望target_seq_length为max_num_tokens(128-3)，这样padding的尽量少，训练的效率高。但是有时候我们也需要生成一些短的序列，否则会出现训练与实际使用不匹配的问题。
+那么算法首先找到一个chunk，它会不断往chunk加入一个句子的所有Token，使得chunk里的token数量大于等于target_seq_length。通常我们期望target_seq_length为max_num_tokens(128-3)，这样padding的尽量少，训练的效率高。但是有时候我们也需要生成一些短的序列，否则会出现训练与实际使用不匹配的问题。
 
 找到一个chunk之后，比如这个chunk有5个句子，那么我们随机的选择一个切分点，比如3。把前3个句子当成句子A，后两个句子当成句子B。这是两个句子A和B有关系的样本(is_random_next=False)。为了生成无关系的样本，我们还以50%的概率把B用随机从其它文档抽取的句子替换掉，这样就得到无关系的样本(is_random_next=True)。如果是这种情况，后面两个句子需要放回去，以便在下一层循环中能够被再次利用。
 
