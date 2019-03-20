@@ -119,7 +119,7 @@ Embedding之后的序列会输入Encoder，首先经过Self-Attention层然后�
 <a name='transformer_self_attention_score'>![](/img/transformer/transformer_self_attention_score.png)</a>
 *图：Self-Attention的向量计算步骤一* 
 
-接下来使用softmax把得分变成概率，注意这里把得分除以8$(\sqrt{d_k})$之后再计算的softmax，根据论文的说法，这样计算梯度时会更加文档(stable)。计算过程如下图所示。
+接下来使用softmax把得分变成概率，注意这里把得分除以8$(\sqrt{d_k})$之后再计算的softmax，根据论文的说法，这样计算梯度时会更加稳定(stable)。计算过程如下图所示。
 
 <a name='self-attention_softmax'>![](/img/transformer/self-attention_softmax.png)</a>
 *图：Self-Attention的向量计算步骤二* 
