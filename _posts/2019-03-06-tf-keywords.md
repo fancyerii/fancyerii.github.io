@@ -13,7 +13,7 @@ tags:
     - 《深度学习理论与实战：提高篇》
 ---
 
-本教程是《深度学习理论与实战》草稿的部分内容。这个教程我们使用Tensorflow来实现某些关键词的识别，这个例子可以用于移动设备的语音控制。这里识别的词包括"yes", "no", "up", "down", "left", "right", "on", "off", "stop",和"go"这10个词。这个程序最终可以在Android上运行，具体参考[这里](https://www.tensorflow.org/tutorials/sequences/audio_recognition#running_the_model_in_an_android_app)。这是一个比较简单的任务，我们假设所有的录音文件的长度是固定的，因此我们可以使用卷积网络来实现分类。更多文章请点击<a href='/tags/#《深度学习理论与实战：提高篇》'>《深度学习理论与实战：提高篇》</a>。
+本教程是《深度学习理论与实战》草稿的部分内容。这个教程我们使用Tensorflow来实现某些关键词的识别，这个例子可以用于移动设备的语音控制。这里识别的词包括"yes", "no", "up", "down", "left", "right", "on", "off", "stop",和"go"这10个词。这个程序最终可以在Android上运行，具体参考[这里](https://www.tensorflow.org/tutorials/sequences/audio_recognition#running_the_model_in_an_android_app)。这是一个比较简单的任务，我们假设所有的录音文件的长度是固定的，因此我们可以使用卷积网络来实现分类。更多文章请点击[深度学习理论与实战：提高篇]({{ site.baseurl }}{% post_url 2019-03-14-dl-book %})。
 
 
 <div class='zz'>转载请联系作者(fancyerii at gmail dot com)！</div>
