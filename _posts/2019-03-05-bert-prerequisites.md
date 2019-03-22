@@ -17,6 +17,10 @@ tags:
 **目录**
 * TOC
 {:toc}
+
+## 课程slides(更新)
+
+课程的slides可以在[这里](/assets/bertcourse.pdf)下载。
  
 ## 背景知识
 为了理解课程的内容，读者需要以下背景知识。
