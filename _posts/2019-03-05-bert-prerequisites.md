@@ -11,14 +11,14 @@ tags:
     - BERT
 ---
 
- 本文是作者即将在CSDN作直播的课程的预备知识，对课程感兴趣但是没有相关背景知识的同学可以提前学习这些内容。
+ 本文是作者即将在CSDN作直播的课程的预备知识，对课程感兴趣但是没有相关背景知识的同学可以提前学习这些内容。<span class='zz'>新增课程slides</span>。
  <!--more-->
  
 **目录**
 * TOC
 {:toc}
 
-## 课程slides(更新)
+## 课程slides
 
 课程的slides可以在[这里](/assets/bertcourse.pdf)下载。
  
