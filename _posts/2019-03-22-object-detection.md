@@ -51,7 +51,7 @@ Region Proposal算法的输入是一张图片，输出是多个可能包含物�
 ### Region Proposal
 最简单的的Region Proposal就是滑动窗口，但是于物体的大小不是固定的，因此我们需要穷举所有可能，这样的计算量会非常大。因此我们需要更好的算法。有很多算法用于Region Proposal，R-CNN使用的是seletive search算法。
 
-selective search算法首先使用基于图的图像分割算法，根据颜色对图像进行分割。如图\ref{fig:ss-segment}所示，左边是原图，而右图是分割之后的图。
+selective search算法首先使用基于图的图像分割算法，根据颜色对图像进行分割。如下图所示，左边是原图，而右图是分割之后的图。
 
 
 原图             |  分割后的图
