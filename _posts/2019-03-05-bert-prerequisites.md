@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "BERT课程预备知识"
+title:      "BERT课程"
 author:     "lili"
 mathjax: true
 sticky: true
@@ -11,15 +11,17 @@ tags:
     - BERT
 ---
 
- 本文是作者即将在CSDN作直播的课程的预备知识，对课程感兴趣但是没有相关背景知识的同学可以提前学习这些内容。<span class='zz'>新增课程slides</span>。
+ 本文是作者即将在CSDN作直播的课程的预备知识，对课程感兴趣但是没有相关背景知识的同学可以提前学习这些内容。<span class='zz'>新增课程slides和视频回放地址</span>。
  <!--more-->
  
 **目录**
 * TOC
 {:toc}
 
-## 课程slides
 
+
+## 课程视频和slides
+回放视频地址是[这里](https://v.qq.com/x/page/j0855zl9a9r.html)。
 课程的slides可以在[这里](/assets/bertcourse.pdf)下载。
  
 ## 背景知识
