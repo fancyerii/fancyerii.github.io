@@ -77,8 +77,10 @@ sidebar-avatar: /img/avatar.jpg      # use absolute URL, seeing it's used in bot
 featured-tags: true                     # whether or not using Feature-Tags
 featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
 
-
-
+collections:
+  books:
+    output: true
+  
 # Friends
 friends: [
     {

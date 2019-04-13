@@ -12,7 +12,7 @@ tags:
     - 《深度学习理论与实战：提高篇》
 ---
 
-本文介绍用于[实例分割]({{ site.baseurl }}{% post_url 2019-03-22-vision-tasks %})的Mask R-CNN算法。更多文章请点击[深度学习理论与实战：提高篇]({{ site.baseurl }}{% post_url 2019-03-14-dl-book %})。
+本文介绍用于[实例分割]({{ site.baseurl }}/books/vision-tasks)的Mask R-CNN算法。更多文章请点击[深度学习理论与实战：提高篇]({{ site.baseurl }}{% post_url 2019-03-14-dl-book %})。
 <div class='zz'>转载请联系作者(fancyerii at gmail dot com)！</div>
  <!--more-->
  

@@ -3,6 +3,7 @@ layout:     post
 title:      "BERT模型详解"
 author:     "lili"
 mathjax: true
+permalink: /2019/03/09/bert-theory
 excerpt_separator: <!--more-->
 tags:
     - 人工智能
@@ -15,7 +16,7 @@ tags:
     - OpenAI GPT
 ---
 
-本文详细介绍BERT模型的原理，包括相关的ELMo和OpenAI GPT模型。阅读本文需要先学习Transformer模型，不了解的读者可以先阅读[Transformer图解]({{ site.baseurl }}{% post_url 2019-03-09-transformer-illustrated %})和[Transformer代码阅读]({{ site.baseurl }}{% post_url 2019-03-09-transformer-codes %})。
+本文详细介绍BERT模型的原理，包括相关的ELMo和OpenAI GPT模型。阅读本文需要先学习Transformer模型，不了解的读者可以先阅读[Transformer图解](/2019/03/09/transformer-illustrated)和[Transformer代码阅读](/2019/03/09/transformer-codes)。
 
  <!--more-->
  

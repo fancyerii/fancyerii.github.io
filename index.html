@@ -35,6 +35,8 @@ mathjax: true
 {% endif %}
 
 {% for post in paginator.posts %}
+{% if post.sticky != true %}
+
 <div class="post-preview">
     <a href="{{ post.url | prepend: site.baseurl }}">
         <h2 class="post-title">
@@ -54,6 +56,7 @@ mathjax: true
     </p>
 </div>
 <hr>
+{% endif %}
 {% endfor %}
 
 <!-- Pager -->

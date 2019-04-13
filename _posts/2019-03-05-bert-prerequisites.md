@@ -102,20 +102,20 @@ tags:
 
 ## Word Embedding
 
-* [Word Embedding教程]({{ site.baseurl }}{% post_url 2019-03-08-word-embedding %})
+* [Word Embedding教程]({{ site.baseurl }}/books/word-embedding)
 
     理解Word Embedding的概念即可，跳过Word2Vec的推导、Softmax和Negative Sample并不影响后续阅读。
 
 
 ## 语言模型
 
-* [语言模型教程]({{ site.baseurl }}{% post_url 2019-03-08-lm %})
+* [语言模型教程]({{ site.baseurl }}/books/lm)
 
     理解语言模型的概念即可，N-Gram可以稍微了解一下，平滑和回退等tricky可以跳过，RNN语言模型需要RNN的知识，请参考RNN/LSTM/GRU的部分。
 
 ## RNN/LSTM/GRU、Seq2Seq和Attention机制
 
-* [循环神经网络简介]({{ site.baseurl }}{% post_url 2019-02-25-rnn-intro %})
+* [循环神经网络简介]({{ site.baseurl }}/books/rnn-intro)
 
      介绍vanilla RNN、LSTM和GRU的基本概念。
 
@@ -133,13 +133,13 @@ tags:
 
 ## Tensorflow基础知识
 
-* [Tensorflow简明教程]({{ site.baseurl }}{% post_url 2019-03-08-tf %})
+* [Tensorflow简明教程]({{ site.baseurl }}/books/tf)
 
      Tensorflow的基础知识，熟悉的读者也建议读读，也许会有新的收获。
 
 ## PyTorch基础知识
 
-* [PyTorch简明教程]({{ site.baseurl }}{% post_url 2019-03-08-pytorch %})
+* [PyTorch简明教程]({{ site.baseurl }}/books/pytorch)
 
      来自官网的教程，包含60分钟PyTorch教程、通过例子学PyTorch和迁移学习教程。
 
@@ -147,19 +147,19 @@ tags:
 
 下面的内容会在课程上详细讲解，但是建议同学们提前预习一下。
 
-* [Transformer图解]({{ site.baseurl }}{% post_url 2019-03-09-transformer-illustrated %})
+* [Transformer图解](/2019/03/09/transformer-illustrated)
 
      通过图解详细的介绍Transformer的原理。
 
-* [Transformer代码阅读]({{ site.baseurl }}{% post_url 2019-03-09-transformer-codes %})
+* [Transformer代码阅读](/2019/03/09/transformer-codes)
 
      详细解读Transformer的代码。
 
-* [BERT模型详解]({{ site.baseurl }}{% post_url 2019-03-09-bert-theory %})
+* [BERT模型详解](/2019/03/09/bert-theory)
 
      本文详细介绍BERT模型的原理，包括相关的ELMo和OpenAI GPT模型。
 
-* [BERT代码阅读]({{ site.baseurl }}{% post_url 2019-03-09-bert-codes %})
+* [BERT代码阅读](/2019/03/09/bert-codes)
 
      详细解读BERT模型的代码。
 
