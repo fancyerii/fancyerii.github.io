@@ -3,7 +3,7 @@ layout:     post
 title:      "Transformer图解"
 author:     "lili"
 mathjax: true
-permalink: /2019/03/09/transformer-illustrated
+permalink: /2019/03/09/transformer-illustrated/
 excerpt_separator: <!--more-->
 tags:
     - 人工智能

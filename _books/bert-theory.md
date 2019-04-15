@@ -3,7 +3,7 @@ layout:     post
 title:      "BERT模型详解"
 author:     "lili"
 mathjax: true
-permalink: /2019/03/09/bert-theory
+permalink: /2019/03/09/bert-theory/
 excerpt_separator: <!--more-->
 tags:
     - 人工智能

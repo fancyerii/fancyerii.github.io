@@ -3,7 +3,7 @@ layout:     post
 title:      "Transformer代码阅读"
 author:     "lili"
 mathjax: true
-permalink: /2019/03/09/transformer-codes
+permalink: /2019/03/09/transformer-codes/
 excerpt_separator: <!--more-->
 tags:
     - 人工智能

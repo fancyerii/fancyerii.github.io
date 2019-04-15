@@ -3,7 +3,7 @@ layout:     post
 title:      "BERT代码阅读"
 author:     "lili"
 mathjax: true
-permalink: /2019/03/09/bert-codes
+permalink: /2019/03/09/bert-codes/
 excerpt_separator: <!--more-->
 tags:
     - 人工智能
