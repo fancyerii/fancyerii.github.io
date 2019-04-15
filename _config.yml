@@ -80,7 +80,10 @@ featured-condition-size: 1              # A tag will be featured if the size of 
 collections:
   books:
     output: true
-  
+
+  wang:
+    output: true
+
 # Friends
 friends: [
     {
