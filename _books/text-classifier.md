@@ -1032,8 +1032,9 @@ $$
 
 我们来分析一些上式，第一项是特征$f_k$在训练数据中值为1出现的次数(假设$f_k$都是非零即一的函数)；而第二项是特征$f_k$的值为1的期望次数(关于条件概率$p(y \vert x)$的期望)。如果这个两个值相同，则梯度为零，从而参数$w_k$不需要变动。因此模型学到的w就是使得这两个值相等。接下来我们加入正则项：
 
+<a name='eq_ld'></a>
+
 $$
-\label{eq:loglinear-derivative}
 \frac{dL'(w)}{dw_k}=\sum_{i=1}^{n}f_k(x^i,y^i) -\sum_{i=1}^{n}\sum_{y \in \mathcal{Y}} p(y|x;w)f_k(x^i,y) - \lambda w_k
 $$
 
