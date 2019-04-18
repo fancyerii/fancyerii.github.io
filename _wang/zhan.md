@@ -2,7 +2,6 @@
 layout:     post
 title:      "桥边小说三篇之詹大胖子"
 author:     "lili"
-mathjax: true
 excerpt_separator: <!--more-->
 tags:
     - 汪曾祺
@@ -14,8 +13,12 @@ tags:
 * TOC
 {:toc}
 
+## 朗读
 
-## 阅读
+<iframe width="260" height="50" src="https://www.ximalaya.com/thirdparty/player/sound/player.html?id=177051489&type=red" frameborder="0" allowfullscreen></iframe>
+
+
+## 原文
 
 詹大胖子是五小的斋夫[<a href='#z_zhaifu'>注</a><a name='zb_zhaifu'></a>]。五小是县立第五小学的简称。斋夫就是后来的校工、工友。詹大胖子那会，还叫做斋夫。这是一个很古的称呼。后来就没有人叫了。“斋夫”废除于何时，谁也不知道。
 
