@@ -848,9 +848,9 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
   token_type_ids = tf.constant([[0, 0, 1], [0, 1, 0]])
   
   # 创建一个BertConfig，词典大小是32000，Transformer的隐单元个数是512
-  # 8个Transformer block，每个block有6个Attention Head，全连接层的隐单元是1024
+  # 8个Transformer block，每个block有8个Attention Head，全连接层的隐单元是1024
   config = modeling.BertConfig(vocab_size=32000, hidden_size=512,
-		  num_hidden_layers=8, num_attention_heads=6, intermediate_size=1024)
+		  num_hidden_layers=8, num_attention_heads=8, intermediate_size=1024)
 
   # 创建BertModel
   model = modeling.BertModel(config=config, is_training=True,
