@@ -105,9 +105,14 @@ layout: default
 
                 {% if site.disqus_username %}
                 <!-- disqus 评论框 start -->
-                <div class="comment">
-                    <div id="disqus_thread" class="disqus-thread"></div>
-                </div>
+
+		<div class="show-comments" style='text-align:center;margin-top:30px;font-size:1.5em'>
+		    <button id="show-comments-button"  onclick="disqus();return false;">显示Disqus评论(需要科学上网，有Disqus的广告)</button>
+		</div>
+
+   
+                <div id="disqus_thread" class="disqus-thread"></div>
+           
                 <!-- disqus 评论框 end -->
                 {% endif %}
 
@@ -173,19 +178,34 @@ layout: default
 
 
 {% if site.disqus_username %}
-<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = "{{site.disqus_username}}";
-    var disqus_identifier = "{{page.id}}";
-    var disqus_url = "{{site.url}}{{page.url}}";
 
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
+<script>
+var disqus_loaded = false;
+var disqus_shortname = "{{site.disqus_username}}";
+function disqus() {
+    if (!disqus_loaded)  {
+        disqus_loaded = true;
+        var e = document.createElement("script");
+        e.type = "text/javascript";
+        e.async = true;
+        e.src = "//" + disqus_shortname + ".disqus.com/embed.js";
+        (document.getElementsByTagName("head")[0] ||
+        document.getElementsByTagName("body")[0])
+        .appendChild(e);
+        //Hide the button after opening
+        document.getElementById("show-comments-button").style.display = "none";
+    }
+}
+//Opens comments when linked to directly
+var hash = window.location.hash.substr(1);
+if (hash.length > 8) {
+    if (hash.substring(0, 8) == "comment-") {
+        disqus();
+    }
+}
+
 </script>
+
 <!-- disqus 公共JS代码 end -->
 {% endif %}
 
