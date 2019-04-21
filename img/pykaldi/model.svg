@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" xmlns:inkspace="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs id="defs_block">
+    <filter height="1.504" id="filter_blur" inkspace:collect="always" width="1.1575" x="-0.07875" y="-0.252">
+      <feGaussianBlur id="feGaussianBlur3780" inkspace:collect="always" stdDeviation="4.2" />
+    </filter>
+  </defs>
+  <title>blockdiag</title>
+  <desc>blockdiag {
+0 [label="MLP_layers1",shape = box];
+1 [label="mfcc",shape = circle];
+2 [label="cost_nll",shape = roundedbox];
+3 [label="lab_cd",shape = roundedbox];
+1 -&gt; 0 [label = "mfcc"]
+3 -&gt; 2 [label = "lab_cd"]
+0 -&gt; 2 [label = "out_dnn1"]
+}</desc>
+  <rect fill="rgb(0,0,0)" height="40" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" width="128" x="259" y="46" />
+  <ellipse cx="131" cy="66" fill="rgb(0,0,0)" rx="24.0" ry="24.0" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" />
+  <path d="M 459 46 L 571 46 A8,8 0 0 1 579 54 L 579 78 A8,8 0 0 1 571 86 L 459 86 A8,8 0 0 1 451 78 L 451 54 A8,8 0 0 1 459 46" fill="rgb(0,0,0)" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" />
+  <path d="M 75 126 L 187 126 A8,8 0 0 1 195 134 L 195 158 A8,8 0 0 1 187 166 L 75 166 A8,8 0 0 1 67 158 L 67 134 A8,8 0 0 1 75 126" fill="rgb(0,0,0)" stroke="rgb(0,0,0)" style="filter:url(#filter_blur);opacity:0.7;fill-opacity:1" />
+  <rect fill="rgb(255,255,255)" height="40" stroke="rgb(0,0,0)" width="128" x="256" y="40" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="66" x="320.0" y="66">MLP_layers1</text>
+  <ellipse cx="128" cy="60" fill="rgb(255,255,255)" rx="24.0" ry="24.0" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="24" x="128.0" y="65">mfcc</text>
+  <path d="M 456 40 L 568 40 A8,8 0 0 1 576 48 L 576 72 A8,8 0 0 1 568 80 L 456 80 A8,8 0 0 1 448 72 L 448 48 A8,8 0 0 1 456 40" fill="rgb(255,255,255)" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="48" x="512.0" y="66">cost_nll</text>
+  <path d="M 72 120 L 184 120 A8,8 0 0 1 192 128 L 192 152 A8,8 0 0 1 184 160 L 72 160 A8,8 0 0 1 64 152 L 64 128 A8,8 0 0 1 72 120" fill="rgb(255,255,255)" stroke="rgb(0,0,0)" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="36" x="128.0" y="146">lab_cd</text>
+  <path d="M 384 60 L 440 60" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="447,60 440,56 440,64 447,60" stroke="rgb(0,0,0)" />
+  <path d="M 152 60 L 248 60" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="255,60 248,56 248,64 255,60" stroke="rgb(0,0,0)" />
+  <path d="M 192 140 L 432 140" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 432 140 L 432 60" fill="none" stroke="rgb(0,0,0)" />
+  <path d="M 432 60 L 440 60" fill="none" stroke="rgb(0,0,0)" />
+  <polygon fill="rgb(0,0,0)" points="447,60 440,56 440,64 447,60" stroke="rgb(0,0,0)" />
+  <rect fill="white" height="16" stroke="rgb(0,0,0)" width="64" x="384" y="37" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="48" x="416.0" y="51">out_dnn1</text>
+  <rect fill="white" height="14" stroke="rgb(0,0,0)" width="40" x="204" y="38" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="24" x="224.0" y="50">mfcc</text>
+  <rect fill="white" height="16" stroke="rgb(0,0,0)" width="52" x="390" y="102" />
+  <text fill="rgb(0,0,0)" font-family="sans-serif" font-size="11" font-style="normal" font-weight="normal" text-anchor="middle" textLength="36" x="416.0" y="116">lab_cd</text>
+</svg>
