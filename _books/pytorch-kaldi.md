@@ -14,7 +14,7 @@ tags:
     - 《深度学习理论与实战：提高篇》
 ---
 
-本文介绍PyTorch-Kaldi。前面介绍过的Kaldi是用C++和各种脚本来实现的，因此它不是一个通用的深度学习框架，如果要使用神经网络来梯度GMM的声学模型，就得自己用C++代码实现神经网络的训练与预测，这显然很难实现并且容易出错。我们更加习惯使用Tensorflow或者PyTorch来实现神经网络。因此PyTorch-Kaldi就应运而生了，它使得我们可以利用Kaldi高效的特征提取、HMM模型和基于WFST的解码器，同时使用我们熟悉的PyTorch来解决神经网络的训练和预测问题。阅读本文前需要理解HMM-DNN的语音识别系统、WFST和Kaldi的基本用法，不了解的读者请点击[深度学习理论与实战：提高篇]({{ site.baseurl }}{% post_url 2019-03-14-dl-book %})提前学习这些知识。
+本文介绍PyTorch-Kaldi。前面介绍过的Kaldi是用C++和各种脚本来实现的，它不是一个通用的深度学习框架。如果要使用神经网络来梯度GMM的声学模型，就得自己用C++代码实现神经网络的训练与预测，这显然很难实现并且容易出错。我们更加习惯使用Tensorflow或者PyTorch来实现神经网络。因此PyTorch-Kaldi就应运而生了，它使得我们可以利用Kaldi高效的特征提取、HMM模型和基于WFST的解码器，同时使用我们熟悉的PyTorch来解决神经网络的训练和预测问题。阅读本文前需要理解HMM-DNN的语音识别系统、WFST和Kaldi的基本用法，不了解的读者请点击[深度学习理论与实战：提高篇]({{ site.baseurl }}{% post_url 2019-03-14-dl-book %})提前学习这些知识。
 <div class='zz'>转载请联系作者(fancyerii at gmail dot com)！</div>
  <!--more-->
  
