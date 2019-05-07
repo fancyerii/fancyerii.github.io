@@ -182,14 +182,14 @@ for episode in range(episodes):
         env.render()
         pos, vel = discretization(env, obs)
 		
-		# epsilon的概率随机探索
+	# epsilon的概率随机探索
         if np.random.uniform(low=0, high=1) < epsilon:
             a = np.random.choice(env.action_space.n)
         # 否则选取q值最大的action    
         else:
             a = np.argmax(q_table[pos][vel])
 
-		# 执行a，得到reward和新的状态(观察)obs
+	# 执行a，得到reward和新的状态(观察)obs
         obs, reward, terminate, _ = env.step(a)
 
         # q-table更新
@@ -365,8 +365,8 @@ def build_networks(self):
 ```
 代码会构造两个结构完全一样的神经网络，primary网络会定义loss，而target网络的作用是在就是target的时候用它来计算Q(s,a)的值，因此它的参数不会在训练中更改，只是定期同步primary的参数(使用前面的replacing_target_parameters)。loss的定义如下：
 ```
-        with tf.variable_scope('loss'):
-            self.loss = tf.reduce_mean(tf.squared_difference(self.qtarget, self.qeval))
+with tf.variable_scope('loss'):
+    self.loss = tf.reduce_mean(tf.squared_difference(self.qtarget, self.qeval))
 ```
 这里qtarget是placeholder，训练的时候传入，而qeval就是primary网络的输出(3个值，分别表示Q(s,a1),Q(s,a2),Q(s,a3))。注意：通常对于一个状态s，我们只会更新某一个action a的Q(s,a)，另外两个是不变的，所以placehodler传入的3个值中有一个是修改过的，而另外两个的值就是primary网络(而不是target网络的，因为target网络会滞后)预测的结果，因此是不变的。函数target_params_replaced运行replacing_target_parameters操作来实现target网络的参数更新。
 ```
@@ -383,12 +383,12 @@ def build_networks(self):
 ```
 它首先通过self.experience_counter \% self.experience_limit计算下一个写入位置。然后存入(obs, [a, r], obs_)，表示当前状态，action a，reward r和下一个状态。函数epsilon_greedy用来$\epsilon$-贪婪的行为策略：
 ```
-    def epsilon_greedy(self, obs):
-        # epsilon greedy implementation to choose action
-        if np.random.uniform(low=0, high=1) < self.epsilon:
-            return np.argmax(self.sess.run(self.qeval, feed_dict={self.s: obs[np.newaxis, :]}))
-        else:
-            return np.random.choice(self.n_actions)
+def epsilon_greedy(self, obs):
+    # epsilon greedy implementation to choose action
+    if np.random.uniform(low=0, high=1) < self.epsilon:
+        return np.argmax(self.sess.run(self.qeval, feed_dict={self.s: obs[np.newaxis, :]}))
+    else:
+        return np.random.choice(self.n_actions)
 ```
 注意epsilon以开始是0，也就是完全随机选择action，然后会慢慢的变大(参考fit代码)直到0.9。下面是fit的代码，请仔细阅读代码和注释：
 ```
@@ -465,26 +465,26 @@ def build_networks(self):
     shape = [None] + self.n_features
     self.s = tf.placeholder(tf.float32, shape)
     self.qtarget = tf.placeholder(tf.float32, [None, self.n_actions])
- 
+  
     with tf.variable_scope('primary_network'):
         c = ['primary_network_parameters', tf.GraphKeys.GLOBAL_VARIABLES]
-        # first convolutional layer
+        # 第一个卷积层
         with tf.variable_scope('convlayer1'):
             l1 = self.add_layer(self.s, w_shape=[5, 5, 4, 32], b_shape=[32], layer='convL1',
                                 activation_fn=tf.nn.relu, c=c, isconv=True)
  
-        # first convolutional layer
+        # 第二个卷积层
         with tf.variable_scope('convlayer2'):
             l2 = self.add_layer(l1, w_shape=[5, 5, 32, 64], b_shape=[64], layer='convL2', 
 				activation_fn=tf.nn.relu, c=c, isconv=True)
  
-        # first fully-connected layer
+        # 第一个全连接层
         l2 = tf.reshape(l2, [-1, 80 * 80 * 64])
         with tf.variable_scope('FClayer1'):
             l3 = self.add_layer(l2, w_shape=[80 * 80 * 64, 128], b_shape=[128], 
 				layer='fclayer1', activation_fn=tf.nn.relu, c=c)
  
-        # second fully-connected layer
+        # 第二个全连接层
         with tf.variable_scope('FClayer2'):
             self.qeval = self.add_layer(l3, w_shape=[128, self.n_actions],
 					b_shape=[self.n_actions], layer='fclayer2', c=c)
@@ -500,23 +500,23 @@ def build_networks(self):
  
     with tf.variable_scope('target_network'):
         c = ['target_network_parameters', tf.GraphKeys.GLOBAL_VARIABLES]
-        # first convolutional layer
+        # 第一个卷积层
         with tf.variable_scope('convlayer1'):
             l1 = self.add_layer(self.st, w_shape=[5, 5, 4, 32], b_shape=[32],
 				layer='convL1', activation_fn=tf.nn.relu, c=c, isconv=True)
  
-        # first convolutional layer
+        # 第二个卷积层
         with tf.variable_scope('convlayer2'):
             l2 = self.add_layer(l1, w_shape=[5, 5, 32, 64], b_shape=[64], layer='convL2',
 				activation_fn=tf.nn.relu, c=c, isconv=True)
  
-        # first fully-connected layer
+        # 第一个全连接层
         l2 = tf.reshape(l2, [-1, 80 * 80 * 64])
         with tf.variable_scope('FClayer1'):
             l3 = self.add_layer(l2, w_shape=[80 * 80 * 64, 128], b_shape=[128], 
 				layer='fclayer1', activation_fn=tf.nn.relu, c=c)
  
-        # second fully-connected layer
+        # 第二个全连接层
         with tf.variable_scope('FClayer2'):
             self.qt = self.add_layer(l3, w_shape=[128, self.n_actions], 
 				b_shape=[self.n_actions], layer='fclayer2', c=c)
@@ -602,7 +602,7 @@ if __name__ == "__main__":
         print("Episode {} with Reward : {} at epsilon {} in steps {}"
 		 .format(episode + 1, episode_reward, dqn.epsilon, steps))
 
-    while True:  # to hold the render at the last step when Car passes the flag
+    while True:
         env.render()
 ```
  
