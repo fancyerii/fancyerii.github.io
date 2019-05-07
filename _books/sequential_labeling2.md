@@ -249,7 +249,8 @@ def _viterbi_decode(self, feats):
     init_vvars = torch.full((1, self.tagset_size), -10000.)
     init_vvars[0][self.tag_to_ix[START_TAG]] = 0
     
-    # forward_var就是类似HMM的alpha，表示前一个时刻的最优路径的概率，forward_var[i]表示最后一个时刻的状态是i的最优路径的概率。
+    # forward_var就是类似HMM的alpha，表示前一个时刻的最优路径的概率，
+    # forward_var[i]表示最后一个时刻的状态是i的最优路径的概率。
     forward_var = init_vvars
     for feat in feats:
 	    bptrs_t = []  # 这一个时刻的backpointers，每个状态占有一个
@@ -419,10 +420,7 @@ next_tag_var = forward_var + trans_score + emit_score
 next_tag_var = forward_var + log(trans_score) + log(emit_score)
 ```
 
-因为我们这里的self.transitions和LSTM输出的feats以及是log域的了。所有前面我们的_score_sentence函数计算logp(y|x)也是直接把跳转概率和发射概率相加就行了，包括再之前的Viterbi算法，所有需要概率相乘的地方都改成加法了。计算出了loss之后，我们就可以让PyTorch自动帮我们计算反向梯度和更新参数了。
-
-
-
+因为我们这里的self.transitions和LSTM输出的feats以及是log域的了。所有前面我们的_score_sentence函数计算$logp(y \vert x)$也是直接把跳转概率和发射概率相加就行了，包括再之前的Viterbi算法，所有需要概率相乘的地方都改成加法了。计算出了loss之后，我们就可以让PyTorch自动帮我们计算反向梯度和更新参数了。
 
 
 
