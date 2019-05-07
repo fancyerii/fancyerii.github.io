@@ -384,7 +384,7 @@ with tf.variable_scope('loss'):
 它首先通过self.experience_counter \% self.experience_limit计算下一个写入位置。然后存入(obs, [a, r], obs_)，表示当前状态，action a，reward r和下一个状态。函数epsilon_greedy用来$\epsilon$-贪婪的行为策略：
 ```
 def epsilon_greedy(self, obs):
-    # epsilon greedy implementation to choose action
+    # epsilon贪婪的选择action
     if np.random.uniform(low=0, high=1) < self.epsilon:
         return np.argmax(self.sess.run(self.qeval, feed_dict={self.s: obs[np.newaxis, :]}))
     else:
@@ -408,10 +408,10 @@ def fit(self):
                               feed_dict={self.st: batch[:, -self.n_features:], 
 					     self.s: batch[:, :self.n_features]})
 		
-	# qtarget是需要更新的Q(s,a1),Q(s,a2),Q(s,a3)
-	# 我们先复制qeval的值，假设实际的action是a1，那么根据r+gamma max_a' Q(s,a')更新Q(s,a1)
-	# Q(s,a1) primary预测的值和期望的值有差距(loss)，需要调整参数。
-	# 而Q(s,a2),Q(s,a3)仍然是primary网络预测的结果，这样它们的损失就是零。
+    # qtarget是需要更新的Q(s,a1),Q(s,a2),Q(s,a3)
+    # 我们先复制qeval的值，假设实际的action是a1，那么根据r+gamma max_a' Q(s,a')更新Q(s,a1)
+    # Q(s,a1) primary预测的值和期望的值有差距(loss)，需要调整参数。
+    # 而Q(s,a2),Q(s,a3)仍然是primary网络预测的结果，这样它们的损失就是零。
     # 因此不需要为了他们调整参数
     qtarget = qeval.copy()
     batch_indices = np.arange(self.batch_size, dtype=np.int32)
@@ -422,7 +422,7 @@ def fit(self):
     # Q(s, a1)对应的target需要更新
     qtarget[batch_indices, actions] = rewards + self.gamma * np.max(qt, axis=1)
 		
-		# 进行训练，传入当前状态s和target
+    # 进行训练，传入当前状态s和target
     _ = self.sess.run(self.train, feed_dict={self.s: batch[:, :self.n_features], 
                                              self.qtarget: qtarget})
 
