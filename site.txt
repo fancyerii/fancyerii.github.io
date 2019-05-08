@@ -60,3 +60,8 @@ http://fancyerii.github.io/2019/02/14/chatbot/
 http://fancyerii.github.io/2019/03/08/gpt2/
 http://fancyerii.github.io/2019/02/19/mvn-error/
 http://fancyerii.github.io/2019/03/06/github-email/
+http://fancyerii.github.io/2019/03/14/philosophy
+http://fancyerii.github.io/2019/03/09/transformer-illustrated
+http://fancyerii.github.io/2019/03/09/transformer-codes
+http://fancyerii.github.io/2019/03/09/bert-theory
+http://fancyerii.github.io/2019/03/09/bert-codes
