@@ -36,7 +36,7 @@ tags:
 ## 依存关系(Dependency Relation)
 传统的语法关系(Grammatical Relation)是依存关系的基础，但是依存关系只是二元的关系。每一种依存关系都有一个中心词(Head)和一个依赖(Dependent)，比如前面例子里的nsubj表示了prefer和I直接的依存关系是谓词依赖一个主语。语言学家定义了很多中依存关系，不同的语言可能也不一样。
 
-在自然语言处理处理实际中不同的依存树库会使用不同的依存关系定义，当然一些最基本的关系是所有的树库都会有。对于英语来说，最常用的依存树库是Standord Dependency。它定义了一系列依存关系，并且提供工具从PTB把成分句法分析树转成依存句法树。当然对于中文，也有CTB转换成的中文依存树库。但是不同的语言都需要定义一套依存关系会比较麻烦，因此Stanford NLP Group定义了Universal Dependencies，这是一套使用与任何语言的依存关系集合，不过目前还属于早期推广阶段，有兴趣的读者可以点击[这里](http://universaldependencies.org/)了解更多细节。
+在自然语言处理处理实践中不同的依存树库会使用不同的依存关系定义，当然一些最基本的关系是所有的树库都会有。对于英语来说，最常用的依存树库是Standord Dependency。它定义了一系列依存关系，并且提供工具从PTB把成分句法分析树转成依存句法树。当然对于中文，也有CTB转换成的中文依存树库。但是不同的语言都需要定义一套依存关系会比较麻烦，因此Stanford NLP Group定义了Universal Dependencies，这是一套使用与任何语言的依存关系集合，不过目前还属于早期推广阶段，有兴趣的读者可以点击[这里](http://universaldependencies.org/)了解更多细节。
 
 
 
@@ -52,7 +52,7 @@ tags:
 
 我们首先定义边(arc)满足Projective的条件：假设这条边连接的是$w_i$和$w_j$，其中$i < j$，它的中心词是head(是$w_i,w_j$中的一个)。如果对于i和j之间的每一个词，都存在一条从head到它的路径，那么这条边就满足Projective性质。
 
-如果一棵依存树的每条边都满足Projective性质，那么这棵树就满足Projective性质。比如图\ref{fig:dp-3}所示的依存树(请读者验证这是一棵树)，有一条从flight(head)到was的边，它们之间包含3个单词"this morning which"，flight有到which的路径(flight->was->which)，但是flight到"this"和"morning"都没有路径可达。因此这条边不满足Projective。
+如果一棵依存树的每条边都满足Projective性质，那么这棵树就满足Projective性质。比如下图所示的依存树(请读者验证这是一棵树)，有一条从flight(head)到was的边，它们之间包含3个单词"this morning which"，flight有到which的路径(flight->was->which)，但是flight到"this"和"morning"都没有路径可达。因此这条边不满足Projective。
 
 
 <a name='dp-3'>![](/img/dp/dp-3.png)</a>
