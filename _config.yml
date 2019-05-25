@@ -84,6 +84,15 @@ collections:
   wang:
     output: true
 
+  kaldi:
+    output: true
+
+  kaldidoc:
+    output: true
+
+  dev287x:
+    output: true
+
 # Friends
 friends: [
     {
