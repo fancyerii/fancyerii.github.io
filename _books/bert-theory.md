@@ -258,7 +258,7 @@ $$
 ## BERT
 
 ### ELMo和OpenAI GPT的问题
-ELMo和GPT最大的问题就是传统的语言模型是单向的——我们是根据之前的历史来预测当前词。但是我们不能利用后面的信息。比如句子"The animal didn't cross the street because it was too tired"。我们在编码it的语义的时候需要同时利用前后的信息，因为在这个句子中，it可能指代animal也可能指代street。根据tired，我们推断它指代的是animal，因为street是不能tired。但是如果把tired改成wide，那么it就是指代street了。传统的语言模型，不过是RNN还是Transformer，它都只能利用单方向的信息。比如前向的RNN，在编码it的时候它看到了animal和street，但是它还没有看到tired，因此它不能确定it到底指代什么。如果是后向的RNN，在编码的时候它看到了tired，但是它还根本没看到animal，因此它也不能指代指代的是animal。Transformer的Self-Attention理论上是可以同时attend to到这两个词的，但是根据前面的介绍，由于我们需要用Transformer来学习语言模型，因此必须用Mask来让它看不到未来的信息，所以它也不能解决这个问题的。
+ELMo和GPT最大的问题就是传统的语言模型是单向的——我们是根据之前的历史来预测当前词。但是我们不能利用后面的信息。比如句子"The animal didn't cross the street because it was too tired"。我们在编码it的语义的时候需要同时利用前后的信息，因为在这个句子中，it可能指代animal也可能指代street。根据tired，我们推断它指代的是animal，因为street是不能tired。但是如果把tired改成wide，那么it就是指代street了。传统的语言模型，不管是RNN还是Transformer，它都只能利用单方向的信息。比如前向的RNN，在编码it的时候它看到了animal和street，但是它还没有看到tired，因此它不能确定it到底指代什么。如果是后向的RNN，在编码的时候它看到了tired，但是它还根本没看到animal，因此它也不能知道指代的是animal。Transformer的Self-Attention理论上是可以同时attend to到这两个词的，但是根据前面的介绍，由于我们需要用Transformer来学习语言模型，因此必须用Mask来让它看不到未来的信息，所以它也不能解决这个问题的。
 
 注意：即使ELMo训练了双向的两个RNN，但是一个RNN只能看一个方向，因此也是无法"同时"利用前后两个方向的信息的。也许有的读者会问，我的RNN有很多层，比如第一层的正向RNN在编码it的时候编码了animal和street的语义，反向RNN编码了tired的语义，然后第二层的RNN就能同时看到这两个语义，然后判断出it指代animal。理论上是有这种可能，但是实际上很难。举个反例，理论上一个三层(一个隐层)的全连接网络能够拟合任何函数，那我们还需要更多层词的全连接网络或者CNN、RNN干什么呢？如果数据不是足够足够多，如果不对网络结构做任何约束，那么它有很多中拟合的方法，其中很多是过拟合的。但是通过对网络结构的约束，比如CNN的局部特效，RNN的时序特效，多层网络的层次结构，对它进行了很多约束，从而使得它能够更好的收敛到最佳的参数。我们研究不同的网络结构(包括resnet、dropout、batchnorm等等)都是为了对网络增加额外的(先验的)约束。
 
