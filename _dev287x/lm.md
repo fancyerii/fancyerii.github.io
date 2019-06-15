@@ -954,4 +954,4 @@ ngram -debug 1 -lm librispeech.3bo.gz -prune 1e-5 -write-lm librispeech-pruned1.
 | 模型大小      | 336K | 2.1M | 12M | 61M| 205M | 263M | 286M|
 | 在data/dev.txt上的PPL      | 258      |   178 | 136| 118| 113.49|113.21| 113.19|
 
-我们可以看到
+
