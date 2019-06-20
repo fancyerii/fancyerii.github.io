@@ -93,6 +93,9 @@ collections:
   dev287x:
     output: true
 
+  wfst:
+    output: true
+
 # Friends
 friends: [
     {
