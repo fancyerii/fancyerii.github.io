@@ -10,7 +10,7 @@ tags:
     - DEV287x
 ---
 
-这个模块介绍声学模型。完全不熟悉的读者可以先阅读[基于HMM的语音识别(一)]({{ site.baseurl }}/books/asr-hmm)、[基于HMM的语音识别(二)]({{ site.baseurl }}/books/asr-hmm2)、[基于HMM的语音识别(三)]({{ site.baseurl }}/books/asr-hmm3)、[深度学习在语音识别中的应用]({{ site.baseurl }}/books/dl-speech)和[PyTorch-Kaldi简介之原理回顾]({{ site.baseurl }}/books/pytorch-kaldi/#%E5%8E%9F%E7%90%86%E5%9B%9E%E9%A1%BE)。
+这个模块介绍声学模型。完全不熟悉的读者可以先阅读[基于HMM的语音识别(一)]({{ site.baseurl }}/books/asr-hmm)、[基于HMM的语音识别(二)]({{ site.baseurl }}/books/asr-hmm2)、[基于HMM的语音识别(三)]({{ site.baseurl }}/books/asr-hmm3)、[深度学习在语音识别中的应用]({{ site.baseurl }}/books/dl-speech)和[PyTorch-Kaldi简介之原理回顾]({{ site.baseurl }}/books/pytorch-kaldi/#%E5%8E%9F%E7%90%86%E5%9B%9E%E9%A1%BE)。更多本系列文章请点击[微软Edx语音识别课程]({{ site.baseurl }}{% post_url 2019-05-25-dev287x %})。
  <!--more-->
  
 **目录**

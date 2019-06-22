@@ -10,7 +10,7 @@ tags:
     - DEV287x
 ---
 
-这个模块介绍语言模型。读者可以参考[语言模型教程]({{ site.baseurl }}/books/lm)。
+这个模块介绍语言模型。读者可以参考[语言模型教程]({{ site.baseurl }}/books/lm)。更多本系列文章请点击[微软Edx语音识别课程]({{ site.baseurl }}{% post_url 2019-05-25-dev287x %})。
  <!--more-->
  
 **目录**

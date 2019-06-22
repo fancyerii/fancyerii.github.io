@@ -9,7 +9,7 @@ tags:
     - Kaldi
 ---
 
-本文的内容主要是翻译文档[The build process (how Kaldi is compiled) ](http://kaldi-asr.org/doc/build_setup.html)，介绍Kaldi的编译过程。
+本文的内容主要是翻译文档[The build process (how Kaldi is compiled) ](http://kaldi-asr.org/doc/build_setup.html)，介绍Kaldi的编译过程。更多本系列文章请点击[Kaldi文档解读]({{ site.baseurl }}{% post_url 2019-05-21-kaldi-doc %})。
  <!--more-->
  
 **目录**

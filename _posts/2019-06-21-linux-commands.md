@@ -2,7 +2,6 @@
 layout:     post
 title:      "常见Linux工具用法" 
 author:     "lili" 
-sticky: true
 excerpt_separator: <!--more-->
 tags:
     - Linux

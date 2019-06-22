@@ -10,7 +10,7 @@ tags:
     - DEV287x
 ---
 
-这个模块介绍语音信号的处理，也就是把输入的wav文件变成特征向量的序列。完全不熟悉的读者可以先阅读[MFCC特征提取]({{ site.baseurl }}/books/mfcc)。
+这个模块介绍语音信号的处理，也就是把输入的wav文件变成特征向量的序列。完全不熟悉的读者可以先阅读[MFCC特征提取]({{ site.baseurl }}/books/mfcc)。更多本系列文章请点击[微软Edx语音识别课程]({{ site.baseurl }}{% post_url 2019-05-25-dev287x %})。
  <!--more-->
  
 **目录**

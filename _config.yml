@@ -96,6 +96,9 @@ collections:
   wfst:
     output: true
 
+  kaldicodes:
+    output: true
+
 # Friends
 friends: [
     {
