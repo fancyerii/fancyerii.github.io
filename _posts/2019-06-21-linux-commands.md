@@ -51,6 +51,12 @@ git -c "http.proxy=address:port" clone http://github.com/xxxx.git
 sudo http_proxy=http://yourserver apt-get update
 ```
 
+### svn
+
+```
+svn co --config-option servers:global:http-proxy-host=ai-dev --config-option servers:global:http-proxy-port=1080 ...
+```
+
 ## git
 
 ### git上传大文件到github
