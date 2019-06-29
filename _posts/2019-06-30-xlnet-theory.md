@@ -313,7 +313,7 @@ $$
 
 ### Pretraining和实现
 
-和BERT一样，XLNet使用了BooksCorpus和英文的维基百科作为训练数据，这两者总共13GB的文本。此外，XLNet还增加了Giga5(16GB)、ClueWeb 2012-B和Common Crawl的数据来进行Pretraining。对于ClueWeb 2012-B和Common Crawl的内容使用了启发式的规则进行了预处理，最终各自保留了19GB和78GB的文本。使用SentencePiece[https://github.com/google/sentencepiece]工具后分别得到2.78B, 1.09B, 4.75B, 4.30B和19.97B Token(subword unit)，总计32.89B。
+和BERT一样，XLNet使用了BooksCorpus和英文的维基百科作为训练数据，这两者总共13GB的文本。此外，XLNet还增加了Giga5(16GB)、ClueWeb 2012-B和Common Crawl的数据来进行Pretraining。对于ClueWeb 2012-B和Common Crawl的内容使用了启发式的规则进行了预处理，最终各自保留了19GB和78GB的文本。使用[SentencePiece](https://github.com/google/sentencepiece)工具后分别得到2.78B, 1.09B, 4.75B, 4.30B和19.97B Token(subword unit)，总计32.89B。
  
 最大的模型XLNet-Large采样了和BERT-large一样的超参数，从而得到类似大小的模型。序列长度和cache分别设置为512和384。训练XLNet-Large是在512核心(不是512个)的TPU v3芯片上进行，使用Adam优化器迭代了500K次。使用了线性的Learning rate decay，batch大小是2048，最终训练了2.5天。我们发现模型仍然是欠拟合(underfitting)的，如果继续训练的话在训练数据上的loss还能下降。但是对于下游的任务并没有太大帮助。因此我们判断是因为数据太大了，默认没有能力完全拟合数据。为了与BERT对比，我们也训练了XLNet-Base模型，它只使用了BooksCorpus和维基百科的数据。
 
