@@ -133,6 +133,7 @@ $$
 
 
 <a name='eq4'></a>
+
 $$
 p_\theta(X_{z_t}=x \vert \mathbf{x}_{z_{<t}})=\frac{exp(e(x)^Tg_\theta(\mathbf{x}_{z_{<t}}, z_t))}{\sum_{x'}exp(e(x')^Tg_\theta(\mathbf{x}_{z_{<t}}, z_t))}
 $$
