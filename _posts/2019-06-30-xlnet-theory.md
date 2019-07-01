@@ -3,6 +3,7 @@ layout:     post
 title:      "XLNet原理" 
 author:     "lili" 
 mathjax: true
+sticky: true
 excerpt_separator: <!--more-->
 tags:
     - 深度学习

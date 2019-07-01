@@ -3,7 +3,7 @@ layout:     post
 title:      "Kaldi代码分析"
 author:     "lili"
 mathjax: false
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - 语音识别
