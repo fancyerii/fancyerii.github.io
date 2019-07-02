@@ -165,7 +165,75 @@ image inpainting是遮挡掉图片的一部分，比如打了马赛克，然后�
 
 ### 语音识别
 
+语音识别系统是一个非常复杂的系统，在深度学习技术之前的主流系统都是基于HMM模型。它通常时候HMM-GMM来建模subword unit(比如triphone)，通过发音词典来把subword unit的HMM拼接成词的HMM，最后解码器还要加入语言模型最终来融合声学模型和语言模型在巨大的搜索空间里寻找最优的路径。
+
+Hinton一直在尝试使用深度神经网络来改进语音识别系统，最早(2006年后)的工作是2009年发表的[Deep belief networks for phone recognition](http://www.cs.toronto.edu/~hinton/absps/NIPS09_DBN_phone_rec.pdf)，这正是Pretraining流行的时期，把DBN从计算机视觉用到语音识别是非常自然的想法。类似的工作包括2010年的[Phone Recognition using Restricted Boltzmann Machines](http://www.cs.toronto.edu/~hinton/absps/icassp10.pdf)。但是这些工作只是进行最简单的phone分类，也就是判断每一帧对应的phone，这距离连续语音识别还相差的非常远。
+
+真正把深度神经网络用于语音识别的重要文章是Hinton等人2012年[Deep Neural Networks for Acoustic Modeling in Speech Recognition](http://www.cs.toronto.edu/~hinton/absps/DNN-2012-proof.pdf)的文章，这篇文章使用DNN替代了传统HMM-GMM声学模型里的GMM模型，从此语音识别的主流框架变成了HMM-DNN的模型。接着在2013年Sainath等人在[Deep convolutional neural networks for LVCSR](http://www.cs.toronto.edu/~asamir/papers/icassp13_cnn.pdf)用CNN替代普通的全连接网络。从George等人的文章[Improving deep neural networks for LVCSR using rectified linear units and dropout](https://arxiv.org/pdf/1309.1501.pdf)也可以发现在计算机视觉常用的一些技巧也用到了语音识别上。
+
+前面的HMM-DNN虽然使用了深度神经网络来替代GMM，但是HMM和后面的N-gram语言模型仍然存在，而且DNN本身的训练还需要使用HMM-GMM的强制对齐来提供帧级别的训练数据。
+
+怎么构建一个End-to-end的语音识别系统一直是学术界关注的重点。RNN我们现在处理时序数据的有力武器，2013年的时候Graves等人在论文[Speech Recognition with Deep Recurrent Neural Networks](https://arxiv.org/pdf/1303.5778.pdf)里把RNN用于了语音识别。这篇文章使用了RNN加上CTC损失函数，CTC是后来的Deep Speech的核心。虽然"真正"把CTC用于语音识别是在2013年，但是Graves却是早在2006年的时候就在论文[Connectionist temporal classification: labelling unsegmented sequence data with recurrent neural networks](https://www.cs.toronto.edu/~graves/icml_2006.pdf)了提出了CTC。
+
+Hannun等人在2014年提出的[Deep Speech: Scaling up end-to-end speech recognition](https://arxiv.org/pdf/1412.5567.pdf)是首个效果能和HMM-DNN媲美的End-to-end系统，包括后续的[Deep Speech 2: End-to-End Speech Recognition in English and Mandarin](https://arxiv.org/pdf/1512.02595)。Deep Speech的系统非常简单，输入是特征序列，输出就是字符序列，没有HMM、GMM、发音词典这些模块，甚至没有phone的概念。
+
+除了基于CTC损失函数的End-to-end系统，另外一类End-to-end系统借鉴了机器翻译等系统常用的seq2seq模型。这包括最早的[Listen, attend and spell: A neural network for large vocabulary conversational speech recognition](https://arxiv.org/pdf/1508.01211.pdf)，Google的[State-of-the-art Speech Recognition With Sequence-to-Sequence Models](https://arxiv.org/abs/1712.01769)总结了用于语音识别的SOTA的一些Seq2Seq模型，并且在[博客](https://ai.googleblog.com/2017/12/improving-end-to-end-models-for-speech.html)称他们在实际的系统中使用了这个模型之后词错误率从原来的6.7%下降到5.6%。这是首个在业界真正得到应用的End-to-end的语音识别系统(虽然Andrew Ng领导的百度IDL提出了Deep Speech和Deep Speech2，但是在百度的实际系统中并没有使用它)。
+
+
+下图是常见数据集上的效果，拿SwitchBoard为例，在2006年之前的进展是比较缓慢的，但是在使用了深度学习之后，词错误率持续下降，图中是2017年的数据，微软的系统已经降到了6.3%的词错误率。
+
+<a name='img12'>![](/img/ai-survey/12.jpg)</a>
+*图：词错误率变化*
+
 ### 自然语言处理
+
+和语音识别不同，自然语言处理是一个很"庞杂"的领域，语音识别就一个任务——把声音变成文字，即使加上相关的语音合成、说话人识别等任务，也远远无法和自然语言处理的任务数量相比。自然语言处理的终极目标是让机器理解人类的语言，理解是一个很模糊的概念。相对论的每个词的含义我都可能知道，但是并不代表我理解了相对论。
+
+因为这个原因，在这里我关注的是比较普适性的方法，这些方法能用到很多的子领域而不是局限于某个具体的任务。
+
+自然语言和连续的语音与图像不同，它是人类创造的离散抽象的符号系统。传统的特征表示都是离散的稀疏的表示方法，其泛化能力都很差。比如训练数据中出现了很多"北京天气"，但是没有怎么出现"上海天气"，那么它在分类的时候预测的分数会相差很大。但是"北京"和"上海"很可能经常在相似的上下文出现，这种表示方法无法利用这样的信息。
+
+在2003年到时候，Bengio在论文[A Neural Probabilistic Language Model](http://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf)就提出了神经网络的语言模型，通过Embedding矩阵把一个词编码成一个低维稠密的向量，这样实现相似上下文的共享——比如"北京"和"上海"经常在相似的上下文出现，则它们会被编码成比较相似的向量，这样即使"上海天气"在训练数据中不怎么出现，也能通过"北京天气"给予其较大的概率。
+
+不过2003年的时候大家并不怎么关注神经网络，因此这篇文章当时并没有太多后续的工作。到了2012年之后，深度神经网络在计算机视觉和语音识别等领域取得了重大的进展，把它应用到自然语言处理领域也是非常自然的事情。但是这个时候面临一个问题——没有大量有监督的标注数据的问题。这其实也是前面提到的自然语言处理是很"庞杂"的有关。自然语言处理的任务太多了，除了机器翻译等少数直接面向应用并且有很强实际需求的任务有比较多的数据外，大部分任务的标注数据非常有限。和ImageNet这种上百万的标注数据集或者语音识别几千小时的标注数据集相比，很多自然语言处理的标注数据都是在几万最多在几十万这样的数量级。这是由自然语言处理的特点决定的，因为它是跟具体业务相关的。因此自然语言处理领域一直急需解决的就是怎么从未标注的数据里学习出有用的知识，这些知识包括语法的、语义的和世界知识。
+
+Mikolov等人2013年在[Efficient estimation of word representations in vector space](https://arxiv.org/pdf/1301.3781.pdf)和[Distributed representations of words and phrases and their compositionality](http://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf)开始了这段征程。他们提出的Word2Vec可以简单高效的学习出很好的词向量，如下图所示。
+
+<a name='img13'>![](/img/ai-survey/13.png)</a>
+*图：Word2Vec的词向量*
+
+从上图我们可以发现它确实学到了一些语义的知识，通过向量计算可以得到类似"man-woman=king-queen"。
+
+我们可以把这些词向量作为其它任务的初始值。如果下游任务数据量很少，我们甚至可以固定住这些预训练的词向量，然后只调整更上层的参数。Pennington等人在2014年的论文[Glove: Global vectors for word representation](http://anthology.aclweb.org/D/D14/D14-1162.pdf)里提出了GloVe模型。
+
+
+但是Word2Vec无法考虑上下文的信息，比如"bank"有银行和水边的意思。但是它无法判断具体在某个句子里到底是哪个意思，因此它只能把这两个语义同时编码进这个向量里。但是在下游应用中的具体某个句子里，只有一个语义是需要的。当然也有尝试解决多义词的问题，比如Neelakantan等人在2014年的[Efficient Non-parametric Estimation of Multiple Embeddings per Word in Vector Space](https://arxiv.org/pdf/1504.06654)，但都不是很成功。
+
+另外一种解决上下文的工具就是RNN。但是普通的RNN有梯度消失的问题，因此更常用的是LSTM。LSTM早在1997年就被Sepp Hochreiter和Jürgen Schmidhuber提出了。在2016年前后才大量被用于自然语言处理任务，成为当时文本处理的"事实"标准——大家认为任何一个任务首先应该就使用LSTM。当然LSTM的其它变体以及新提出的GRU也得到广泛的应用。RNN除了能够学习上下文的语义关系，理论上还能解决长距离的语义依赖关系(当然即使引入了门的机制，实际上太长的语义关系还是很难学习)。
+
+
+<a name='img14'>![](/img/ai-survey/14.png)</a>
+*图：LSTM*
+
+很多NLP的输入是一个序列，输出也是一个序列，而且它们之间并没有严格的顺序和对应关系。为了解决这个问题，seq2seq模型被提了出来。最终使用seq2seq的是机器翻译。Sutskever等人在2014年的论文[Sequence to Sequence Learning with Neural Networks](https://papers.nips.cc/paper/5346-sequence-to-sequence-learning-with-neural-networks.pdf)首次使用了seq2seq模型来做机器翻译，Bahdanau等人在论文[Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/pdf/1409.0473)里首次把Attention机制引入了机器翻译，从而可以提高长句子的翻译效果。而Google在论文里[Google's Neural Machine Translation System: Bridging the Gap between Human and Machine Translation](https://arxiv.org/pdf/1609.08144)介绍了他们实际系统中使用神经网络机器翻译的一些经验，这是首次在业界应用的神经网络翻译系统。
+
+
+<a name='img15'>![](/img/ai-survey/15.png)</a>
+*图：LSTM*
+
+Seq2seq加Attention成为了解决很多问题的标准方法，包括摘要、问答甚至对话系统开始流行这种End-to-End的seq2seq模型。
+
+Google2017年在[Attention is All You Need](https://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf)更是把Attention机制推向了极致，它提出了Transformer模型。因为Attention相对于RNN来说可以更好的并行，而且它的Self-Attention机制可以同时编码上下文的信息，它在机器翻译的WMT14数据上取得了第一的成绩。
+
+<a name='img16'>![](/img/ai-survey/16.jpg)</a>
+*图：Neural Machine Translation*
+
+不过其实和Attention同时流行的还包括"Memory"，这大概是2015年的时候，当时流行"Reason, Attention and Memory"(简称RAM)，我记得当年NIPS还有个RAM的workshop。Memory就是把LSTM的Cell进一步抽象，变成一种存储机制，就行计算机的内存，然后提出了很多复杂的模型，包括Neural Turing Machine(NTM)等等，包括让神经网络自动学习出排序等算法。当时也火过一阵，但是最终并没有解决什么实际问题。
+
+虽然RNN/Transformer可以学习出上下文语义关系，但是除了在机器翻译等少量任务外，大部分的任务的训练数据都很少。因此怎么能够使用无监督的语料学习出很好的上下文语义关系就成为非常重要的课题。这个方向从2018年开始一直持续到现在，包括Elmo、OpenAI GPT、BERT和XLNet等，这些模型一次又一次的刷榜，引起了极大的关注。
+
+
+
 
 ### 强化学习
 
