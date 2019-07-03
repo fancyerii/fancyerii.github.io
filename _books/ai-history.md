@@ -162,6 +162,17 @@ image inpainting是遮挡掉图片的一部分，比如打了马赛克，然后�
 
 #### 最新热点
 
+最近有两个方向我觉得值得关注：一个是自动的优化网络的结构；另一个是半监督的学习。
+
+自动网络优化最新的文章是Google研究院的[EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks](https://arxiv.org/pdf/1905.11946)，它希望找到一个的神经网络扩展方法可以同时提高网络的准确率和效率(减少参数)。要实现这点，一个很关键的步骤便是如何平衡宽度、深度和分辨率这三个维度。作者发现，可以使用一种固定比例的缩放操作简单地实现对三者的平衡。最终，作者提出了一种简单却有效的compound scaling method。如果想使用 $2^N$倍的计算资源，只需要对网络宽度增加$\alpha^N$，深度增加$\beta^N$和增加$\gamma^N$ 倍的图像大小。其中$\alpha, \beta, \gamma$是固定的系数，最优的值通使用小范围的grid search得到。通过这种方法他们实现了EfficientNet模型，这个模型使用非常少的参数就达到了很好的效果，如下图所示：
+
+<a name='img19'>![](/img/ai-survey/19.png)</a>
+*图：模型参数和准确率图*
+
+我们可以看到，EfficientNet比之前最好的模型GPipe要小8.4倍，但是效果比它还要好。
+
+半监督学习这里指的是通过未标注的图片来预训练学习特征，然后用少量监督的数据进行学习。最新的文章是Google DeepMind的[Data-Efficient Image Recognition with Contrastive Predictive Coding](https://arxiv.org/pdf/1905.09272)。这篇文章通过Contrastive Predictive Coding的方法来从大量未标注的数据量提取特征。在这些特征上简单的加上一个线性的softmax层，在ImageNet上就可以超过使用AlexNet有监督学习的模型。如果每个类的训练数据只有13个，则本文的方法比只用13个数据训练的模型的Top-5准确率要高20%，比之前最好的半监督模型高10%。传统的很多无监督的特征在少量数据会比较好，但是当数据量足够多的时候会比完全的监督学习要差，但是本文的方法得到的特征使用全部的ImageNet数据训练，也可以达到和完全监督学习类似的效果，这说明它学到的特征是足够好的。
+
 
 ### 语音识别
 
@@ -232,11 +243,78 @@ Google2017年在[Attention is All You Need](https://papers.nips.cc/paper/7181-at
 
 虽然RNN/Transformer可以学习出上下文语义关系，但是除了在机器翻译等少量任务外，大部分的任务的训练数据都很少。因此怎么能够使用无监督的语料学习出很好的上下文语义关系就成为非常重要的课题。这个方向从2018年开始一直持续到现在，包括Elmo、OpenAI GPT、BERT和XLNet等，这些模型一次又一次的刷榜，引起了极大的关注。
 
+ELMo是Embeddings from Language Models的缩写，意思就是语言模型得到的(句子)Embedding。另外Elmo是美国儿童教育电视节目芝麻街(Sesame Street)里的小怪兽的名字。原始论文是[Deep contextualized word representations](https://arxiv.org/abs/1802.05365)，这个标题是很合适的，也就是用深度的Transformer模型来学习上下文相关的词表示。
+
+
+这篇论文的想法其实非常非常简单，但是取得了非常好的效果。它的思路是用深度的双向RNN(LSTM)在大量未标注数据上训练语言模型，如下图所示。然后在实际的任务中，对于输入的句子，我们使用这个语言模型来对它处理，得到输出的向量，因此这可以看成是一种特征提取。但是和普通的Word2Vec或者GloVe的pretraining不同，ELMo得到的Embedding是有上下文的。比如我们使用Word2Vec也可以得到词”bank”的Embedding，我们可以认为这个Embedding包含了bank的语义。但是bank有很多意思，可以是银行也可以是水边，使用普通的Word2Vec作为Pretraining的Embedding，只能同时把这两种语义都编码进向量里，然后靠后面的模型比如RNN来根据上下文选择合适的语义——比如上下文有money，那么它更可能是银行；而如果上下文是river，那么更可能是水边的意思。但是RNN要学到这种上下文的关系，需要这个任务有大量相关的标注数据，这在很多时候是没有的。而ELMo的特征提取可以看成是上下文相关的，如果输入句子有money，那么它就(或者我们期望)应该能知道bank更可能的语义，从而帮我们选择更加合适的编码。
+
+
+<a name='img17'>![](/img/ai-survey/17.png)</a>
+*图：RNN语言模型*
+
+ELMo学到的语言模型的参数是固定的，下游的任务它的的隐状态作为特征。而来自论文[Improving Language Understanding by Generative Pre-Training](https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf)的OpenAI GPT模型会根据特定的任务进行调整(通常是微调)，这样得到的句子表示能更好的适配特定任务。它的思想其实也很简单，使用Transformer来学习一个语言模型，对句子进行无监督的Embedding，然后根据具体任务对Transformer的参数进行微调。因为训练的任务语言模型的输入是一个句子，但是下游的任务很多输入是两个，因此OpenAI GPT通过在两个句子之前加入特殊的分隔符来处理两个输入，如下图所示。
+
+
+<a name='img18'>![](/img/ai-survey/18.png)</a>
+*图：OpenAI GPT处理下游任务的方法*
+
+OpenAI GPT取得了非常好的效果，在很多任务上远超之前的第一。
+
+ELMo和GPT最大的问题就是传统的语言模型是单向的——我们是根据之前的历史来预测当前词。但是我们不能利用后面的信息。比如句子”The animal didn’t cross the street because it was too tired”。我们在编码it的语义的时候需要同时利用前后的信息，因为在这个句子中，it可能指代animal也可能指代street。根据tired，我们推断它指代的是animal，因为street是不能tired。但是如果把tired改成wide，那么it就是指代street了。传统的语言模型，不管是RNN还是Transformer，它都只能利用单方向的信息。比如前向的RNN，在编码it的时候它看到了animal和street，但是它还没有看到tired，因此它不能确定it到底指代什么。如果是后向的RNN，在编码的时候它看到了tired，但是它还根本没看到animal，因此它也不能知道指代的是animal。Transformer的Self-Attention理论上是可以同时attend to到这两个词的，但是根据前面的介绍，由于我们需要用Transformer来学习语言模型，因此必须用Mask来让它看不到未来的信息，所以它也不能解决这个问题的。
+
+那它是怎么解决语言模型只能利用一个方向的信息的问题呢？答案是它的pretraining训练的不是普通的语言模型，而是Mask语言模型。这个思路是在Google的论文[Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/abs/1810.04805)里提出了，也就是我们现在熟知的BERT模型。
+
+
+BERT一出来就横扫了各种NLP的评测榜单，引起了极大的关注。就在媒体都在用"最强NLP模型"之类的词赞美BERT的时候，最近又出现了[XLNet](https://arxiv.org/pdf/1906.08237)，又一次横扫了各大榜单。它认为BERT有两大问题：它假设被Mask的词之间在给定其它非Mask词的条件下是独立的，这个条件并不成立；Pretraining的时候引入了特殊的[MASK]，但是fine-tuing又没有，这会造成不匹配。XLNet通过Permutation语言模型来解决普通语言模型单向信息流的问题，同时借鉴[Transformer-XL](https://arxiv.org/pdf/1901.02860)的优点。通过Two-Stream Self-Attention解决target unaware的问题，最终训练的模型在很多任务上超过BERT创造了新的记录。
+
+
+
 
 
 
 ### 强化学习
 
+强化学习和视觉、听觉和语言其实不是一个层面上的东西，它更多的是和监督学习、非监督学习并行的一类学习机制(算法)，但是我认为强化学习是非常重要的一种学习机制。
+
+监督学习的特点是有一个“老师”来“监督”我们，告诉我们正确的结果是什么。在我们在小的时候，会有老师来教我们，本质上监督学习是一种知识的传递，但不能发现新的知识。对于人类整体而言，真正（甚至唯一）的知识来源是实践——也就是强化学习。比如神农尝百草，最早人类并不知道哪些草能治病，但是通过尝试，就能学到新的知识。学到的这些知识通过语言文字记录下来，一代一代的流传下来，从而人类社会作为整体能够不断的进步。和监督学习不同，没有一个“老师”会“监督“我们。比如下围棋，不会有人告诉我们当前局面最好的走法是什么，只有到游戏结束的时候我们才知道最终的胜负，我们需要自己复盘（学习）哪一步是好棋哪一步是臭棋。自然界也是一样，它不会告诉我们是否应该和别人合作，但是通过优胜劣汰，最终”告诉”我们互相协助的社会会更有竞争力。和前面的监督非监督学习相比有一个很大的不同点：在强化学习的Agent是可以通过Action影响环境的——我们的每走一步棋都会改变局面，有可能变好也有可能变坏。
+
+它要解决的核心问题是给定一个状态，我们需要判断它的价值(Value)。价值和奖励(Reward)是强化学习最基本的两个概念。对于一个Agent（强化学习的主体）来说，Reward是立刻获得的，内在的甚至与生俱来的。比如处于饥饿状态下，吃饭会有Reward。而Value是延迟的，需要计算和慎重考虑的。比如饥饿状态下去偷东西吃可以有Reward，但是从Value(价值观)的角度这(可能)并不是一个好的Action。为什么不好？虽然人类的监督学习，比如先贤告诉我们这是不符合道德规范的，不是好的行为。但是我们之前说了，人类最终的知识来源是强化学习，先贤是从哪里知道的呢？有人认为来自上帝或者就是来自人的天性，比如“人之初性本善”。如果从进化论的角度来解释，人类其实在玩一场”生存”游戏，有遵循道德的人群和有不遵循的人群，大自然会通过优胜劣汰”告诉”我们最终的结果，最终我们的先贤“学到”了(其实是被选择了)这些道德规范，并且把这些规范通过教育(监督学习)一代代流传下来。
+
+因为强化学习只是一种方法，它在很多领域都有应用，机器人、控制和游戏是其最常见的应用领域，但是其它领域包括自然语言处理的对话系统，也经常会用到强化学习的技术。强化学习和机器学习一样有很多方法：根据是否对环境建模可以分为Model based和Mode free的方法；按照是否有Value函数又分为Value based方法和Policy Gradient，但是又可以把两者结合得到Actor-Critic方法……
+
+我们这里重点关注深度学习和强化学习结合的一些方法。
+
+Google DeepMind在Nature发表的文章[Human-level Control through Deep Reinforcement Learning](https://web.stanford.edu/class/psych209/Readings/MnihEtAlHassibis15NatureControlDeepRL.pdf)首次实现了End-to-End的深度强化学习模型Deep Q-Networks，它的输入是游戏画面的像素值，而输出是游戏的控制命令。它的原理如下图所示：
+
+
+<a name='img21'>![](/img/ai-survey/21.png)</a>
+*图：Deep Q-Networks*
+
+通过Experience Replay来避免同一个trajectory数据的相关性，同时使用引入了一个Target Network $Q_{\theta’}$来解决target不稳定的问题，Deep Q-Networks在Atari 2600的49个游戏中的29个中的得分达到了人类的75%以上，而在其中23个游戏中的得分超过了人类选手，如下图所示。
+
+
+<a name='img22'>![](/img/ai-survey/22.png)</a>
+*图：Deep Q-Networks在Atari2600平台上的得分*
+
+Deep Q-Networks的后续改进工作包括[Prioritized Experience Replay](https://arxiv.org/pdf/1511.05952)、[Deep Reinforcement Learning with Double Q-learning](https://arxiv.org/pdf/1509.06461.pdf)和[Rainbow: Combining Improvements in Deep Reinforcement Learning](https://arxiv.org/pdf/1710.02298)等。
+
+而Policy Gradient类的工作包括[Trust Region Policy Optimization](https://arxiv.org/pdf/1502.05477)(TRPO)、[Deterministic Policy Gradient Algorithms](http://proceedings.mlr.press/v32/silver14.pdf)(DPG)、[Expected Policy Gradients for Reinforcement Learning](EPG)(https://arxiv.org/pdf/1801.03326)、[Proximal Policy Optimization Algorithms](https://arxiv.org/pdf/1707.06347)(PPO)等。
+
+而在游戏方面，Google DeepMind发表的大家耳熟能详的[AlphaGo](https://www.nature.com/articles/nature16961)、[AlphaGoZero](https://deepmind.com/documents/119/agz_unformatted_nature.pdf)和[AlphaZero](https://arxiv.org/pdf/1712.01815)系列文章。
+
+围棋解决了之后，大家也把关注点放到了即时战略游戏上，包括DeepMind的[AlphaStar: An Evolutionary Computation Perspective](https://arxiv.org/pdf/1902.01724)和[OpenAI Five](https://openai.com/five/)在星际争霸2和Dota2上都取得了很大的进展。
+
+此外，在Meta Learning、Imitation Learning和Inverse Reinforcement Learning也出现了一些新的进展，我们这里就不一一列举了。
+
+
+
 
 ## 未来展望
+
+
+最近一个比较明显的趋势就是非监督(半监督)学习的进展，首先是在自然语言处理领域，因为根据前面的分析，这个领域的任务多监督数据少的特点一直期望能在这个方向有所突破。在计算机视觉我们也看到了Google DeepMind的最新进展，我觉得还会有更多的突破。相对而已在语音识别领域这方面的进展就慢了一些，先不说无监督，就连从一个数据集(应用场景)Transfer到另一个数据集(场景)都很难。比如我们有大量普通话的数据，怎么能够使用少量的数据就能在其它带方言的普通话上很好的识别。虽然有很多Adaptation的技术，但是总体看起来还是很难达到预期。另外一个就是End-to-End的系统在业界(除了Google声称使用)还并没有得到广泛应用，当然这样跟语音领域的玩家相对很少，目前的系统效果也不错，完全推倒重来没有必要(除非计算机视觉领域一样深度学习的方法远超传统的方法)。原来的HMM-GMM改造成HMM-DNN之后再加上各种Adaptation和sequence discriminative training，仍然可以得到SOTA的效果，所以相对来讲使用End-to-end的动力就更加不足。虽然学术界大力在往这个方向发展，但是老的语音玩家(Google之外)并不怎么买账。
+
+
+从长远来讲，要"真正"实现人工智能，我认为还得结合视觉、听觉(甚至味觉和触觉等)和语言，使用无监督、监督和强化学习的方法，让"机器"有一个可以自己控制的身体，像三岁小孩一样融入"真正"的物理世界和人类社会，才有可能实现。这除了需要科技上的进步，还需要我们人类在思想上的巨大突破才有可能实现。
+
 
