@@ -10,7 +10,7 @@ tags:
     - 人工智能
 ---
 
-本文是发表在CSDN的[《人工智能六十年技术简史》](https://mp.weixin.qq.com/s?__biz=MzI0ODcxODk5OA==&mid=2247506358&idx=1&sn=353f7493666f48d1d95a671d7d296fac&chksm=e99eea4fdee963593853bafe7260b64d864cce110e12a33cc8ca0c34ac58aae30ab14654af5e&mpshare=1&scene=1&srcid=&pass_ticket=fYvl7Ri0%2FSJB9XG4PHVf%2BR4%2FYNf%2Fj6S7KpfKImPFympWlJ0oVJeQJreBjmdVcOQF#rd)的草稿，因为排版的原因，文中的链接在那里都去掉了。读者自己寻找这些论文可能比较不方便，所以把这篇草稿也发出来。
+本文是发表在CSDN的[《人工智能六十年技术简史》](https://mp.weixin.qq.com/s?__biz=MzI0ODcxODk5OA==&mid=2247506358&idx=1&sn=353f7493666f48d1d95a671d7d296fac&chksm=e99eea4fdee963593853bafe7260b64d864cce110e12a33cc8ca0c34ac58aae30ab14654af5e&mpshare=1&scene=1&srcid=&pass_ticket=fYvl7Ri0%2FSJB9XG4PHVf%2BR4%2FYNf%2Fj6S7KpfKImPFympWlJ0oVJeQJreBjmdVcOQF#rd)的草稿，因为最早是网页的形式，参考文献直接作为了链接，没有像传统的论文一样在后面给出参考文献的详细信息。但是发到微信公众号后文中的链接都去掉了。读者自己寻找这些论文可能比较不方便，所以把这篇草稿也发出来。
 
 <!--more-->
 
