@@ -656,4 +656,4 @@ def train(ps_device):
 * 使用session运行fetches进行训练
 
 
-[未完待续！]
+**请继续阅读[XLNet代码分析(二)](/2019/07/14/xlnet-codes2)**
