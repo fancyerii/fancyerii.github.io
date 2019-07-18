@@ -20,7 +20,7 @@ tags:
 
 ## Difference between git reset soft, mixed and hard
 
-[Difference between git reset soft, mixed and hard]()这篇文章介绍git reset \-\-soft/\-\-mixed/\-\-hard的区别，非常清晰。
+[Difference between git reset soft, mixed and hard](https://davidzych.com/difference-between-git-reset-soft-mixed-and-hard/)这篇文章介绍git reset \-\-soft/\-\-mixed/\-\-hard的区别，非常清晰。
 
 
 
