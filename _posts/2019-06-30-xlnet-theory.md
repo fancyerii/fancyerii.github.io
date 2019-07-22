@@ -259,7 +259,7 @@ $$
 上式中$E_{s_{\tau}}$是segment的每一个词的Embedding的序列。我们发现$E_{s_{\tau}}$和$E_{s_{\tau+1}}$都是加了$U_{1:L}$，因此模型无法通过向量判断它到底是当前segment的第i个位置还是前一个Segment的第i个位置。注：不熟悉位置编码的读者需要参考[Transformer图解](/2019/03/09/transformer-illustrated/#%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81positional-encoding)。它的基本思想就是给每一个绝对位置一个Embedding，因此模型可以通过这个Embedding猜测它在编码哪个位置的信息，也可以学到某个位置用什么向量来表示更好。
 
 
-因此Transformer-XL必须使用相对位置编码，它使用了和原始的Transformer使用正弦函数不同的方法。原始的Transformer是把位置信息embedding进去直接加到输入里，而Transformer-XL是在Attention计算的时候利用当前Query和Key的相对位置。因为XLNet使用的是正弦函数的位置编码，所以这里就不介绍Transformer-XL的位置编码方法了，感兴趣的读者可以参考[Transformer-XL论文](https://arxiv.org/abs/1901.02860)。
+因此Transformer-XL必须使用相对位置编码，它使用了和原始的Transformer使用正弦函数不同的方法。原始的Transformer是把位置信息embedding进去直接加到输入里，而Transformer-XL是在Attention计算的时候利用当前Query和Key的相对位置。~~因为XLNet使用的是正弦函数的位置编码，所以这里就不介绍Transformer-XL的位置编码方法了，感兴趣的读者可以参考[Transformer-XL论文](https://arxiv.org/abs/1901.02860)。~~ **上面删除线的说法是错误的：XLNet使用的是Transformer-XL的位置编码方式，请参考[XLNet代码分析(三)](/2019/07/20/xlnet-codes3)。**
 
 
 ### 在XLNet里融入Transformer-XL的思想
