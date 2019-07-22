@@ -3,7 +3,7 @@ layout:     post
 title:      "XLNet代码分析(二)" 
 author:     "lili" 
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - 深度学习
@@ -1289,5 +1289,5 @@ cat_ids[None, :]: [1, 224, 8] -> [128, 224, 8]
 **本想一气把train函数写完，但今天太晚了就先到这里吧。**
 
 
-
+请继续阅读[XLNet代码分析(三)](/2019/07/20/xlnet-codes3/)。
 
