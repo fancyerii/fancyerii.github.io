@@ -204,7 +204,7 @@ $$
 
 到此为止，XLNet的核心思想已经比较清楚了：还是使用语言模型，但是为了解决双向上下文的问题，引入了排列语言模型。排列语言模型在预测时需要target的位置信息，因此通过引入Two-Stream，Content流编码到当前时刻的所有内容，而Query流只能参考之前的历史以及当前要预测的位置。最后为了解决计算量过大的问题，对于一个句子，我们只预测后面的1/K的词。
 
-接下来XLNet借鉴了Transformer-XL的优点，它对于很长的上下文的处理是要由于传统的Transformer的。我们这里只是简单的介绍Transformer-XL，有兴趣的读者可以参考[Transformer-XL论文](https://arxiv.org/abs/1901.02860)。
+接下来XLNet借鉴了Transformer-XL的优点，它对于很长的上下文的处理是要优于传统的Transformer的。我们这里只是简单的介绍Transformer-XL，有兴趣的读者可以参考[Transformer-XL论文](https://arxiv.org/abs/1901.02860)。
 
 
 ### Transformer-XL思想简介
