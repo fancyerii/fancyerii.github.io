@@ -77,7 +77,7 @@ $$
 \begin{split}
 z_j^{(i)} & =\theta[c^{(i)};r^{(i)};w_j^{(i)}] \\
 p^{(i)} & =\text{softmax}(z_0^{(i)}, z_1^{(i)}) \\
-\hat{y}^{(i)} & = argmax_jP^{(i)}
+\hat{y}^{(i)} & = argmax_jp^{(i)}
 \end{split}
 $$
 
