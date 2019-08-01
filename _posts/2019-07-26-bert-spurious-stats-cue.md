@@ -21,7 +21,7 @@ tags:
 
 ### Abstract
 
-BERT在Argument Reasoning Comprehension Task(ARCT)任务上的准确率是77\%，这比没受过训练的人只底3个百分点，这是让人惊讶的好成绩。但是我们(论文作者)发现这么好的成绩的原因是BERT模型学习到了一些虚假相关的统计线索。我们分析了这些统计线索，发现很多其它的模型也是利用了这些线索。所以我们提出了一种方法来通过已有数据构造等价的对抗(adversarial)数据，在对抗数据下，BERT模型的效果基本等价于随机的分类器(瞎猜)。
+BERT在Argument Reasoning Comprehension Task(ARCT)任务上的准确率是77%，这比没受过训练的人只底3个百分点，这是让人惊讶的好成绩。但是我们(论文作者)发现这么好的成绩的原因是BERT模型学习到了一些虚假相关的统计线索。我们分析了这些统计线索，发现很多其它的模型也是利用了这些线索。所以我们提出了一种方法来通过已有数据构造等价的对抗(adversarial)数据，在对抗数据下，BERT模型的效果基本等价于随机的分类器(瞎猜)。
 
 ### Introduction
 
@@ -161,7 +161,7 @@ ACRT数据集的词的统计不均匀问题可以使用下面的技巧来解决�
 
 ## 相关讨论
 
-这里注意收集了一些来自Reddit的帖子[BERT's success in some benchmarks tests may be simply due to the exploitation of spurious statistical cues in the dataset. Without them it is no better then random.](https://www.reddit.com/r/MachineLearning/comments/cfxpxy/berts_success_in_some_benchmarks_tests_may_be/)讨论里的一些观点。下面的内容都是我摘录和翻译(意译)的部分观点。
+这里收集了一些来自Reddit的帖子[BERT's success in some benchmarks tests may be simply due to the exploitation of spurious statistical cues in the dataset. Without them it is no better then random.](https://www.reddit.com/r/MachineLearning/comments/cfxpxy/berts_success_in_some_benchmarks_tests_may_be/)讨论里的一些观点。下面的内容都是我摘录和翻译(意译)的部分观点。
 
 ### 观点1(贴主orenmatar)
 
