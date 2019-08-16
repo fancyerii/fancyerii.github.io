@@ -3,7 +3,7 @@ layout:     post
 title:      "XLNet代码分析(三)" 
 author:     "lili" 
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - 深度学习
@@ -103,12 +103,12 @@ $$
 $$
 \begin{split}
 
-\hat{h}_{\tau}^{n-1} & = [SG(m_{\tau}^{n-1} \circ h_{\tau}^{n-1}] \\
+\hat{h}_{\tau}^{n-1} & = [SG(m_{\tau}^{n-1} \circ h_{\tau}^{n-1})] \\
 q_{\tau}^n, k_{\tau}^n, v_{\tau}^n & = h_{\tau}^{n-1}{W_q^n}^T, \hat{h}_{\tau}^{n-1} {W_{k,E}^n}^T, \hat{h}_{\tau}^{n-1} {W_{v}^n}^T \\
 A_{\tau, i,j}^n & = {q_{\tau,i}^n}^T k_{\tau,j}^n + {q_{\tau,i}^n}^T W_{k,R}^nR_{i-j} \\
 & + u^Tk_{\tau,j}^n +v^T W_{k,R}^nR_{i-j} \\
 a_\tau^n & = \text{Mask-Softmax}(A_\tau^n)v_\tau^n \\
-o_\tau^n & = \text{LayerNorm}(\text{Linear}(a_\tau^n)+h_\tau^{n-1} \\
+o_\tau^n & = \text{LayerNorm}(\text{Linear}(a_\tau^n)+h_\tau^{n-1}) \\
 h_\tau^n & = \text{Positionwise-Feed-Forward}(o_\tau^n)
 \end{split}
 $$
@@ -382,7 +382,7 @@ def _cache_mem(curr_out, prev_mem, mem_len, reuse_len=None):
 * r_r_bias (16, 64)
 * seg_mat (128, 224, 8, 2) 表示i(范围是0-127)和j(被attend to的，包括mem因此范围是0-223)是否在同一个segment里，1是True
 * r_s_bias (16, 64)
-* seg_embed (2, 16, 64) 表示两个Token处于相同或者不同Segment(只有两种可能)的embeddign
+* seg_embed (2, 16, 64) 表示两个Token处于相同或者不同Segment(只有两种可能)的embedding
 * attn_mask_h (128, 224, 8, 1) 这是内容stream的mask，attn_mask_h(i,j)表示i能否attend to j，1表示不能
 * attn_mask_g (128, 224, 8, 1) 这是查询stream的mask，attn_mask_h(i,j)表示i能否attend to j，1表示不能
 * target_mapping (21, 128, 8) 表示21个Mask的Token下标，使用one-hot编码(1 out of 128)的方式，注意如果Mask的不够21个，则padding的内容全是零(而不是有且仅有一个1)。
@@ -1011,3 +1011,5 @@ def get_train_op(FLAGS, total_loss, grads_and_vars=None):
 ```
 
 **XLNet的Pretraining代码介绍完毕，接下来会介绍Fine-Tuning，敬请关注！**
+
+请继续阅读[XLNet代码分析(四)](/2019/08/16/xlnet-codes4/)。

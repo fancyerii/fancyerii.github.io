@@ -784,7 +784,7 @@ targets=tf.constant([13,15,20,21,22,4,16,33,34,35,36,37,38,10,3,3])
 ```
 #### _local_perm的实现和论文的对比
 
-如果读者还没有完全明白，我们再来把代码和论文的描述对比一下。论文在Partial Prediction部分提到：为了提高效率，我们只预测排列最后几个词。比如假设总共4个词，并且假设某次随机排列的顺序为$3 \rightarrow 2 \rightarrow 4 \rightarrow 1$，我们假设预测(Mask)最后两个词，也就是预测第4和第1个词。那么1可以attend to [2,3,4]；4可以attend to [2,3]。而非Mask(预测)的第2和3个词使用普通的Self-Attention，也就是可以互相看到所有的非Mask词(包括自己)，因此2可以attend to [1,2]，1也可以attend to [1,2]。
+如果读者还没有完全明白，我们再来把代码和论文的描述对比一下。论文在Partial Prediction部分提到：为了提高效率，我们只预测排列最后几个词。比如假设总共4个词，并且假设某次随机排列的顺序为$3 \rightarrow 2 \rightarrow 4 \rightarrow 1$，我们假设预测(Mask)最后两个词，也就是预测第4和第1个词。那么1可以attend to [2,3,4]；4可以attend to [2,3]。而非Mask(预测)的第2和3个词使用普通的Self-Attention，也就是可以互相看到所有的非Mask词(包括自己)，因此2可以attend to [2,3]，3也可以attend to [2,3]。
 
 上面按照论文我们随机排列，然后选择最后的几个词作为Mask；而前面的代码我们先已经选定了要Mask的值，然后再排列，这就可能出现非Mask值的排列下标有可能Mask的值，比如假设我们选定Mask第2个和第3个词，但是随机的排列为：
 ```
@@ -988,8 +988,8 @@ use_tpu = {bool} False
 #### 构造函数的参数
 
 
-* xlnet_config: XLNetConfig，Pretraining和Fine-tuning都一样的超参数
-* run_config: RunConfig，Pretraining的超参数
+* xlnet_config: XLNetConfig，XLNet模型结构的超参数，比如层数，head数量等等
+* run_config: RunConfig，运行时的超参数，包括dropout、初始范围等等。
 * input_ids: int32 Tensor，shape是[len, bsz], 输入token的ID
 * seg_ids: int32 Tensor，shape是[len, bsz], 输入的segment ID
 * input_mask: float32 Tensor，shape是[len, bsz], 输入的mask，0是真正的tokens而1是padding的
@@ -1192,7 +1192,7 @@ use_tpu = {bool} False
     else:
       non_tgt_mask = None
 ```
-下面来看一些non_tgt_mask，为了简单，我们假设qlen是4， mlen是3，前两行的结果为：
+下面来看一下non_tgt_mask，为了简单，我们假设qlen是4， mlen是3，前两行的结果为：
 ```
 0 0 0   -1 0 0 0
 0 0 0   0 -1 0 0
@@ -1200,7 +1200,7 @@ use_tpu = {bool} False
 0 0 0   0 0 0 -1
 ```
 
-attn_mask是(qlen, qlen+mlen, batch, 1)，它和non_tgt_mask[:,:,None,None]相加。它的作用是让Token不能attend to 自己，除后面的对角线外，non_tgt_mask等于attn_mask，而对角线的位置由1变成了0。
+attn_mask是(qlen, qlen+mlen, batch, 1)，它和non_tgt_mask[:,:,None,None]相加。它的作用是让Token能attend to 自己，除后面的对角线外，non_tgt_mask等于attn_mask，而对角线的位置由1变成了0，从而让它可以attend自己。注意：在XLNet的代码里，0表示可以attend to，而1表示不能attend to。non_tgt_mask用于Content Stream，它不是预测的目标(target)，所以可以利用自己的信息。而Query Stream就必须使用attn_mask，预测第i个Token时不能利用自己的内容。
 
 ##### 第三段
 
