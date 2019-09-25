@@ -3,7 +3,7 @@ layout:     post
 title:      "BERT的成功是否依赖于虚假相关的统计线索？"
 author:     "lili"
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - BERT

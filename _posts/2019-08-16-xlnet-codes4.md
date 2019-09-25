@@ -3,7 +3,7 @@ layout:     post
 title:      "XLNet代码分析(四)" 
 author:     "lili" 
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - 深度学习
