@@ -11,7 +11,7 @@ tags:
     - sentiment analysis
 ---
 
-本文是对情感分析这个问题(领域)的调研，对于问题的定义和介绍主要参考了[Sentiment Analysis: mining sentiments, opinions, and emotions](https://www.cs.uic.edu/~liub/FBS/sentiment-opinion-emotion-analysis.html)，虽然这本书写于2015年，很多当时SOTA的方法现在已经过时了，但是本书对于问题的介绍和描述非常详细和清晰，强烈建议对情感分析领域有兴趣的读者阅读。
+本文是对情感分析这个问题(领域)的调研，对于问题的定义和介绍主要参考了[Sentiment Analysis: mining sentiments, opinions, and emotions](https://www.cs.uic.edu/~liub/FBS/sentiment-opinion-emotion-analysis.html)，虽然这本书写于2015年，很多当时SOTA的方法现在已经过时了，但是本书对于问题的介绍和描述非常详细和清晰，强烈建议对情感分析领域有兴趣的读者阅读。<span class='zz'>9/26更新</span>
 
 <!--more-->
 
@@ -83,6 +83,201 @@ tags:
 #### 评论的Spam Detection和评论质量评估
 
 社交媒体的优点是可以匿名的自由发表言论，但是这也会让一些不法分子有可乘之机。在各种利益的驱使下，很多人会发表"假的"评论来提高某些商品的评价得分。这些人被叫做opinion spammer，而他们的行为叫做opinion spamming。为了检测这些评论和评论者，我们不仅仅需要用的文本的语义内容(比如为了刷榜的评论一般比较短，用比较空虚的句子，当然也有很专业的五毛党写的让你看不出来)，还需要使用用户的行为数据。与之相关的一个问题是评估评论的质量，它的作用是把好的评论排序在前面让用户看到，另外在排序商品的时候一般也需要更多参考质量高的评论。
+
+## 问题的形式化定义
+
+### 观点(Opinion)的定义
+
+如前面所述，情感分析主要关注表达正面或者负面的情感的观点。我们用观点(Opinion)表示非常广的概念，它包括情感(sentiment)、评价和态度以及评价的对象(opinion target)和评论者(opinion holder)。而情感(sentiment)只表示观点(opinion)的情感极性是正面还是负面的。
+
+#### Opinion的定义
+
+我们使用下面的例子来说明Opinion的定义，为了方便引用对每个句子做了编号：
+
+```
+评论者：John Smith            日期：September 10, 2011
+(1) I bought a Canon G12 camera six months ago. 
+(2) I simply love it. 
+(3) The picture quality is amazing. 
+(4) The battery life is also long. 
+(5) However, my wife thinks it is too heavy for her.
+```
+
+上面的评论对于产品Canon G12有许多评论。第2个句子对于它的整体持正面的评价。第3个句子对它的picture equality属性持正面评价。第4个句子对它的battery life属性也是正面评价。而第5个句子对于它的weight属性持负面评价。
+
+一个观点有两个要素：对象(target)和情感(sentiment)。我们用(g,s)来表示这两个要素，其中g可以是某个实体(比如Canon G12)或者实体的某个属性(比如Canon G12的battery life)；而s表示情感极性，它的取值可以是正面的、负面的和中性的或者连续的实数值，比如Canon G12的battery life是正面的。
+
+另外观点还包含观点的持有者(评论者)，比如第2个句子的观点持有者是"我"而第5个句子的持有者是"my wife"。
+
+最好观点还有一个时间，这样我们可以分析大量观点随时间的变化规律。在上面的例子里，观点的(发布)时间是2011年9月10日。
+
+因此，观点的定义是一个四元组(g, s, h, t)，其中：
+
+* g是情感的对象
+* s是情感
+* h是持有者
+* t是时间
+
+这里需要说明一下的是观点有一个对象(target)，这有两个用处。首先对于一个包含两个对象的句子，我们可以分开处理。比如句子"Apple is doing very well in this poor economy"同时保护两个观点，如果用句子级别的情感分类是没有办法处理的。有了观点的对象，我们知道对Apple的情感是正面的，而对economy的是负面的。第二个好处是情感词语的极性有时和对象有关，比如"大"和"房间"搭配时就是正面的而与"噪声"搭配就是负面的。
+
+这里定义的是普通的观点，对于比较性的观点需要不同的定义，后面我们再介绍。
+
+#### 情感对象(sentiment target)
+
+* 情感对象
+
+    * 情感对象(sentiment target)也叫观点对象(opinion target)，是这个观点针对的实体或者实体的某个属性。
+
+比如前面的例子里的第3个句子，情感对象是Canon G12的picture quality属性。注意：虽然句子中没有出现Canon G12，但是它隐含指代的对象是Canon G12。
+
+* 实体(entity)
+
+    * 一个实体e可能是一个产品、服务、主题、人、组织机构等。它可以表示为一个pair e=(T,W)，其中T是它的部件(part)的集合，而每一个部件又是一个实体(递归定义)；W是实体e的属性集合。e的部件或者子部件也可能有属性。
+
+ 
+比如Canon G12这个特定的照相机就是一个实体。它包含picture qulity、size和weight等属性，同时它包含lens、viewfinder和battery等部件。battery也是一个实体，它包含battery life和battery weight等属性。上面的定义通过part-of关系定义了对象的树状层次结构。根节点是实体，比如Canon G12。我们评论的对象可以是某个子部件的属性，比如battery的battery life这个属性。当然我们也可以评论子部件整体，比如说battery很好。也就是说，这棵树的每一个节点(实体)和节点的属性都可以成为评论的对象。
+
+#### 观点的情感(opinion sentiment)
+
+* 观点的情感是某个观点表达的感受、态度、评价或者情绪。它可以表示为三元组(y, o, i)，其中
+    * y是情感类型(type)
+    * o是情感的极性
+    * i是情感的强度
+
+情感类型可以分为理性情感和感性情感。
+
+* 理性(rational)情感
+    * 理性的情感来自于理性的推理、实际的信念和实用主义的态度。它不(直接)包含强烈的个人情绪。
+
+比如"The voice of this phone is clear."和"This car is worth the price."这两个句子就是理性的情感类型。
+
+* 感性(emotional)情感
+    * 感性情感来自于人内心深处的心理学状态，它是对某个实体无形的和情绪的反应。
+
+比如句子"I love the iPhone", "I am so angry with their service people", "This is the best car ever"和"After our team won, I cried."就是感性的情感。感性的情感通常要比理性的情感更加强烈，对于营销来说，我们期望用户的情感能上升到感性层次，比如用户说"iPhone is good"，那他还不见得会买单，但是如果他说"I love iPhone"，那么离转化就不远了。
+
+情感倾向(sentiment orientation)可以是正面的(positive)、负面的(negative)和中立的(neutral)。情感倾向也被叫做情感极性(polarity)和立场(valence)。
+
+情感强度(sentiment intensity)表示情感的强烈程度。比如good要比excellent弱，而dislike要比detest弱。理论上我们可以用一个连续的实数值来表示情感的强弱，但是实际人都很难做这么细粒度的区分。因此在实际应用中，我们通常把情感强度分为5级别，比如1星到5星：
+
+* 5星 感性的正面情感
+* 4星 理性的正面情感
+* 3星 中立的情感
+* 2星 理性的负面情感
+* 1星 感性的负面情感
+
+#### 简化的观点定义
+
+前面的观点定义关于实体的定义包含递归，使用起来过于复杂，这里我们介绍简化版本的定义。我们这里把对象简化成实体和aspect，也就是把子部件和属性都称为aspect。对于观点的情感(sentiment)，不管是正面的、负面的和中立的还是1星到5星，我们都可以用一个数值来表示，比如-1表示负面的而0表示中立的而1表示正面的。
+
+这样我们得到简化版本的观点定义，它是一个五元组(e, a, s, h, t)，其中：
+
+* e代表实体(entity)
+* a代表aspect，可以是实体的属性，也可以是子部件或者子部件的属性
+* s表示一个数值，表示不同的情感
+* h是观点的持有者
+* t是时间
+
+如果评论的对象是entity这个整体，比如"I love iPhone 5"，则entity是"iPhone 5"，而aspect是特殊的"GENERAL"。上面这样定义的情感分析叫做基于aspect的情感分析(aspected based sentiment analysis)，用首字母缩写为ABSA。
+
+#### 观点的理由(reason)和限定词(qualifier)
+
+除了前面的五元组，我们还可以提前观点里的更多信息。比如句子"This car is too small for a tall person"，实体是"this car"，aspect是size，sentiment是负面的，观点持有者是说话人，时间是说话的时间。除此之外，我们还可以分析得到持有这个观点的理由是"too small"，并且这个观点还有一个限制条件"for a tall person"。因此对于一个不那么高的人来说，也许这个车的size并不是负面的。
+
+* 观点的理由
+    * 观点的理由是持有这个观点的理由或者解释
+
+对于很多应用来说，知道理由是很有用的。比如"do not like the picture quality of this camera"只告诉我们照相机的拍摄质量有问题，但是"I do not like the picture quality of this camera because the pictures are quite dark."还能告诉我们拍摄质量不好的解释(现象)是因为拍出来的照片太黑，这可以指导厂家改进产品。
+
+* 观点的限定词
+    * 观点的限定词是一些限制条件，在满足这些条件下此观点才成立
+
+比如"This car is too small for a tall person"，它说明只要对于高个来说车太小，但是并不是对所有的人来说都小。个子并不那么高的人可能不会在意这一点。并不是每个观点都有理由或者限定词，而且理由和限定词也可能和评论的主要内容出现在不同的句子里，这也会让抽取变得更加困难。比如"The picture quality of this camera is not great. Pictures of night shots are very dark."，理由出现在第二个句子里。而"I am six feet five inches tall. This car is too small for me."的限定词出现在地一个句子里。
+
+
+#### 情感分析的目标和任务
+
+有了前面观点的定义之后，我们就可以定义情感分析的目标和任务了。给定一个文档d，情感分析的目标就是找出其中所有的观点五元组(e, a, s, h, t)。对于更复杂的场景，我们可能还需要抽取观点的理由和限定词。
+
+第一个抽取任务就是识别五元组中的实体。这和NLP的命名实体识别(NER)有一点关系，比如产品名称等通常就是命名实体。但是观点里的实体并不都是命名实体，比如"I hate tax increase"这个观点的实体是抽象的概念"tax increase"，这不是命名实体。
+
+识别出实体之后，我们还需要"归一化"。我们需要定义一个实体类别(entity category)，比如iphone_5(它只是一个ID)，而它的不同文字描述比如"iPhone5"，"iphone 5"和"苹果5"都是对应这个实体类别。这些不同的文字叫做实体表示(entity expression)或者entity mention(不知道咋翻译好)。
+
+aspect也是一样，比如camera的"picture", "image"和"photo"指得都是同一个aspect。因此我们也有aspect category和aspect expression。
+
+aspect expression通常都是名词和名词短语，但是也可以是动词、形容词、副词等其它词类。aspect expression可以分为显式的和隐式的。
+
+* 显式的aspect expression
+    * 显式的aspect expression是文本里的名词或者名词短语。比如"The picture quality of this camera is great"中，picture quality这个aspect expression是名词短语。
+
+* 隐式的aspect expression
+    * 隐式的aspect expression通常通过形容词来隐含的表示。比如"This camera is expensive"，对应的aspect是price，这是通过形容词expensive来推断出来的。除了形容词，动词也可以隐含aspect，比如"I can install the software easily"，通过动词install可以推断出aspect是installation。此外还有更加复杂的隐式aspect expression，比如"This camera will not easily fit in my pocket"，能放到口袋里(fit in my pocket)说明它的size这个aspect；而"This restaurant closes too early"说明餐馆的下班时间这个aspect。为了理解这样的aspect，我们还需要世界知识，这是非常困难的。
+
+
+下面我们定义情感分析的具体任务。
+
+* 实体抽取(entity extraction)和指代消解(resolution)
+    * 识别文档d里的所有entity expression，然后根据指代是否同一个实体把它们分组起来(或者叫归一化成一个ID)。
+
+* aspect抽取和指代消解
+    * 和实体类似，只不过处理aspect
+
+* 观点持有者的抽取和指代消解
+    * 抽取观点的持有者并进行指代消解
+
+* 时间抽取和归一化
+
+* aspect的情感分类/回归
+    * 判断某个aspect的情感分类或者预测连续的情感强度
+
+* 生成所有的观点五元组
+
+* 抽取观点的原因
+
+* 抽取观点的限定词
+
+最后两个任务是非常困难的，而且很多观点并不包含，在实际应用中很少会处理它们。下面我们通过一个例子来说明不同的任务需要做哪些事情。我们的例子为：
+
+```
+Review B: Posted by bigJohn     Date: September 15, 2011
+(1) I bought a Samsung camera and my friend brought a Canon camera yesterday.
+(2) In the past week, we both used the cameras a lot. 
+(3) The photos from my Samy are not clear for night shots, and the battery life is short too. 
+(4) My friend was very happy with his camera and loves its picture quality. 
+(5) I want a camera that can take good photos. 
+(6) I am going to return it tomorrow.
+```
+
+第1个任务需要抽取entity expression Samsung和Samy，然后把它们放到一个cateory里面，而Canon是另外一个category。第2个任务需要抽取picture, photo和battery life，并且把picture和photo放到一起。而第3个任务需要抽取第3句话对应的观点的持有者是bigJohn，第4句话对于观点的持有者是bigJohn的朋友。任务4需要抽取时间为"September 15, 2011"。任务5需要识别第3句话对于Samy的photo这个aspect是负面的，battery life也是负面的；而第4个句子关于Canon整体(GENERAL这个aspect)是正面的，关于它的picture这个aspect也是正面的。
+
+为了完成任务5，我们还需要知道句子his camera和its指代的是哪个实体。任务5应该生成如下的五元组：
+
+```
+1. (Samsung, picture_quality, negative, bigJohn, Sept-15-2011)
+2. (Samsung, battery_life, negative, bigJohn, Sept-15-2011)
+3. (Canon, GENERAL, positive, bigJohn’s_friend, Sept-15-2011)
+4. (Canon, picture_quality, positive, bigJohn’s_friend, Sept-15-2011)
+```
+
+如果再加上任务6和7，则生成的结果为：
+
+```
+1. (Samsung, picture_quality, negative, bigJohn, Sept-15-2011)
+    Reason for opinion: picture not clear
+    Qualifier of opinion: night shots
+2. (Samsung, battery_life, negative, bigJohn, Sept-15-2011)
+    Reason for opinion: short battery life
+    Qualifier of opinion: none
+3. (Canon, GENERAL, positive, bigJohn’s_friend, Sept-15-2011)
+    Reason for opinion: none
+    Qualifier of opinion: none
+4. (Canon, picture_quality, positive, bigJohn’s_friend, Sept-15-2011)
+    Reason for opinion: none
+    Qualifier of opinion: none
+```
+
+
+
 
 **未完待续**
 
