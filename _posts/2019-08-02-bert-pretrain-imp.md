@@ -3,7 +3,7 @@ layout:     post
 title:      "对BERT的pretraining改进的几篇文章"
 author:     "lili"
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - BERT
