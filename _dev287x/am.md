@@ -356,7 +356,7 @@ $$
 
 $$
 \begin{split}
-F_{MMI} & =\sum_{u=1}^UlogP_{\lambda}(X_u|M(W_u) \\
+F_{MMI} & =\sum_{u=1}^UlogP_{\lambda}(X_u|M(W_u)) \\
 & = \sum_{u=1}^Ulog \frac {P_{\lambda}(X_u|M(W_u))P(W_u)} {\sum_{w'}P_{\lambda}(X_u|M(w'))P(w')}
 \end{split}
 $$
@@ -370,7 +370,7 @@ $$
 
 $$
 \begin{split}
-F_{MPE} = \sum_{u=1}^Ulog \frac {\sum_{w}P_{\lambda}(X_u|M(w))P(w)A(w,W_u} {\sum_{w'}P_{\lambda}(X_u|M(w'))P(w')}
+F_{MPE} = \sum_{u=1}^Ulog \frac {\sum_{w}P_{\lambda}(X_u|M(w))P(w)A(w,W_u)} {\sum_{w'}P_{\lambda}(X_u|M(w'))P(w')}
 \end{split}
 $$
 
