@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "情感分析综述" 
+title:      "情感分析简介" 
 author:     "lili" 
 mathjax: true
 sticky: true
@@ -11,7 +11,7 @@ tags:
     - sentiment analysis
 ---
 
-本文是对情感分析这个问题(领域)的调研，对于问题的定义和介绍主要参考了[Sentiment Analysis: mining sentiments, opinions, and emotions](https://www.cs.uic.edu/~liub/FBS/sentiment-opinion-emotion-analysis.html)，虽然这本书写于2015年，很多当时SOTA的方法现在已经过时了，但是本书对于问题的介绍和描述非常详细和清晰，强烈建议对情感分析领域有兴趣的读者阅读。<span class='zz'>9/26更新</span>
+本文是对情感分析这个问题(领域)的调研，对于问题的定义和介绍主要参考了[Sentiment Analysis: mining sentiments, opinions, and emotions](https://www.cs.uic.edu/~liub/FBS/sentiment-opinion-emotion-analysis.html)，虽然这本书写于2015年，很多当时SOTA的方法现在已经过时了，但是本书对于问题的介绍和描述非常详细和清晰，强烈建议对情感分析领域有兴趣的读者阅读。
 
 <!--more-->
 
@@ -322,7 +322,6 @@ Emotion和Mood的区别是：Emotion通常很强烈而很短暂，而Mood更加�
 
 用第一人称观点直接表达说话人的观点，而第三人称观点描述其他人的观点。
 
-**未完待续**
 
 
 
