@@ -599,7 +599,7 @@ Batch构造函数的输入是src和trg，后者可以为None，因为再预测�
 
 我们首先看src_mask怎么得到，(src != pad)把src中大于0的时刻置为1，这样表示它可以attend to的范围。然后unsqueeze(-2)把把src_mask变成(48/batch, 1, 20/time)。它的用法参考前面的attention函数。
 
-对于训练来说(Teaching Forcing模式)，Decoder有一个输入和一个输出。比如句子"<sos> it is a good day <eos>"，输入会变成"<sos> it is a good day"，而输出为"it is a good day <eos>"。对应到代码里，self.trg就是输入，而self.trg_y就是输出。接着对输入self.trg进行mask，使得Self-Attention不能访问未来的输入。这是通过make_std_mask函数实现的，这个函数会调用我们之前详细介绍过的subsequent_mask函数。最终得到的trg_mask的shape是(48/batch, 24, 24)，表示24个时刻的Mask矩阵，这是一个对角线以及之下都是1的矩阵，前面已经介绍过了。
+对于训练来说(Teaching Forcing模式)，Decoder有一个输入和一个输出。比如句子"\<sos> it is a good day \<eos>"，输入会变成"\<sos> it is a good day"，而输出为"it is a good day \<eos>"。对应到代码里，self.trg就是输入，而self.trg_y就是输出。接着对输入self.trg进行mask，使得Self-Attention不能访问未来的输入。这是通过make_std_mask函数实现的，这个函数会调用我们之前详细介绍过的subsequent_mask函数。最终得到的trg_mask的shape是(48/batch, 24, 24)，表示24个时刻的Mask矩阵，这是一个对角线以及之下都是1的矩阵，前面已经介绍过了。
 
 注意src_mask的shape是(batch, 1, time)，而trg_mask是(batch, time, time)。因为src_mask的每一个时刻都能attend to所有时刻(padding的除外)，一次只需要一个向量就行了，而trg_mask需要一个矩阵。
 
