@@ -25,7 +25,7 @@ docker build --build-arg http_proxy=http://myproxy:1080 --build-arg https_proxy=
 
 ### maven
 ```
-mvn install -Dhttp.proxyHost=[PROXY_SERVER] -Dhttp.proxyPort=[PROXY_PORT] -Dhttp.nonProxyHosts=[PROXY_BYPASS_IP] 
+mvn install -Dhttp.proxyHost=[PROXY_SERVER] -Dhttp.proxyPort=[PROXY_PORT] -Dhttp.nonProxyHosts=[PROXY_BYPASS_IP] -Dhttps.proxyHost= -Dhttps.proxyPort= 
 ```
 
 ### wget
