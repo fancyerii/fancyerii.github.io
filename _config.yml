@@ -99,6 +99,9 @@ collections:
   kaldicodes:
     output: true
 
+  gittutorials:
+    output: true
+
 # Friends
 friends: [
     {
