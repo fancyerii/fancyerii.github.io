@@ -3,7 +3,7 @@ layout:     post
 title:      "PaddlePaddle框架简介" 
 author:     "lili" 
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - 深度学习

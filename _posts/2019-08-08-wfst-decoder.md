@@ -3,7 +3,7 @@ layout:     post
 title:      "基于WFST的语音识别解码器"
 author:     "lili"
 mathjax: false
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - 语音识别
