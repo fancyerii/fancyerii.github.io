@@ -102,6 +102,8 @@ collections:
   gittutorials:
     output: true
 
+  unpub:
+    output: true
 # Friends
 friends: [
     {
