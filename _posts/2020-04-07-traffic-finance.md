@@ -3,7 +3,7 @@ layout:     post
 title:      "美国交通财政政策" 
 author:     "lili" 
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - 美国交通财政
@@ -20,7 +20,7 @@ tags:
 {:toc}
  
 
-我们这里主要讨论美国的交通财政模式，参考的主要是美国明尼苏达大学公共事务学院赵志荣教授的一些观点[<a href='#r_1'>1</a><a name='rb_1'></a>][<a href='#r_2'>2</a><a name='rb_2'></a>][<a href='#r_3'>3</a><a name='rb_3'></a>][<a href='#r_4'>4</a><a name='rb_4'></a>][<a href='#r_5'>5</a><a name='rb_5'></a>]。
+本文讨论美国的交通财政模式，参考的主要是美国明尼苏达大学公共事务学院赵志荣教授的一些观点[<a href='#r_1'>1</a><a name='rb_1'></a>][<a href='#r_2'>2</a><a name='rb_2'></a>][<a href='#r_3'>3</a><a name='rb_3'></a>][<a href='#r_4'>4</a><a name='rb_4'></a>][<a href='#r_5'>5</a><a name='rb_5'></a>]。
 
 
 在交通基础设施投融资方面，美国和中国都面对钱不够用的问题，但却又站在两个极端。中国修路，主要依靠债务融资，若要靠设施运营偿还贷款，怕还遥遥无期；美国修路，依靠州和联邦的燃油税，其实际购买能力在下降，另外，如今燃油税也无法衡量对交通设施的使用情况。
