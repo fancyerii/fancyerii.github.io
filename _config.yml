@@ -104,6 +104,12 @@ collections:
 
   unpub:
     output: true
+
+  djmhl:
+    output: true
+
+  fotuozhuan:
+    output: true
 # Friends
 friends: [
     {
