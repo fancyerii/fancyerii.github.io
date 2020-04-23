@@ -2,7 +2,7 @@
 layout:     post
 title:      "读书笔记"
 author:     "lili"
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - 读书笔记
