@@ -110,6 +110,9 @@ collections:
 
   fotuozhuan:
     output: true
+
+  reading:
+    output: true
 # Friends
 friends: [
     {

@@ -2,7 +2,7 @@
 layout:     post
 title:      "读书笔记"
 author:     "lili"
-sticky: false
+sticky: true
 excerpt_separator: <!--more-->
 tags:
     - 读书笔记
@@ -16,6 +16,10 @@ tags:
 
 
 ## 按日期更新
+
+### 2020/7/12
+
+#### [“百菜之主”大白菜](/reading/dabaicai)
 
 ### 2020/2/25
 #### [二、旧京城](/djmhl/2.2/)
