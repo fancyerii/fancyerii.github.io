@@ -26,7 +26,7 @@ The version of CentOS is 7.6.1810 and the version of gcc is 4.8.5. If your versi
 
 
 ## Install  Python 3.6
-CentOS 7 ships with Python2.7，But I want use python3 with TensorFlow, so I need to install Python 3.6 first.
+CentOS 7 ships with Python2.7，But I want to use python3 with TensorFlow, so I need to install Python 3.6 first.
 
 ```
 sudo yum update -y
@@ -51,7 +51,7 @@ sudo ldconfig
 
 ## Create a virtualenv environment
 
-TensorFlow depends on some python packages. We can certainly install them directly. But I don't like to install them to system that may affect all user, so I created a virtualenv environment to install the packages TensorFlow needs.
+TensorFlow depends on some python packages. We can certainly install them directly. But I don't like to install them to system that may affect all users, so I created a virtualenv environment to install the packages TensorFlow needs.
 
 
 First create virtualenv environment and activate it.
@@ -86,7 +86,7 @@ sudo yum -y install https://packages.endpoint.com/rhel/7/os/x86_64/endpoint-repo
 sudo yum install git
 ```
 
-Warning: This rpm source is very very slow. It cost me dozens of minutes. If you are not that patient, you may compile git from source yourself.
+Warning: This rpm source is very very slow. It costed me dozens of minutes. If you are not that patient, you may compile git from source yourself.
 
 Here is my new git version:
 ```
@@ -95,7 +95,7 @@ git version 2.24.1
 ```
 
 ## Install JDK8
-My system administrator has already installed for me. So if you don't have jdk 8, you should install it.
+My system administrator has already installed it for me. So if you don't have jdk 8 there, you should install it.
 
 ## Install bazel
 
@@ -121,7 +121,7 @@ Go to the TensorFlow root directory and run:
 ./configure
 ```
 
-You must type "y" when asked "Do you wish to build TensorFlow with CUDA support?". If setting properly, we should hit enter key to use default values most of the time. Take care to check whether the confiure scripts detect the correct CUDA and CUDNN.
+You must type "y" when asked "Do you wish to build TensorFlow with CUDA support?". If setting properly, we should hit enter key to use default values most of the time. Take care to check whether the configure scripts detect CUDA and CUDNN correctly. 
 
 ## Compile
 
@@ -131,7 +131,6 @@ bazel build --config=cuda -c opt //tensorflow/tools/pip_package:build_pip_packag
 
 ## Problem One
 
-This problem can be found in many articles, such as [this issue](https://github.com/bazelbuild/bazel/issues/5164).
 
 ```
 undeclared inclusion(s) in rule '@com_google_protobuf//:protobuf_lite':
@@ -141,6 +140,8 @@ this rule is missing dependency declarations for the following files included by
   '/usr/lib/gcc/x86_64-linux-gnu/5/include/stdarg.h'
   '/usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h'
 ```
+
+This problem can be found in many articles, such as [this issue](https://github.com/bazelbuild/bazel/issues/5164).
 
 To solve this problem, I googled many articles including[SO post：How to resolve bazel “undeclared inclusion(s)” error?](https://stackoverflow.com/questions/43921911/how-to-resolve-bazel-undeclared-inclusions-error), [SO post：bazel “undeclared inclusion(s)” errors after updating gcc](https://stackoverflow.com/questions/48155976/bazel-undeclared-inclusions-errors-after-updating-gcc/48524741#48524741), [bazel github issue](https://github.com/bazelbuild/bazel/issues/5164), [this gist](https://gist.github.com/gentaiscool/a628fab5cd98953af7f46b69463394b3), [Build TensorFlow from Source in Centos 7](https://todotrader.com/build-tensorflow-from-source-in-centos-7/), [missing dependency declarations](https://github.com/tensorflow/tensorflow/issues/1157) and [The issue of compling from source code: undeclared inclusion(s) in rule ‘@nccl_archive//:nccl’](https://fantashit.com/the-issue-of-compling-from-source-code-undeclared-inclusion-s-in-rule-nccl-archive-nccl/).
 
@@ -225,4 +226,4 @@ After long time of compilation, it succeeded. Now it's time for package them to 
 ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
 ```
 
-You should find something like tensorflow-1.15.4-cp36-cp36m-linux_x86_64.whl in /tmp/tensorflow_pkg. We then can easily install it by pip.
+You should find something like tensorflow-1.15.4-cp36-cp36m-linux_x86_64.whl in /tmp/tensorflow_pkg. You then can easily install it by pip.
