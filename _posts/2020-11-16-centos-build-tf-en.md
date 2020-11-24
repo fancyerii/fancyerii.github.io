@@ -182,7 +182,7 @@ index 9fe46bbe64..623b0b048b 100644
 bazel script complains "unrecognized command line option '-std=c++14'". And I found [this issue](https://github.com/tensorflow/tensorflow/issues/32677). It says we should use newer gcc version supporting c++14. It's very strange that version 1.14 need c++14 while version 2.X don't.
 
 
-Then we need to install a newer gcc version. CentOS 7 ships with gcc 4.8.5 that's a little bit stale. But upgrading gcc is a very complicated thing that so many softwares depend on it. For those liking to hack, they can build and upgrade gcc from source. I don't like bother myself with it so I use [Developer Toolset 7](https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/) to install another gcc for me.
+Then we need to install a newer gcc version. CentOS 7 ships with gcc 4.8.5 that's a little bit stale. But upgrading gcc is a very complicated thing that so many softwares depend on it. For those liking to hack, they can build and upgrade gcc from source. I don't like to bother myself with it so I use [Developer Toolset 7](https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/) to install another gcc for me.
 
 
 ```
