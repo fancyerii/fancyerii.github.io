@@ -1810,11 +1810,13 @@ import org.openqa.selenium.devtools.DevTools;
 public void geoLocationTest(){
   ChromeDriver driver = new ChromeDriver();
   Map coordinates = new HashMap()
+{% raw %}
   {{
       put("latitude", 50.2334);
       put("longitude", 0.2334);
       put("accuracy", 1);
   }};
+{% endraw %}
   driver.executeCdpCommand("Emulation.setGeolocationOverride", coordinates);
   driver.get("<your site url>");
 }
