@@ -84,6 +84,9 @@ collections:
   wang:
     output: true
 
+  wangen:
+    output: true
+
   kaldi:
     output: true
 
