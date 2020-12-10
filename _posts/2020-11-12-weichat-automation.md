@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "微信自动化方案(一)" 
+title:      "微信自动化方案" 
 author:     "lili" 
 mathjax: true
 excerpt_separator: <!--more-->
