@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "异禀中英对照中文注释版(前言)"
+title:      "汪曾祺小说中英对照中文注释版(前言)"
 author:     "lili"
 excerpt_separator: <!--more-->
 tags:
