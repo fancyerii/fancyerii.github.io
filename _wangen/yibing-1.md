@@ -5,6 +5,9 @@ author:     "lili"
 excerpt_separator: <!--more-->
 tags:
     - Zengqi Wang
+    - 汪曾祺
+    - 中文
+    - 英文
 ---
 
  <!--more-->
