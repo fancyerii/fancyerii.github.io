@@ -33,7 +33,7 @@ tags:
 * NMT机器翻译基础
     * [TensorFlow的NMT教程](https://www.tensorflow.org/tutorials/text/nmt_with_attention)
     * [PyTorch的翻译教程](https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html)
-    * [实战 | 手把手教你搭一个机器翻译模型](https://cloud.tencent.com/developer/article/1142780) 作者18年的文章。
+    * [实战 \| 手把手教你搭一个机器翻译模型](https://cloud.tencent.com/developer/article/1142780) 作者18年的文章。
     * [统计机器翻译](/books/mt/) ，作者的文章，介绍统计机器翻译，不是必须
     * [Neural Machine Translation](http://www.statmt.org/nmt-book/) Philipp Koehn的新书，推荐想深入了解翻译的读者仔细阅读。
     * [机器翻译：基础与模型](https://github.com/NiuTrans/MTBook) [下载地址](https://github.com/NiuTrans/MTBook/blob/master/mt-book.pdf) 免费开源中文书籍，同时介绍统计机器翻译和NMT，强烈推荐。
