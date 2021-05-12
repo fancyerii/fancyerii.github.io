@@ -1183,3 +1183,95 @@ for param in model.base_model.parameters():
     param.requires_grad = False
 ```
 
+### 在TensorFlow 2里进行训练
+
+和PyTorch类似，在TensorFlow 2里，也可以使用 from_pretrained()函数加载预训练的模型：
+```
+from transformers import TFBertForSequenceClassification
+model = TFBertForSequenceClassification.from_pretrained('bert-base-uncased')
+```
+ 
+接下来我们使用tensorflow_datasets来加载GLUE评测的MRPC数据。Transformers包提供了glue_convert_examples_to_features()函数来对MRPC数据集进行tokenize并且转换成TensorFlow的Dataset。注意Tokenizer是与TensorFlow或者PyTorch无关的，所以它的名词前面不需要加TF前缀。
+
+```
+from transformers import BertTokenizer, glue_convert_examples_to_features
+import tensorflow as tf
+import tensorflow_datasets as tfds
+tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+data = tfds.load('glue/mrpc')
+train_dataset = glue_convert_examples_to_features(data['train'], tokenizer, max_length=128, task='mrpc')
+train_dataset = train_dataset.shuffle(100).batch(32).repeat(2)
+```
+
+from_pretrained得到的是Keras的模型，因此我们很容易就可以对它进行训练：
+
+```
+optimizer = tf.keras.optimizers.Adam(learning_rate=3e-5)
+loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+model.compile(optimizer=optimizer, loss=loss)
+model.fit(train_dataset, epochs=2, steps_per_epoch=115)
+```
+
+因为Transformers包会对模型进行转换，我们甚至可以把训练好的TensorFlow模型保存下来然后用PyTorch进行加载：
+
+```
+from transformers import BertForSequenceClassification
+model.save_pretrained('./my_mrpc_model/')
+pytorch_model = BertForSequenceClassification.from_pretrained('./my_mrpc_model/', from_tf=True)
+```
+
+### Trainer
+
+We also provide a simple but feature-complete training and evaluation interface through Trainer() and TFTrainer(). You can train, fine-tune, and evaluate any 🤗 Transformers model with a wide range of training options and with built-in features like logging, gradient accumulation, and mixed precision.
+
+除了上面的两种方法之外，Transformers还提供了[Trainer](https://huggingface.co/transformers/main_classes/trainer.html#transformers.Trainer)和[TFTrainer](https://huggingface.co/transformers/main_classes/trainer.html#transformers.TFTrainer)。
+
+```
+from transformers import BertForSequenceClassification, Trainer, TrainingArguments
+
+model = BertForSequenceClassification.from_pretrained("bert-large-uncased")
+
+training_args = TrainingArguments(
+    output_dir='./results',          # output directory
+    num_train_epochs=3,              # total # of training epochs
+    per_device_train_batch_size=16,  # batch size per device during training
+    per_device_eval_batch_size=64,   # batch size for evaluation
+    warmup_steps=500,                # number of warmup steps for learning rate scheduler
+    weight_decay=0.01,               # strength of weight decay
+    logging_dir='./logs',            # directory for storing logs
+)
+
+trainer = Trainer(
+    model=model,                         # the instantiated 🤗 Transformers model to be trained
+    args=training_args,                  # training arguments, defined above
+    train_dataset=train_dataset,         # training dataset
+    eval_dataset=test_dataset            # evaluation dataset
+)
+```
+
+TrainingArguments参数指定了训练的设置：输出目录、总的epochs、训练的batch_size、预测的batch_size、warmup的step数、weight_decay和log目录。
+
+然后使用trainer.train()和trainer.evaluate()函数就可以进行训练和验证。我们也可以自己实现模型，但是要求它的forward返回的第一个参数是loss。注意：TFTrainer期望的输入是tensorflow_datasets的DataSet。
+
+如果我们想计算除了loss之外的指标，需要给Trainer传入compute_metrics函数：
+
+```
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support
+
+def compute_metrics(pred):
+    labels = pred.label_ids
+    preds = pred.predictions.argmax(-1)
+    precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average='binary')
+    acc = accuracy_score(labels, preds)
+    return {
+        'accuracy': acc,
+        'f1': f1,
+        'precision': precision,
+        'recall': recall
+    }
+```
+
+
+
+
+
