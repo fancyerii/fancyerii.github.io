@@ -62,7 +62,7 @@ tags:
     * 设置窗口的高度，如果显示器的分辨率较大，可以设置的更加高一些，从而一页包含的文章数更多一些，从而翻页少一点。注意：一定要保证窗口完全可见，也就是说win_height不能大于实际分辨率的高度！
 
 
-这个函数的主要功能是构建Application对象从而通过pywinauto实现控制，这里使用的是uia的backend，然后设置窗口的大小并且把窗口移到最左上角。因为根据[so文章](https://stackoverflow.com/questions/61165628/how-to-move-uiawrapper-windows-in-pywinauto)，pywinauto 0.6.8存在bug，只能通过win32的backend来移到窗口，所以构造了self.app2然后调用move_window()函数把窗口移到最左上角。
+这个函数的主要功能是构建Application对象从而通过pywinauto实现控制，这里使用的是uia的backend，然后设置窗口的大小并且把窗口移到最左上角。因为根据[so文章](https://stackoverflow.com/questions/61165628/how-to-move-uiawrapper-windows-in-pywinauto)，pywinauto 0.6.8存在bug，只能通过win32的backend来移动窗口，所以构造了self.app2然后调用move_window()函数把窗口移到最左上角。
 
 ### crawl_gongzhonghao
 
