@@ -27,7 +27,7 @@ tags:
 
 读者可以去[这里](https://github.com/UB-Mannheim/tesseract/wiki)下载tesseract的安装程序，作者使用的版本是[tesseract-ocr-w32-setup-v4.1.0-elag2019.exe](https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w32-setup-v4.1.0-elag2019.exe)。
 
-由于我们要识别中文，所以记得安装中文模型，简体中文版模型的名字是"Chinese(Simplified)。默认安装位置是“C:\Program Files\Tesseract-OCR\tesseract”。
+由于我们要识别中文，所以记得安装中文模型，简体中文版模型的名字是"Chinese(Simplified)。默认安装位置是“C:\Program Files\Tesseract-OCR”。
 
 ## 安装pytesseract
 
