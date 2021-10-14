@@ -35,12 +35,12 @@ tags:
 
 ### 安装openvpn
 
-文档是这样安装的：
+安装文档是这样安装的：
 ```
 sudo apt-get -y install openvpn
 ```
 
-但是后来我碰到了问题，客服说“在中国境内使用我们的OpenVPN，需要支持scramble 功能。”，可以去[这里](https://app.blackhole.run/#7628c8d9a51GjDabREpchRGfUsSnzHveYZLoEffSsa3x)下载openvpn_2.4.8-bionic0_amd64.deb安装。
+但是后来我碰到了问题，客服说“在中国境内使用我们的OpenVPN，需要支持scramble 功能。” 所以我又卸载了官方源的openvpn，然后去[这里](https://app.blackhole.run/#7628c8d9a51GjDabREpchRGfUsSnzHveYZLoEffSsa3x)下载openvpn_2.4.8-bionic0_amd64.deb安装。如果链接过期，可以联系客服要。
 
 不过我在使用sudo dpkg -i openvpn_2.4.8-bionic0_amd64.deb命令时提示没有libssl。搜索后找到[这个文章](https://stackoverflow.com/questions/68148246/broken-php-and-libssl1-1-installation-on-ubuntu-16-04)的解决办法：
 
