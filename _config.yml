@@ -87,6 +87,9 @@ collections:
   wangen:
     output: true
 
+  wangquanji:
+    output: true
+
   kaldi:
     output: true
 
