@@ -105,4 +105,33 @@ Run->Start debugging->Python: Remote Attach，填写正确的ip和端口。我�
 
 <a name='img4'>![](/img/vscode/4.png)</a>
 
- 
+### 调试虚拟环境中安装的第三方包
+我们很多时候除了看自己的代码，也需要看通过pip或者conda安装的第三方库。
+
+#### 设置fs.inotify.max_user_watches
+
+vscode需要监控这些第三方库的python文件，这个数量通常很大，会超出系统的限制。
+```
+"Visual Studio Code is unable to watch for file changes in this large workspace" (error ENOSPC)
+```
+所以首先参考[这里](https://code.visualstudio.com/docs/setup/linux#_visual-studio-code-is-unable-to-watch-for-file-changes-in-this-large-workspace-error-enospc)提前修改/etc/sysctl.conf：
+
+```
+fs.inotify.max_user_watches=524288
+```
+然后执行下面代码让它生效：
+
+```
+sudo sysctl -p
+```
+
+注：如果你提前操作了第二步，请删除掉.vscode目录重复前面的步骤。
+
+#### 设置Python Interpreter
+
+按下CTRL+SHIFT+P，选择"Python: Select Interpreter"，然后选中我们的虚拟环境，如下图所示：
+
+<a name='img5'>![](/img/vscode/5.png)</a>
+
+<a name='img6'>![](/img/vscode/6.png)</a>
+
