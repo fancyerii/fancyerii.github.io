@@ -498,9 +498,8 @@ print(generated[0, 1:].tolist() == forward_confirmation[0, :-1].tolist())  # Tru
 * 使用匹配token的数量来切分数据，并丢弃与未确认的候选token相关的变量。实质上，在next_tokens中保留匹配token以及第一个不同的token（我们的模型从有效的候选子序列中生成）。
 * 调整下一次迭代中要生成的候选token的数量。我们的原始启发式方法，如果所有token都匹配，则增加2，否则减少1。
 
-我们可以看一下一个示例，如果播放有问题可以另存为下载观看。
-
-{% video /img/textgen/gif_4_1080p.mp4 400 300 %}
+我们可以看一下一个示例，如果播放有问题可以另存为下载观看，[下载地址](/img/textgen/gif_4_1080p.mp4)。
+ 
  
 
 在上面的例子，比如prompt是"The quick brown"，我们首先让辅助模型用贪心算法生成5个token，假设它生成的是"fox jumps into the"。然后我们把它们拼起来变成"The quick brown fox jumps into the"给大的生成模型，它的预测是"fox jumps over a"。我们发现两个模型的预测相同的前缀是"fox jumps"，到第3个token就不相同了。我们当然更信任大模型的结果，因此预测是"The quick brown fox jumps over"。接着把这个序列再交给辅助模型。循环上面的过程直到生成结束。当然这个过程可能会调节候选token的数量，比如使用简单的启发：如果所有token都匹配，加2，否则减少1，这里的例子就是减1变成4，也就是说下一次把"The quick brown fox jumps over"给辅助模型，它只需要输出4个token。
