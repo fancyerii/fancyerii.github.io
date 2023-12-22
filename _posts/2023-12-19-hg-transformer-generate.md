@@ -238,9 +238,7 @@ model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint)
 outputs = model.generate(**inputs, num_beams=5, do_sample=True)
 tokenizer.decode(outputs[0], skip_special_tokens=True)
 ```
-
-<a>![](/img/moe/12.png)</a>
-**MegaBlocks 中提到的块稀疏矩阵乘法，适用于不同大小的专家和标记数量**
+ 
 
 #### 多样性beam搜索(Diverse beam search decoding)
 
