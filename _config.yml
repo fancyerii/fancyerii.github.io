@@ -123,6 +123,9 @@ collections:
   lixue:
     output: true
 
+  procmake:
+    output: true
+
 # Friends
 friends: [
     {
