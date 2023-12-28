@@ -12,7 +12,7 @@ tags:
     - conda
 ---
 
-本文介绍Pipenv的用途也就是为什么需要它，然后简单的介绍使用pipenv管理项目依赖的方法。
+本文介绍Pipenv的用途以及为什么需要它，然后简单的介绍使用pipenv管理项目依赖的方法。
 
  <!--more-->
 
@@ -594,8 +594,7 @@ accelerate = "*"
 [requires]
 python_version = "3.9"
 python_full_version = "3.9.18"
-ubuntu@VM-128-7-ubuntu:~/lili/transformers-test$ 
-```
+
 ubuntu@VM-128-7-ubuntu:~/lili/transformers-test$ cat Pipfile.lock |grep -A 8 accelerate
         "accelerate": {
             "hashes": [
@@ -610,7 +609,7 @@ ubuntu@VM-128-7-ubuntu:~/lili/transformers-test$ cat Pipfile.lock |grep -A 8 acc
 
 和update一样，我们也可以指定"accelerate<0.26.0"。那怎么在venv里安装0.25.0呢？可以是pipenv sync，它的意思是按照lock文件来更新依赖：
 
-```bash
+```
 ubuntu@VM-128-7-ubuntu:~/lili/transformers-test$ pipenv sync
 Installing dependencies from Pipfile.lock (40fc66)...
 To activate this project's virtualenv, run pipenv shell.
