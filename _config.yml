@@ -119,6 +119,13 @@ collections:
 
   reading:
     output: true
+
+  lixue:
+    output: true
+
+  procmake:
+    output: true
+
 # Friends
 friends: [
     {

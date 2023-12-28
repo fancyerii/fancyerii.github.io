@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "星期天"
+title:      "黄油烙饼"
 author:     "lili"
 excerpt_separator: <!--more-->
 tags:
