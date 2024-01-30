@@ -160,6 +160,7 @@
 
 <!-- Google Analytics -->
 {% if site.ga_track_id %}
+<!--
 <script>
     // dynamic User by Hux
     var _gaId = '{{ site.ga_track_id }}';
@@ -173,6 +174,16 @@
 
     ga('create', _gaId, _gaDomain);
     ga('send', 'pageview');
+</script>
+-->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2CWM3HY3R0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2CWM3HY3R0');
 </script>
 {% endif %}
 
