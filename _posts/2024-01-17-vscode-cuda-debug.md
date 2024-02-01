@@ -6,9 +6,10 @@ mathjax: true
 sticky: false
 excerpt_separator: <!--more-->
 tags:
-    - Pre-training
-    - LLM
-    - CPT
+    - vscode
+    - cuda
+    - cmake
+    - debug
 ---
 
 使用vscode调试本地和远程cuda代码，使用cmake构建项目。
@@ -52,8 +53,11 @@ Ctrl+Shift+P然后输入cmake选择"CMake: Quick Start command"，如下图所�
 
 ```c++
 #include <cuda.h>
+
 #include <iostream>
+
 #include <vector>
+
 using namespace std;
 
 // Add A and B vector on the GPU. Results stored into C
