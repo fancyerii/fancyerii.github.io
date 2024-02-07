@@ -3,6 +3,7 @@ layout:     post
 title:      "关于ChatGPT的思考"
 author:     "lili"
 mathjax: true
+sticky: true
 excerpt_separator: <!--more-->
 tags:
     - 人工智能
