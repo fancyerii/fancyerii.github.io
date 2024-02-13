@@ -135,6 +135,9 @@ collections:
   pmpp:
     output: true
 
+  hfaudio:
+    output: true
+
 # Friends
 friends: [
     {
