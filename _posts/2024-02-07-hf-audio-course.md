@@ -22,3 +22,5 @@ tags:
 ### [第一单元：working with audio data]({{ site.baseurl }}/hfaudio/unit1)
 
 ### [第二单元：a gentle introduction to audio applications]({{ site.baseurl }}/hfaudio/unit2)
+
+### [第三单元：transformer architectures for audio]({{ site.baseurl }}/hfaudio/unit3)
