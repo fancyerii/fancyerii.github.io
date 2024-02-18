@@ -31,4 +31,30 @@ tags:
 
 就可以了，这样terminal使用python3.6，而系统的python3指向新版本的python。
 
+另外一个问题就是如果输入一个不存在的命令，会出现奇怪的错误：
+
+```
+$ abcd
+$ abcd
+Traceback (most recent call last):
+  File "/usr/lib/command-not-found", line 27, in <module>
+    from CommandNotFound.util import crash_guard
+ModuleNotFoundError: No module named 'CommandNotFound'
+```
+
+通过搜索，找到[这个问题](https://unix.stackexchange.com/questions/9580/why-is-this-python-error-message-generated-whenever-i-type-a-nonsense-command)。原因还是因为python3从3.6升级带来的，只需要修改/usr/lib/command-not-found，把
+
+```
+#!/usr/bin/python3
+```
+
+改成
+
+```
+#!/usr/bin/python3.6
+```
+
+
+看起来Ubuntu的terminal是和特点版本的python绑定的，如果升级了python的版本，可能带来很多问题。如果发现了问题，一般都可以通过shell脚本的#!来解决。当然如果把python3指向python3.6就不会有任何问题了。
+
 
