@@ -24,3 +24,5 @@ tags:
 ### [第二单元：a gentle introduction to audio applications]({{ site.baseurl }}/hfaudio/unit2)
 
 ### [第三单元：transformer architectures for audio]({{ site.baseurl }}/hfaudio/unit3)
+
+### [第四单元：build a music genre classifier]({{ site.baseurl }}/hfaudio/unit4)
