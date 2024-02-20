@@ -26,3 +26,5 @@ tags:
 ### [第三单元：transformer architectures for audio]({{ site.baseurl }}/hfaudio/unit3)
 
 ### [第四单元：build a music genre classifier]({{ site.baseurl }}/hfaudio/unit4)
+
+### [第五单元：automatic speech recognition]({{ site.baseurl }}/hfaudio/unit5)
