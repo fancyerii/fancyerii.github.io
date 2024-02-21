@@ -3,7 +3,7 @@ layout:     post
 title:      "3. Transformer architectures for audio"
 author:     "lili"
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - deep learning

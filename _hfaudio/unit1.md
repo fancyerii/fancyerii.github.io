@@ -3,7 +3,7 @@ layout:     post
 title:      "1. working with audio data"
 author:     "lili"
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - deep learning

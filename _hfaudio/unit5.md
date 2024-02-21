@@ -3,7 +3,7 @@ layout:     post
 title:      "5. Automatic Speech Recognition"
 author:     "lili"
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - deep learning

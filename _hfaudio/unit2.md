@@ -3,7 +3,7 @@ layout:     post
 title:      "2. A gentle introduction to audio applications"
 author:     "lili"
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - deep learning

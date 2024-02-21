@@ -3,7 +3,7 @@ layout:     post
 title:      "第四章：计算架构和调度"
 author:     "lili"
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - gpu

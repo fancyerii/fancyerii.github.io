@@ -3,7 +3,7 @@ layout:     post
 title:      "4. Build a music genre classifier"
 author:     "lili"
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - deep learning

@@ -3,7 +3,7 @@ layout:     post
 title:      "第三章：多维网格和数据"
 author:     "lili"
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - cmake 

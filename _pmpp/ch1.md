@@ -3,7 +3,7 @@ layout:     post
 title:      "第一章：简介"
 author:     "lili"
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - cmake 

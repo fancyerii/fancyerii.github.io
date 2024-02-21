@@ -3,7 +3,7 @@ layout:     post
 title:      "第二章：异构数据并行计算"
 author:     "lili"
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 tags:
     - cmake 
