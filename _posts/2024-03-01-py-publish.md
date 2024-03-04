@@ -966,6 +966,8 @@ packages = [
 (venv) $ poetry publish
 ```
 
+【译注：如前面所说，pypi/testpypi目前只支持token发布，请参考[这个so问题](https://stackoverflow.com/questions/68882603/using-python-poetry-to-publish-to-test-pypi-org)配置token.】
+
 这将上传您的包到 PyPI。除了帮助构建和发布外，Poetry 还可以在过程的早期阶段帮助您。Poetry 可以使用 new 命令帮助您启动一个新项目。它还支持使用虚拟环境。请参阅 Poetry 的文档以获取所有详细信息。
 
 除了略有不同的配置文件外，Flit 和 Poetry 的工作方式非常相似。Poetry 的范围更广，因为它还旨在帮助管理依赖关系，而 Flit 已经存在了一段时间。
