@@ -2480,15 +2480,10 @@ yacs==0.1.8
 yarl==1.9.4
 zhon==2.0.2
 zipp==3.18.0; python_version < "3.10" 
+--find-links https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html
 ```
 
-如果读者不想使用PDM，那么直接用pip install -r requirements.txt安装。注意：这是CPU版本的！如果要安装GPU版本，请用:
-
-```shell
-$ python -m pip install paddlepaddle-gpu==2.4.2.post117 -f https://www.paddlepaddle.org.cn/whl/windows/mkl/avx/stable.html
-```
-
-安装。
+如果读者不想使用PDM，那么直接用pip install -r requirements.txt安装。注意：这是CPU版本的！如果要安装GPU版本，请修改上面文件，把"paddlepaddle==2.4.2"改为"paddlepaddle-gpu==2.4.2.post117"
 
 ### 使用
 
