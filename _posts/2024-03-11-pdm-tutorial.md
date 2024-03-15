@@ -1,13 +1,13 @@
 ---
 layout:     post
-title:      "使用PMD来管理Python项目" 
+title:      "使用PDM来管理Python项目" 
 author:     "lili" 
 mathjax: true
 sticky: false
 excerpt_separator: <!--more-->
 tags:
-    - openai
-    - chatgpt
+    - pip
+    - PDM
 ---
 
 使用Pip+venv来管理pyton项目会有很多问题，使用conda也不尽如人意。最近尝试了很多Python包管理工具，包括[Pipenv](https://pipenv.pypa.io/en/latest/)、[Poetry](https://python-poetry.org/)和[PDM](https://pdm-project.org/latest/)。通过一番尝试之后发现PDM最符合我的需求，因此记录一下。部分内容来自[Pipenv教程](/2023/12/27/pipenv-tutor)。
