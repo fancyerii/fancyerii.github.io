@@ -295,7 +295,7 @@ modules
 
 ## setup.py简介
 
-关于setup.py，读者可以参考[翻译：Building and Distributing Packages with Setuptools](/2024/03/12/setuptools/)。我们这里介绍一下Pytorch的setup.py](https://github.com/pytorch/pytorch/blob/main/setup.py)。
+关于setup.py，读者可以参考[翻译：Building and Distributing Packages with Setuptools](/2024/03/12/setuptools/)。我们这里介绍一下Pytorch的[setup.py](https://github.com/pytorch/pytorch/blob/main/setup.py)。
 
 这个文件很长，有1400多行，但是并不复杂。
 
