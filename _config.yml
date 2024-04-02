@@ -137,6 +137,9 @@ collections:
 
   hfaudio:
     output: true
+  
+  rustinaction:
+    output: true
 
 # Friends
 friends: [
