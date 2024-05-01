@@ -141,6 +141,18 @@ collections:
   rustinaction:
     output: true
 
+  eloquentjavascript:
+    output: true
+
+  profcpp:
+    output: true
+
+  tmp:
+    output: true
+
+  jaxinaction:
+    output: true
+
 # Friends
 friends: [
     {
