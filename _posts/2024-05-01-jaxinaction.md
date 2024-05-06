@@ -16,5 +16,5 @@ tags:
  
  
 ### [第一章：Intro to JAX]({{ site.baseurl }}/jaxinaction/ch1)
- 
+### [第二章：Your first program in JAX]({{ site.baseurl }}/jaxinaction/ch2) 
  
