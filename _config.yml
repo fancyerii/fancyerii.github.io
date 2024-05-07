@@ -153,6 +153,9 @@ collections:
   jaxinaction:
     output: true
 
+  gnn:
+    output: true
+
 # Friends
 friends: [
     {

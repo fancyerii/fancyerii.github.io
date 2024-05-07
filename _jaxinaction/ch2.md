@@ -9,7 +9,10 @@ tags:
     - Jax
 ---
 
-
+<!--more-->
+**目录**
+* TOC
+{:toc}
 
 这一章涵盖了以下内容：
 
@@ -35,8 +38,7 @@ JAX是一个用于Python和NumPy程序可组合转换的库，技术上并不限
 我在Google Colab笔记本上使用GPU运行时。这是开始使用JAX的最简单方法。Colab已经预装了JAX，并且JAX可以利用硬件加速。在本书的后面，我们还将使用Google TPU与JAX。因此，我建议在Colab笔记本中运行这段代码。
 
 您可能在不同的系统上运行代码，因此可能需要手动安装JAX。要这样做，请查看官方文档中的安装指南（https://github.com/google/jax#installation）并选择最合适的选项。
-
- <!--more-->
+ 
 
 ## 2.1 一个玩具机器学习问题：手写数字分类
 
@@ -61,7 +63,7 @@ JAX是一个用于Python和NumPy程序可组合转换的库，技术上并不限
 <a>![](/img/jaxinaction/ch1/3.png)</a>
  
  
-# 2.2 加载和准备数据集
+## 2.2 加载和准备数据集
 
 如前所述，JAX不包含任何数据加载器，因为JAX倾向于专注于其核心优势。您可以轻松地使用TensorFlow或PyTorch的数据加载器；您更喜欢或更熟悉哪一个。JAX官方文档包含了这两种加载器的示例。我们将在此特定示例中使用TensorFlow数据集及其数据加载API。
 
