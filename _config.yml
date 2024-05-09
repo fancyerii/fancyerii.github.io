@@ -156,6 +156,8 @@ collections:
   gnn:
     output: true
 
+  nwcp:
+    output: true
 # Friends
 friends: [
     {
