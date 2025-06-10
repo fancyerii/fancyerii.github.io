@@ -3,7 +3,7 @@ layout:     post
 title:      "人工智能能否实现？"
 author:     "lili"
 mathjax: true
-sticky: true
+sticky: false
 excerpt_separator: <!--more-->
 permalink: /2019/03/14/philosophy/
 tags:
