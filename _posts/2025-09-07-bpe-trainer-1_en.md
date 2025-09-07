@@ -384,7 +384,7 @@ total time: 2187.1810638625175
 openwebtext time: 2187.20 seconds
 ```
 
-As you can see, the total training time for OpenWebText is 2178 seconds, which is over the assignment's goal (30 minutes). Additionally, we can see that 944 seconds were spent on calling `BPE_Trainer._count_pairs`, the `max` function took 167 seconds, and updating `word_encoding` took 453 seconds.
+As you can see, the total training time for OpenWebText is 2187 seconds, which is over the assignment's goal (30 minutes). Additionally, we can see that 944 seconds were spent on calling `BPE_Trainer._count_pairs`, the `max` function took 167 seconds, and updating `word_encoding` took 453 seconds.
 
 The first version is correct but very slow. Optimizing it is our next objective.
 
