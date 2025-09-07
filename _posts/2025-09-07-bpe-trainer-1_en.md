@@ -10,7 +10,7 @@ tags:
     - bpe tokenizer
 ---
 
-This article series is a sub-project of Stanford's CS336 Assignment 1, focusing on implementing an efficient training algorithm for a BPE Tokenizer. Through a series of optimizations, we managed to reduce the training time on OpenWebText from over 10 hours to less than 10 minutes. This series explains that entire optimization process, covering: algorithm optimization, data structure optimization, parallelization with OpenMP, Cython optimization, and the implementation and Cython integration of key components in C++. This is the second article, covering the implementation of the simplest algorithm.
+This series of articles implements a subtask of Stanford’s CS336 Assignment 1: building an efficient training algorithm for a BPE Tokenizer. Through a series of optimizations, our algorithm’s training time on OpenWebText was reduced from over 10 hours to less than 10 minutes. This series explains these optimizations, including algorithmic improvements, data structure enhancements, parallelization with OpenMP, Cython optimization, and implementing key code in C++ along with its integration via Cython. This is the second article, covering the implementation of the simplest algorithm.
 
 <!--more-->
 
