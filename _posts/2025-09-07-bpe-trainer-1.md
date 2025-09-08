@@ -388,7 +388,7 @@ unknown_args=[]
 _pretokenize_and_count time 622.017874084413
 count_pairs_time: 944.907833525911, max_time: 167.04244575463235, update_time: 453.1098820846528
 total time: 2187.1810638625175
-openwebtext time: 2187.20 seconds
+total train time: 2187.20 seconds
 ```
 
 可以看到，训练openwebtext总的时间是2187秒，这是超过了作业的目标(30分钟)。另外我们可以看到有944秒花在了调用BPE_Trainer._count_pairs上，max函数的时间是167秒，而更新word_encoding的时间是453秒。

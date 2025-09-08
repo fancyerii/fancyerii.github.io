@@ -392,6 +392,6 @@ The first version is correct but very slow. Optimizing it is our next objective.
 
 For easy comparison, each article will summarize all test results up to the current version.
 
-| Version | Data | Total Time (s) | Stat. Freq. Time (s) | Merge Time (s) | Other |
+| Version | Data | Total Time (s) | Count Time (s) | Merge Time (s) | Other |
 |---|---|---|---|---|---|
 | bpe\_v1\_time | tinystory | 2187/2264/2247 | 622/642/628 | count\_pair: 944/995/984 <br> max: 167/173/174/174 <br> update: 453/453/460 | |
