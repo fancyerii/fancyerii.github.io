@@ -234,28 +234,6 @@ Your implementation should be able to pass all tests. Optionally (this could be 
 * (b) Compare and contrast the tokenizer that you get training on TinyStories versus OpenWebText.
     * **Deliverable**: A one-to-two sentence response.
 
-#### 问题 (train_bpe_tinystories)：在 TinyStories 上训练 BPE (2 分)
-
-* (a) 在 TinyStories 数据集上训练一个字节级 BPE 分词器，最大词汇量为 10,000。确保将 TinyStories 的特殊标记 `<|endoftext|>` 添加到词汇表中。将得到的词汇表和合并操作序列化到磁盘，以供后续检查。训练耗时和占用的内存分别是多少？词汇表中包含的最长标记是什么？这合理吗？
-
-  * **资源要求**: ≤ 30 分钟（无需 GPU），≤ 30GB 内存
-  * **提示**：如果你在预分词阶段使用多进程并行化，并利用以下两个事实，你应该能够将 BPE 训练时间控制在 2 分钟以内：
-    * (a) 数据文件中的文档以 `<|endoftext|>` 标记作为分隔符。
-    * (b) 在应用 BPE 合并之前，`<|endoftext|>` 标记作为特殊情况被处理。
-  * **提交内容**：一到两句话的回答。
-
-* (b) 对你的代码进行性能分析。分词器训练过程中哪一部分最耗时？
-  * **提交内容**：一到两句话的回答。
-
-
-#### 问题 (train_bpe_expts_owt)：在 OpenWebText 上训练 BPE (2 分)
-
-* (a) 在 OpenWebText 数据集上训练一个字节级 BPE 分词器，最大词汇量为 32,000。将得到的词汇表和合并操作序列化到磁盘，以供后续检查。词汇表中包含的最长标记是什么？这合理吗？
-  * **资源要求**: ≤ 12 小时（无需 GPU），≤ 100GB 内存
-  * **提交内容**：一到两句话的回答。
-
-* (b) 比较和对比在 TinyStories 和 OpenWebText 上训练得到的分词器。
-  * **提交内容**：一到两句话的回答。
 
 ## 2\. Code
 
