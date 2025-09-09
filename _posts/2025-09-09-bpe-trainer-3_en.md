@@ -19,9 +19,7 @@ This series of articles implements a subtask of Stanford’s CS336 Assignment 1:
 * TOC
 {:toc}
 
------
 
-Here is the English translation of the provided content, preserving the markdown formatting.
 
 ## 1\. Algorithm Optimization
 
