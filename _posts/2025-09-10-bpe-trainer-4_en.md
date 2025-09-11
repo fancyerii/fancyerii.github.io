@@ -485,7 +485,60 @@ bpe_v4_mp_deepcopy_time      | tinystory | 1924/1872/1983 | 80/90/80 |merge time
 
 The `compute_time` for `bpe_v4_mp_deepcopy_time` is similar to `bpe_v4_mp_time` (around 200+ seconds), which again refutes my guess. `pickle` serialization/deserialization doesn't seem to make list iteration faster.
 
-To this day, the question remains: why is the `compute_time` for a `fork`-created child process slower than a `spawn`- or `Pool`-created process? If you know the potential reason, please let me know\!
+A final question remains: Why is the subprocess created with `fork` slower at iterating through the `count_pairs` list than one created with `spawn` or `Pool`? A search on Gemini provided this answer:
+
+A `fork` subprocess doesn't need to copy the arguments passed from the parent process. If the subprocess modifies a corresponding memory page, the operating system will create a private copy of that page. This is known as **Copy-on-Write (CoW)**. However, since our subprocess's traversal of `count_pairs` should be read-only, it shouldn't, in theory, trigger the CoW mechanism. I searched Gemini, and its reference answer is as follows.
+
+Even if the subprocess only performs a read operation on `count_pairs`, it can still trigger Copy-on-Write (CoW). While this seems counterintuitive, the reason is typically related to the Python interpreter and underlying memory management mechanisms.
+
+When a subprocess created with `fork` inherits the parent process's memory space, it gets read-only access to the `count_pairs` data. Ideally, if the subprocess only iterates through the data, it shouldn't trigger CoW. However, several scenarios can break this ideal state:
+
+**1. Garbage Collection**
+
+This is the most common and subtle reason. When the Python interpreter runs in the subprocess, it performs its own memory management and garbage collection. To ensure correct object reference counts or to mark and clear objects that are no longer in use, the interpreter may make small modifications to certain metadata in memory, such as reference counts.
+
+* Python Objects: In Python, every object has an `ob_refcnt` (reference count) field.
+* Subprocess Reading: When the subprocess iterates through the tuples in `count_pairs`, the interpreter might internally need to inspect or update the reference counts of these tuples.
+* Triggering CoW: Even updating a single byte of a reference count is considered a modification by the operating system. To maintain the parent-child processes' independence, the kernel immediately creates a private copy of the entire memory page containing that object.
+
+**2. Memory Alignment and Cache Lines**
+
+When a processor accesses memory, it does so in units called **cache lines** (typically 64 bytes). When a memory page is accessed, the entire cache line is loaded into the processor's cache. If this cache line contains data that needs to be modified (even if it belongs to other, unrelated objects), the entire memory page may be flagged for copying.
+
+**3. JIT Compilers and Other System Calls**
+
+If the subprocess uses a Just-In-Time (JIT) compiler or other complex libraries, these libraries may perform internal memory operations that unintentionally trigger CoW. Even a simple memory access can have a complex interaction with the kernel's memory management.
+
+**Conclusion**
+
+The read operation on `count_pairs` in the subprocess triggers CoW not because of an explicit modification in your code, but because of small, background modifications made by the Python interpreter to maintain its internal memory state (most commonly, reference counts for garbage collection).
+
+The `spawn` method doesn't have this issue because it creates a separate memory copy from the beginning. While this copying process (serialization and deserialization) is time-consuming at startup, once complete, the subprocess has its own fully independent memory space. Subsequent operations will not be affected by or affect the parent process's memory, so there's no CoW overhead.
+
+To verify this, I wrote a program to test it:
+
+```
+import time
+import multiprocessing as mp
+
+def worker(lst):
+    t0 = time.perf_counter()
+    for x in lst:       
+        pass
+    print(f"traverse time: {time.perf_counter() - t0:.2f}s")
+
+if __name__ == '__main__':
+    mp.set_start_method('spawn')           
+    lst = list(zip(range(5_000_000), range(5_000_000)))
+    start_time = time.perf_counter()
+    p = mp.Process(target=worker, args=(lst,))
+    p.start()
+    p.join()
+    end_time = time.perf_counter()
+    print(f"total time: {end_time - start_time:.2f}s")
+```
+
+With the `fork` method, the total time was 1.07s and the subprocess traversal time was 0.28s. With the `spawn` method, the total time was 4.8s and the subprocess traversal time was 0.08s. Therefore, even with the CoW issue, `fork` is still faster overall than `spawn`.
 
 
 

@@ -497,7 +497,62 @@ bpe_v4_mp_deepcopy_time      | tinystory | 1924/1872/1983 | 80/90/80 |merge time
 
 bpe_v4_mp_deepcopy_time的compute_time和bpe_v4_mp_time差不多，都是200+秒。这又推翻了我的猜想，pickle序列化和反序列化并没有使得list的遍历变快。
 
-所以到目前为止，还存在一个疑问：为什么fork的子进程遍历count_pairs这个list要比spawn和Pool慢。读者如果知道可能的问题，请告诉我，谢谢！
+最后还存在一个疑问：为什么fork的子进程遍历count_pairs这个list要比spawn和Pool慢？通过问Gemini，它给的答案是：
+
+fork的子进程不需要复制父进程传入的参数，如果子进程修改了相应的内存页，操作系统就会为这个内页生成一个私有副本，这就是所谓的写时复制（Copy-On-Write，CoW）。但是我们的子进程遍历count_pairs应该是只读的，理论上不应该触发COW机制。我搜索了一下Gemini，它给的参考答案是如下。
+
+即使子进程只对count_pairs进行读取操作，也可能触发写时复制（Copy-On-Write, CoW）。这听起来有点反直觉，但原因通常与 Python 解释器和底层的内存管理机制有关。
+
+当子进程在 fork 后继承父进程的内存空间时，它获得了对 count_pairs 数据的只读访问权限。理想情况下，如果子进程只遍历数据，就不应该触发 CoW。然而，有几种情况会打破这个理想状态：
+
+**1.垃圾回收 (Garbage Collection)**
+
+这是最常见也最微妙的原因。当 Python 解释器在子进程中运行时，它会进行自己的内存管理和垃圾回收。为了确保对象的引用计数正确，或者为了标记和清除不再使用的对象，解释器可能会对内存中的某些元数据（比如引用计数）进行微小的修改。
+
+* Python 对象：在 Python 中，每个对象都有一个ob_refcnt（引用计数）字段。
+* 子进程读取：当子进程遍历 count_pairs 中的元组时，解释器可能会在内部需要检查或更新这些元组的引用计数。
+* 触发 CoW：即使只是更新一个字节的引用计数，操作系统也会认为这个内存页被修改了。为了保持父子进程的独立性，内核会立即为包含这个对象的整个内存页创建一个私有副本。
+
+**2.内存对齐和缓存行**
+
+处理器在访问内存时，会以缓存行（通常是 64 字节）为单位。当一个内存页被访问时，整个缓存行会被载入处理器缓存。如果这个缓存行包含了需要被修改的数据（即使是其他不相关的对象），那么整个内存页都可能被标记为需要复制。
+
+**3.JIT 编译器和其他系统调用**
+
+如果子进程使用了 JIT（Just-In-Time）编译器或其他一些复杂的库，这些库可能会在内部进行内存操作，从而意外地触发 CoW。即使是简单的内存访问，也可能与内核的其他内存管理操作产生复杂的交互。
+
+**结论**
+
+子进程对 count_pairs 的读取之所以会触发 CoW，并不是因为你代码中显式地进行了修改，而是因为 Python 解释器在后台为了维护自身的内存状态（最常见的是垃圾回收的引用计数）而进行的微小修改。
+
+spawn 方式之所以没有这个问题，是因为它从一开始就创建了一个独立的内存副本。虽然这个复制过程（序列化和反序列化）在启动时很耗时，但一旦完成，子进程就拥有了完全独立的内存空间，后续的任何操作都不会再影响或被父进程的内存所影响，因此也就不存在 CoW 的开销。
+
+
+为了验证这一点，我写了一个程序来测试：
+
+```
+import time
+import multiprocessing as mp
+
+def worker(lst):
+    t0 = time.perf_counter()
+    for x in lst:          
+        pass
+    print(f"traverse time: {time.perf_counter() - t0:.2f}s")
+
+if __name__ == '__main__':
+    mp.set_start_method('spawn')         
+    lst = list(zip(range(5_000_000), range(5_000_000)))
+    start_time = time.perf_counter()
+    p = mp.Process(target=worker, args=(lst,))
+    p.start()
+    p.join()
+    end_time = time.perf_counter()
+    print(f"total time: {end_time - start_time:.2f}s")
+
+```
+
+如果是fork方式，总时间是1.07s，子进程遍历时间是0.28s。如果是spawn方式，总时间是4.8s，子进程遍历时间是.08s。所以即使存在触发CoW的问题，总体来说fork还是要比spawn更快。
 
 ## 9. 总结
 
