@@ -554,7 +554,7 @@ sys      0m4.001s
 
 The speed is similar to `dd`, which confirms the disk speed is about 1.7 GB/s.
 
-But is Python's file reading slow? I wrote a simple script [test\_readspeed.py](https://www.google.com/search?q=https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/test_readspeed.py) to test this:
+But is Python's file reading slow? I wrote a simple script [test\_readspeed.py](https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/test_readspeed.py) to test this:
 
 ```
 read from nfs

@@ -84,7 +84,7 @@ The most obvious approach, similar to our previous successful optimization, is t
 
 ## 2\. Using `multiprocessing.Process` to Parallelize the `max` Operation
 
-My first attempt was to use the successful strategy from the previous article: parallelizing the `max` operation with multiple processes. The code for this approach is in [`bpe_v4_mp.py`](https://www.google.com/search?q=%5Bhttps://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_mp.py%5D\(https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_mp.py\)). Let's look at the changes relative to `bpe_v3.py`.
+My first attempt was to use the successful strategy from the previous article: parallelizing the `max` operation with multiple processes. The code for this approach is in [`bpe_v4_mp.py`](https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_mp.py). Let's look at the changes relative to `bpe_v3.py`.
 
 ```
     @staticmethod
@@ -155,7 +155,7 @@ For convenience during testing, a command-line argument was added to set the num
 
 ## 3\. Test Results for `multiprocessing.Process`
 
-To measure the performance, I implemented [`bpe_v4_mp_time.py`](https://www.google.com/search?q=%5Bhttps://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_mp_time.py%5D\(https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_mp_time.py\)). The initial tests showed that it was incredibly slow on OpenWeb, so I switched to the smaller TinyStories dataset. The results are below:
+To measure the performance, I implemented [`bpe_v4_mp_time.py`](https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_mp_time.py). The initial tests showed that it was incredibly slow on OpenWeb, so I switched to the smaller TinyStories dataset. The results are below:
 
 Version           | Data      | Total Time(s) | Word Count Time(s) | Merge Time(s) | Other
 bpe_v3_time      | tinystory | 211/206/208 | 90/90/90 |total:120/115/117 <br> max_time: 117/112/115 <br> update_time: 3/3/3 |num_counter=8, num_merger=1
@@ -243,7 +243,7 @@ Here are some key takeaways from the results:
 
 The results clearly show that as the number of processes increases, the total time spent also increases. While the actual computation time (`compute_time`) does decrease, the total `max_time` increases significantly. This suggests that the overhead of **creating and destroying processes** is extremely high. Our previous `_pretokenize_and_count_mp` function only created and destroyed processes once, with most of the time spent on regex and counting. However, here, `_merge_a_pair` is called 10,000 times, which means `_parallel_max` is called 10,000 times, leading to 10,000 process creations and destructions. This cost is substantial.
 
-Furthermore, for a parallel algorithm to work, we need to be able to randomly access `pair_counts`. Since Python's `dict` only allows sequential access via an iterator, we need to copy it to a list. This copy operation itself can take longer than the `max` operation. We saw from the `max` source code that it has a time complexity of O(n) and a space complexity of O(1), as it only needs to iterate once to find the maximum value. The copy operation also has O(n) time complexity and O(n) space complexity. To verify this, I wrote [`bpe_v4_time2.py`](https://www.google.com/search?q=%5Bhttps://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_time2.py%5D\(https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_time2.py\)) to compare the `max` and copy times.
+Furthermore, for a parallel algorithm to work, we need to be able to randomly access `pair_counts`. Since Python's `dict` only allows sequential access via an iterator, we need to copy it to a list. This copy operation itself can take longer than the `max` operation. We saw from the `max` source code that it has a time complexity of O(n) and a space complexity of O(1), as it only needs to iterate once to find the maximum value. The copy operation also has O(n) time complexity and O(n) space complexity. To verify this, I wrote [`bpe_v4_time2.py`](https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_time2.py) to compare the `max` and copy times.
 
 ```
         start_time = time.perf_counter()
@@ -282,7 +282,7 @@ To explore these questions, I tried implementing the parallel `max` algorithm us
 
 ## 5\. Using `multiprocessing.Pool` for Parallel `max`
 
-The full code is in [`bpe_v4_time.py`](https://www.google.com/search?q=%5Bhttps://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_time.py%5D\(https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_time.py\)).
+The full code is in [`bpe_v4_time.py`](https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_time.py).
 
 ### The `train` function
 
@@ -430,7 +430,7 @@ We define an `Unpickleable` class that raises an exception if `pickle` is attemp
 
 ## 8\. Verifying the `multiprocessing.Process` Algorithm with `spawn`
 
-Based on our analysis, `Process` has high overhead from creation/destruction and poor cache utilization. The only reason it was faster than `Pool` was `fork`'s lack of IPC data transfer. To test this, I modified the `Process`-based algorithm to use `spawn`. If my reasoning is correct, this version should be the slowest of all. The code is in [`bpe_v4_mp_spawn_time.py`](https://www.google.com/search?q=%5Bhttps://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_mp_spawn_time.py%5D\(https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_mp_spawn_time.py\)), with the only change being:
+Based on our analysis, `Process` has high overhead from creation/destruction and poor cache utilization. The only reason it was faster than `Pool` was `fork`'s lack of IPC data transfer. To test this, I modified the `Process`-based algorithm to use `spawn`. If my reasoning is correct, this version should be the slowest of all. The code is in [`bpe_v4_mp_spawn_time.py`](https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_mp_spawn_time.py), with the only change being:
 
 ```
 mp.set_start_method('spawn')
@@ -456,7 +456,7 @@ However, the `compute_time` is similar to `Pool`'s, which seems to contradict my
 
 If that's not the reason, why is iterating the `pair_counts` list in a `fork`-created child process slower than in a `spawn`- or `Pool`-created process? The key difference is that a `fork`-ed child process reads from the parent's `list(pair_counts.items())` (a shallow copy), while `spawn`- and `Pool`-created processes get a deep copy of the data via `pickle`. This deep copy might result in a more memory-compact list layout, leading to faster iteration.
 
-To test this, I implemented [`bpe_v4_mp_deepcopy_time.py`](https://www.google.com/search?q=%5Bhttps://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_mp_deepcopy_time.py%5D\(https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_mp_deepcopy_time.py\)), which manually serializes and deserializes the list to mimic the deep copy. The only difference from `bpe_v4_mp_time.py` is:
+To test this, I implemented [`bpe_v4_mp_deepcopy_time.py`](https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cs336_basics/bpe_v4_mp_deepcopy_time.py), which manually serializes and deserializes the list to mimic the deep copy. The only difference from `bpe_v4_mp_time.py` is:
 
 ```
         start_time = time.perf_counter()
