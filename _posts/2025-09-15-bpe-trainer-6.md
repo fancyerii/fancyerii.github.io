@@ -442,7 +442,7 @@ bpe_train_updater_omp_v5 | Boost hash | 1327/1330/1393 | 505/539/569 |821/791/82
 bpe_train_updater_omp_v5 | Boost hash | 1002/1004/1080 | 572/580/635 | 430/423/445 | export OMP_NUM_THREADS=32 export OMP_SCHEDULE="dynamic,1000" 
 bpe_train_updater_omp_v5 | Boost hash | 986/925/934 | 712/655/660 | 274/270/273 | export OMP_NUM_THREADS=64 export OMP_SCHEDULE="dynamic,1000" 
 
-bpe_train_updater_omp_v7 | Boost hash | 1268/1196/1215 | 548/473/481 | 719/723/734 | export OMP_NUM_THREADS=32 export OMP_SCHEDULE="dynamic,1000"
+bpe_train_updater_omp_v7 | Boost hash | 1268/1196/1215 | 548/473/481 | 719/723/734 | export OMP_NUM_THREADS=16 export OMP_SCHEDULE="dynamic,1000"
 bpe_train_updater_omp_v7 | Boost hash | 907/908/955 | 514/503/554 | 391/403/400 | export OMP_NUM_THREADS=32 export OMP_SCHEDULE="dynamic,1000"
 bpe_train_updater_omp_v7 | Boost hash | 986/876/971 | 730/618/709 | 253/256/259 | export OMP_NUM_THREADS=64 export OMP_SCHEDULE="dynamic,1000"
 

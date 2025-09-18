@@ -444,7 +444,7 @@ For `bpe_train_updater_omp_v7`, I didn't do extensive chunk size experiments and
 | program | hash function | total time(sec) | update time(sec) | max time(sec) | other |
 |---|---|---|---|---|---|
 | bpe\_train\_updater\_omp\_v5 | Boost hash | 1327/1330/1393 | 505/539/569 |821/791/823 | export OMP\_NUM\_THREADS=16 export OMP\_SCHEDULE="dynamic,2000" |
-| bpe\_train\_updater\_omp\_v5 | Boost hash | 1002/1004/1080 | 572/580/635 | 430/423/445 | export OMP\_NUM\_THREADS=32 export OMP\_SCHEDULE="dynamic,1000" |
+| bpe\_train\_updater\_omp\_v5 | Boost hash | 1002/1004/1080 | 572/580/635 | 430/423/445 | export OMP\_NUM\_THREADS=16 export OMP\_SCHEDULE="dynamic,1000" |
 | bpe\_train\_updater\_omp\_v5 | Boost hash | 986/925/934 | 712/655/660 | 274/270/273 | export OMP\_NUM\_THREADS=64 export OMP\_SCHEDULE="dynamic,1000" |
 | bpe\_train\_updater\_omp\_v7 | Boost hash | 1268/1196/1215 | 548/473/481 | 719/723/734 | export OMP\_NUM\_THREADS=32 export OMP\_SCHEDULE="dynamic,1000" |
 | bpe\_train\_updater\_omp\_v7 | Boost hash | 907/908/955 | 514/503/554 | 391/403/400 | export OMP\_NUM\_THREADS=32 export OMP\_SCHEDULE="dynamic,1000" |
