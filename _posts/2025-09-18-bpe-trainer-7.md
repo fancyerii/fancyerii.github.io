@@ -196,6 +196,8 @@ bpe_train_updater_opt_absl | Absl hash |1072/1012/1022 | 423/378/384 | 648/633/6
 
 ## 6. emhash8::HashMap
 
+关于emhash的原理可以参考[这个issue](https://github.com/ktprime/emhash/issues/33#issuecomment-1636618464)，我也没有深入研究，感兴趣的读者可以自行探索或者去项目的github提问。
+
 [emhash](https://github.com/ktprime/emhash)相较absl::flat_hash_map就轻巧多了，我们用到的只是emhash8，因此只需要引入头文件就行，在CMakeLists.txt里增加target_include_directories即可：
 
 ```
@@ -225,6 +227,7 @@ bpe_train_updater_opt_emhash8 | Boost hash | 469/474/479 | 389/395/399 |79/78/79
 bpe_train_updater_opt_emhash8_hash| my hash | 2316/1951/1983 | 2250/1888/1918 |66/63/64
 
 emhash8::HashMap的速度比basl::flat_hash_map更快，总时长不到500秒。其中max时间更是小于100秒。使用-=优化还能快个十来秒。同时我们看到，如果使用简单的hash函数，它的性能也会下降。
+
 
 ## 8. 小结
 

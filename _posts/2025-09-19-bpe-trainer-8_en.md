@@ -440,3 +440,33 @@ bpe\_train\_updater\_fine\_grained\_absl | Absl hash | 845/845/856 | 204/201/203
 bpe\_train\_updater\_fine\_grained\_emhash8 | Boost Hash | 261/259/261 | 200/198/200 | 61/60/60
 
 After implementing the fine-grained update, the total time for `bpe_train_updater_fine_grained_emhash8` is only **260 seconds**, with an update time of just 200 seconds. In contrast, `bpe_train_updater_emhash8` had a total time of 480 seconds, an update time of nearly 400 seconds, and a max time of 79 seconds. This shows that the fine-grained update reduces unnecessary deletions and insertions, cutting the update time by half. These unnecessary operations also tend to make the data structure messy, which is why the `max` time was slightly reduced as well.
+
+## 6\. Using `emhash8::HashSet`/`emhash9::HashSet` to Replace `std::unordered_set`
+
+Besides `pair_counts`, another frequently updated data structure is the inverted index `pair_wordids`:
+
+```
+std::unordered_map<std::pair<int, int>, std::unordered_set<int>, pair_hash> pair_wordids;
+```
+
+Here, in addition to the outer `std::unordered_map`, the value itself is an `std::unordered_set<int>`. We can replace `std::unordered_set` with `emhash8::HashSet` or `emhash9::HashSet`. The complete code is available in [`bpe_train_updater_fine_grained_emhash8_set.cpp`](https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cppupdate/bpe_train_updater_fine_grained_emhash8_set.cpp) and [`bpe_train_updater_fine_grained_emhash8_set9.cpp`](https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cppupdate/bpe_train_updater_fine_grained_emhash8_set9.cpp).
+
+Using `hash_set4.hpp` (`emhash9::HashSet`) and `hash_table8.hpp` (`emhash8::HashMap`) together can cause some compilation warnings. However, according to [this issue](https://github.com/ktprime/emhash/issues/67#issuecomment-3262163325), we can ignore them. The experimental results are as follows:
+
+program              | hash function | total time(sec) | update time(sec) | max time(sec) | other
+bpe\_train\_updater | Boost hash | 7171/7856/9248 | 392/480/478 |6779/7376/8770 |
+bpe\_train\_updater\_omp\_v7 | Boost hash | 907/908/955 | 514/503/554 | 391/403/400 | export OMP\_NUM\_THREADS=32 export OMP\_SCHEDULE="dynamic,1000"
+bpe\_train\_updater\_omp\_v7 | Boost hash | 1268/1196/1215 | 548/473/481 | 719/723/734 | export OMP\_NUM\_THREADS=16 export OMP\_SCHEDULE="dynamic,1000"
+bpe\_train\_updater\_omp\_v2\_hash | Boost hash | 2201/2392/2281 | 1931/2120/2010 |269/272/270 |
+bpe\_train\_updater\_omp\_v2\_hash2 | Absl hash | 1170/1074/1071 | 545/456/449 |625/617/621
+bpe\_train\_updater\_opt\_absl | Absl hash |1072/1012/1022 | 423/378/384 | 648/633/637
+bpe\_train\_updater\_emhash8 | Boost hash | 479/485/485 | 398/401/401 | 80/83/83
+bpe\_train\_updater\_opt\_emhash8 | Boost hash | 469/474/479 | 389/395/399 |79/78/79
+bpe\_train\_updater\_opt\_emhash8\_hash| my hash | 2316/1951/1983 | 2250/1888/1918 |66/63/64
+bpe\_train\_updater\_fine\_grained | Boost Hash | 8773/8873/7641 | 220/219/233 |8552/8653/7408
+bpe\_train\_updater\_fine\_grained\_absl | Absl hash | 845/845/856 | 204/201/203 | 641/643/653
+bpe\_train\_updater\_fine\_grained\_emhash8 | Boost Hash | 261/259/261 | 200/198/200 | 61/60/60
+bpe\_train\_updater\_fine\_grained\_emhash8\_set | Boost Hash | 192/192/194 | 117/117/117 | 75/75/77
+bpe\_train\_updater\_fine\_grained\_emhash8\_set9 | Boost Hash | 168/170/171 | 107/108/109 | 61/62/61
+
+As you can see, by replacing `pair_wordids` with the faster `emhash8::HashMap`/`emhash8::HashSet`/`emhash9::HashSet`, the time was further reduced from over 250 seconds to around 170 seconds.

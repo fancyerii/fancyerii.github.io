@@ -124,7 +124,7 @@ c st st e f st b
 
 除了减少受影响的老pair的频次计数，增加新pair的计数，我们还需要修改倒排索引pair_to_words。我最早写的代码是把中间受影响的pair从中删除。但是这是有bug的。比如ef会受到影响，因此需要减少计数。但是ef除了在3个st的中间出现，它还出现在最后。如果我们直接从pair_to_words里删除ef，那么倒排索引就和实际不一致了。"真正"的倒排索引不仅仅记录pair('e','f')在词'abcststefstbbef'里出现了，而且还需要记录出现的次数。也就是说pair_to_words的key是pair，value也是dict，value这个dict是word/pair_freq。而我们现在的pair_to_words的value是一个set。因此我们只知道pair('e','f')在词'abcststefstbbef'里出现了，但是不知道出现几次。这就出现问题了。比如上面的例子我们之间从pair_to_words[('e','f')]里删除词'abcststefstbbef'，那么倒排索引就不对了，但是我们又必须从pair_to_words[('t','e')]的value里删除'abcststefstbbef'，因为在单词'abcststefstbbef'里pair('t','e')只出现一次。
 
-一种解决办法就是修改pair_to_words相关代码，把它变成{pair: {word: word_freq}}这样的结构。这是比较清晰的改动方法。不过我当时觉得这么改需要修改的地方太多，我想把修改局限在一个函数里。因此我使用了另外一个办法(现在仔细思考其实并不太好)。这个办法是：找到不受影响的所有pair，把它放到一个set里。在修改倒排索引时如果发现要删除的pair在不受影响的pair也出现，那么不删除。从逻辑的角度这个算法也是正确的，但是它使得代码变得异常复杂，而且如果pair只出现一次，不受影响的pair占多数，为了很少出现的case使代码复杂并且让常见case变慢，这是得不偿失的。
+一种解决办法就是修改pair_to_words相关代码，把它变成{pair: {word: word_freq}}这样的结构。这是比较清晰的改动方法。不过我当时觉得这么改需要修改的地方太多，我想把修改局限在一个函数里。因此我使用了另外一个办法(现在仔细思考其实并不太好)。这个办法是：找到不受影响的所有pair，把它放到一个set里。在修改倒排索引时如果发现要删除的pair在不受影响的pair也出现，那么不删除。从逻辑的角度这个算法也是正确的，但是它使得代码变得复杂。
 
 不过总体来说扫描一遍不受影响的pair速度也比较快，而且后面的很多改进版本都基于当前算法，要改动比较麻烦。所以在写这篇文章的时候我就暂时不修改了。
 
@@ -444,5 +444,35 @@ bpe_train_updater_fine_grained_absl | Absl hash | 845/845/856 | 204/201/203 | 64
 bpe_train_updater_fine_grained_emhash8 | Boost Hash | 261/259/261 | 200/198/200 | 61/60/60
 
 使用了细粒度更新后，bpe_train_updater_fine_grained_emhash8的总时间只有**260秒**，其中更新时间只有200秒。对比bpe_train_updater_emhash8，它的总时间是480秒，update时间接近400秒，max时间79秒。这说明细粒度更新减少了不必要的删除和插入，因此update时间变为原来的一半，而且这些不必要的删除和插入也会让数据结构变得混乱，因此max的时间也有少量减少。
+
+## 6. 使用emhash8::HashSet/emhash9::HashSet替代std::unordered_set
+
+除了pair_counts，还有一个比较频繁更新的就是倒排索引pair_wordids:
+
+```
+std::unordered_map<std::pair<int, int>, std::unordered_set<int>, pair_hash> pair_wordids;
+```
+
+这里除了外面的std::unordered_map，value本身也是一个std::unordered_set<int>。我们可以用emhash8::HashSet/emhash9::HashSet替代std::unordered_set。完整的代码在[bpe_train_updater_fine_grained_emhash8_set.cpp](https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cppupdate/bpe_train_updater_fine_grained_emhash8_set.cpp)和[bpe_train_updater_fine_grained_emhash8_set9.cpp](https://github.com/fancyerii/assignment1-basics-bpe/blob/main/cppupdate/bpe_train_updater_fine_grained_emhash8_set9.cpp)。
+
+同时使用hash_set4.hpp(emhash9::HashSet) and hash_table8.hpp(emhash8::HashMap)在编译时会出现一些警告，不过根据[这个issue](https://github.com/ktprime/emhash/issues/67#issuecomment-3262163325)，我们可以忽略它们。实验结果如下：
+
+program              | hash function | total time(sec) | update time(sec) | max time(sec) | other
+bpe_train_updater | Boost hash | 7171/7856/9248 | 392/480/478 |6779/7376/8770 |
+bpe_train_updater_omp_v7 | Boost hash | 907/908/955 | 514/503/554 | 391/403/400 | export OMP_NUM_THREADS=32 export OMP_SCHEDULE="dynamic,1000"
+bpe_train_updater_omp_v7 | Boost hash | 1268/1196/1215 | 548/473/481 | 719/723/734 | export OMP_NUM_THREADS=16 export OMP_SCHEDULE="dynamic,1000"
+bpe_train_updater_omp_v2_hash | Boost hash | 2201/2392/2281 | 1931/2120/2010 |269/272/270 |
+bpe_train_updater_omp_v2_hash2 | Absl hash | 1170/1074/1071 | 545/456/449 |625/617/621
+bpe_train_updater_opt_absl | Absl hash |1072/1012/1022 | 423/378/384 | 648/633/637
+bpe_train_updater_emhash8 | Boost hash | 479/485/485 | 398/401/401 | 80/83/83
+bpe_train_updater_opt_emhash8 | Boost hash | 469/474/479 | 389/395/399 |79/78/79
+bpe_train_updater_opt_emhash8_hash| my hash | 2316/1951/1983 | 2250/1888/1918 |66/63/64
+bpe_train_updater_fine_grained | Boost Hash | 8773/8873/7641 | 220/219/233 |8552/8653/7408
+bpe_train_updater_fine_grained_absl | Absl hash | 845/845/856 | 204/201/203 | 641/643/653
+bpe_train_updater_fine_grained_emhash8 | Boost Hash | 261/259/261 | 200/198/200 | 61/60/60
+bpe_train_updater_fine_grained_emhash8_set | Boost Hash | 192/192/194 | 117/117/117 | 75/75/77
+bpe_train_updater_fine_grained_emhash8_set9 | Boost Hash | 168/170/171 | 107/108/109 | 61/62/61
+
+可以看到pair_wordids用更快的emhash8::HashMap/emhash8::HashSet/emhash9::HashSet替换会后，时间进一步从250多秒降到了170秒。
 
 

@@ -193,6 +193,8 @@ When using a simple hash (`my hash`), `absl::flat_hash_map`'s max time is still 
 
 ## 6\. emhash8::HashMap
 
+You can refer to [this issue](https://github.com/ktprime/emhash/issues/33#issuecomment-1636618464) for the principles behind **emhash**. I haven't researched it in depth myself, so interested readers can explore it on their own or ask questions on the project's GitHub page.
+
 [emhash](https://github.com/ktprime/emhash) is much lighter than `absl::flat_hash_map`. We only need to use `emhash8`, so we just need to include the header files. We can do this by adding a `target_include_directories` line to `CMakeLists.txt`:
 
 ```
