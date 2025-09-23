@@ -417,7 +417,7 @@ bpe_v2_time | openweb |35358/34265/35687|2870/2949/2930| 32437/31264/32708 |
 bpe_v3_time | tinystory |250/90/90|80/90/90| 170/0/0 | num_counter=8, num_merger=1 skip
 bpe_v3_time | openweb |391/401/32352|390/400/410| total:31883 max:31187 update:695 | num_counter=8, num_merger=1 skip
 bpe_v5_time | tinystory |221/236/222 | 90/90/90 | total:130/146/132 max:127/143/129 update:3/3/3 |num_counter=8, num_merger=1
-bpe_v5_time | openweb |34333/34853/35804 | 401/390 | total:33879/34401/35347 max:33353/33820/34816 update:525/579/530 |num_counter=8, num_merger=1
+bpe_v5_time | openweb |34333/34853/35804 | 401/390/401 | total:33879/34401/35347 max:33353/33820/34816 update:525/579/530 |num_counter=8, num_merger=1
 
 和bpe_v3_time相比，使用细粒度的更新在openweb上的时间从695秒下降到500多秒。
 
@@ -473,6 +473,6 @@ bpe_train_updater_fine_grained_emhash8 | Boost Hash | 261/259/261 | 200/198/200 
 bpe_train_updater_fine_grained_emhash8_set | Boost Hash | 192/192/194 | 117/117/117 | 75/75/77
 bpe_train_updater_fine_grained_emhash8_set9 | Boost Hash | 168/170/171 | 107/108/109 | 61/62/61
 
-可以看到pair_wordids用更快的emhash8::HashMap/emhash8::HashSet/emhash9::HashSet替换会后，时间进一步从250多秒降到了170秒。
+可以看到pair_wordids用更快的emhash8::HashMap/emhash8::HashSet/emhash9::HashSet替换会后，时间进一步从260多秒降到了170秒。
 
 

@@ -469,4 +469,4 @@ bpe\_train\_updater\_fine\_grained\_emhash8 | Boost Hash | 261/259/261 | 200/198
 bpe\_train\_updater\_fine\_grained\_emhash8\_set | Boost Hash | 192/192/194 | 117/117/117 | 75/75/77
 bpe\_train\_updater\_fine\_grained\_emhash8\_set9 | Boost Hash | 168/170/171 | 107/108/109 | 61/62/61
 
-As you can see, by replacing `pair_wordids` with the faster `emhash8::HashMap`/`emhash8::HashSet`/`emhash9::HashSet`, the time was further reduced from over 250 seconds to around 170 seconds.
+As you can see, by replacing `pair_wordids` with the faster `emhash8::HashMap`/`emhash8::HashSet`/`emhash9::HashSet`, the time was further reduced from over 260 seconds to around 170 seconds.
