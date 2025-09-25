@@ -305,4 +305,19 @@ Therefore, the biggest problem with PyPy is its lack of "compatibility" with CPy
 
 ## 7\. Conclusion
 
-Although PyPy can accelerate Python code execution, we have to give it up because of the lack of support from the third-party library `regex`. On the other hand, with Cython, we were able to achieve the fastest speed without modifying the Python code much (though some code was refactored for module calls). Of course, we can further optimize the Cython code, for example, by using C++'s `unordered_map` instead of Python's `dict`. However, a better approach is to perform these optimizations directly in C++ and then package them into a dynamic library for Cython to call. This will be the topic of our next article.
+Although PyPy can accelerate Python code execution, we have to give it up because of the lack of support from the third-party library `regex`. On the other hand, with Cython, we were able to achieve the faster speed without modifying the Python code much (though some code was refactored for module calls). Of course, we can further optimize the Cython code, for example, by using C++'s `unordered_map` instead of Python's `dict`. However, a better approach is to perform these optimizations directly in C++ and then package them into a dynamic library for Cython to call. This will be the topic of our next article.
+
+## Full Series
+
+  * [Part 0: Introduction](/2025/09/05/bpe-trainer-0_en/) Introduces the basic BPE training algorithm and related tasks, as well as the development environment.
+  * [Part 1: The Simplest Implementation](/2025/09/07/bpe-trainer-1_en/) The simplest implementation of BPE training.
+  * [Part 2: Optimized Algorithm](/2025/09/08/bpe-trainer-2_en/) Implements incremental updates for pair\_counts.
+  * [Part 3: Parallel Tokenization and Frequency Counting](/2025/09/09/bpe-trainer-3_en/) Uses multiprocessing to implement a multi-process parallel algorithm.
+  * [Part 4: A Failed Parallel Optimization](/2025/09/10/bpe-trainer-4_en/) An attempt to parallelize the max pair calculation using multiple processes.
+  * [Part 5: Implementing the Merge Algorithm in C++](/2025/09/12/bpe-trainer-5_en/) Implements a C++ merge algorithm equivalent to the Python version, and compares two ways of iterating through std::unordered\_map.
+  * [Part 6: Parallelizing the Max Pair Search with OpenMP](/2025/09/15/bpe-trainer-6_en/) Uses OpenMP to find the max pair in pair\_counts in parallel.
+  * [Part 7: Using Flat Hashmap to Replace std::unordered\_map](/2025/09/18/bpe-trainer-7_en/) Uses flat hashmap to replace std::unordered\_map.
+  * [Part 8: Implementing Fine-Grained Updates](/2025/09/19/bpe-trainer-8_en/) Implements a fine-grained update algorithm for pair\_counts using an inverted index.
+  * [Part 9: Using a Heap to Find the Max Pair](/2025/09/21/bpe-trainer-9_en/) Uses a heap to find the max pair and improve performance.
+  * [Part 10: Using Cython and PyPy for Acceleration](/2025/09/24/bpe-trainer-10_en/) Uses Cython and PyPy to accelerate Python code.
+  * [Part 11: Wrapping C++ Code with Cython](/2025/09/25/bpe-trainer-11_en/) Wraps C++ code using Cython.

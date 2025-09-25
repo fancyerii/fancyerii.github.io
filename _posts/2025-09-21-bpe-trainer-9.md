@@ -738,5 +738,18 @@ bpe_train_updater_fine_grained_heap_emhash8_set9_opt | Boost Hash | 105/102/104 
 bpe_train_updater_fine_grained_heap_emhash8_set9_opt比bpe_train_updater_fine_grained_heap_emhash8_set9的update时间快11%。bpe_train_updater_fine_grained_heap_emhash8_set_opt比bpe_train_updater_fine_grained_heap_emhash8_set快8%。这个结论和python版本是一致的。
 
 
+## 本系列全部文章
 
+* [第0部分：简介](/2025/09/05/bpe-trainer-0/) 介绍bpe训练的基本算法和相关任务，并且介绍开发环境。
+* [第1部分：最简单实现](/2025/09/07/bpe-trainer-1/) bpe训练最简单的实现。
+* [第2部分：优化算法](/2025/09/08/bpe-trainer-2/) 实现pair_counts的增量更新。
+* [第3部分：并行分词和统计词频](/2025/09/09/bpe-trainer-3/) 使用multiprocessing实现多进程并行算法。
+* [第4部分：一次失败的并行优化](/2025/09/10/bpe-trainer-4/) 尝试用多进程并行计算max pair。
+* [第5部分：用C++实现Merge算法](/2025/09/12/bpe-trainer-5/) 用C++实现和Python等价的merge算法，并且比较std::unordered_map的两种遍历方式。
+* [第6部分：用OpenMP实现并行求最大](/2025/09/15/bpe-trainer-6/) 用OpenMP并行求pair_counts里最大pair。
+* [第7部分：使用flat hashmap替代std::unordered_map](/2025/09/18/bpe-trainer-7/) 使用flat hashmap来替代std::unordered_map。
+* [第8部分：实现细粒度更新](/2025/09/19/bpe-trainer-8/) 使用倒排索引实现pair_counts的细粒度更新算法。
+* [第9部分：使用堆来寻找最大pair](/2025/09/21/bpe-trainer-9/) 使用堆来求最大pair，提升性能。
+* [第10部分：使用cython和pypy来加速](/2025/09/24/bpe-trainer-10/) 使用cython和pypy来加速python代码。
+* [第11部分：使用cython封装c++代码](/2025/09/25/bpe-trainer-11/) 使用cython封装c++代码。
 
