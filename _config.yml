@@ -158,6 +158,9 @@ collections:
 
   nwcp:
     output: true
+    
+  chp:
+    output: true
 # Friends
 friends: [
     {
